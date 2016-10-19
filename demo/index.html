@@ -1,0 +1,128 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <title>history-panel demo</title>
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../history-panel.html">
+  <script src="../../chance/dist/chance.min.js"></script>
+  <style is="custom-style" include="demo-pages-shared-styles">
+  .vertical-section-container {
+    max-width: 600px;
+  }
+  </style>
+</head>
+
+<body unresolved>
+  <template is="dom-bind" id="app">
+    <div class="vertical-section-container centered">
+      <h3>The `history-list`</h3>
+      <template is="dom-if" if="[[hasData]]" restamp="true">
+        <history-panel></history-panel>
+      </template>
+    </div>
+  </template>
+  <script>
+  (function(app) {
+    'use strict';
+    app.hasData = false;
+    /* global chance */
+    app.generateHistoryItem = (isHistory) => {
+      var isPayload = chance.bool();
+      var payloadMethods = ['POST', 'PUT', 'DELETE', 'OPTIONS'];
+      var otherMethods = ['GET', 'HEAD'];
+      var headersSize = chance.integer({
+        min: 0,
+        max: 10
+      });
+      var headers = '';
+      for (var i = 0; i < headersSize; i++) {
+        headers += 'X-' + chance.word() + ': ' + chance.word() + '\n';
+      }
+      if (isPayload) {
+        headers += 'content-type: application/x-www-form-urlencoded';
+      }
+      var payload = isPayload ? chance.paragraph() : '';
+      var requestName = isHistory ? null : chance.sentence({
+        words: 2
+      });
+      var d = new Date();
+      var randomDay = chance.date({year: d.getFullYear(), 'month': d.getMonth()});
+      var t = randomDay.getTime();
+      var today = app.getDayToday(t);
+      var item = {
+        'url': chance.url(),
+        'method': chance.pick(isPayload ? payloadMethods : otherMethods),
+        'headers': headers,
+        'payload': payload,
+        'created': t,
+        'updated': t
+      };
+      item._id = encodeURIComponent(item.url) + '/' + item.method + '/' + today;
+      if (!isHistory) {
+        item.name = requestName;
+      }
+      return item;
+    };
+    app.getRequestData = (dataSize, isHistory) => {
+      var list = [];
+      for (var i = 0; i < dataSize; i++) {
+        list.push(app.generateHistoryItem(isHistory));
+      }
+      list.sort((a, b) => {
+        if (a.updated < b.updated) {
+          return 1;
+        }
+        if (a.updated > b.updated) {
+          return -1;
+        }
+        return 0;
+      });
+      return list;
+    };
+    app.produceData = function() {
+      var db = new PouchDB('history-requests');
+      db.info().then(function(result) {
+        // jscs:disable
+        if (result.doc_count < 500) {
+          var d = app.getRequestData(1000, true);
+          return db.bulkDocs(d);
+        }
+        // jscs:enable
+      }).catch(function(err) {
+        console.log(err);
+      }).then(() => {
+        app.hasData = true;
+      });
+    };
+    app.getDayToday = function(timestamp) {
+      var d = new Date(timestamp);
+      var tCheck = d.getTime();
+      if (tCheck !== tCheck) {
+        throw new Error('Invalid timestamp: ' + timestamp);
+      }
+      d.setMilliseconds(0);
+      d.setSeconds(0);
+      d.setMinutes(0);
+      d.setHours(0);
+      return d.getTime();
+    };
+    app.produceData();
+  })(document.querySelector('#app'));
+  </script>
+</body>
+</html>
