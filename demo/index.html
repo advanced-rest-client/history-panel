@@ -21,20 +21,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="../history-panel.html">
   <script src="../../chance/dist/chance.min.js"></script>
   <style is="custom-style" include="demo-pages-shared-styles">
-  .vertical-section-container {
-    max-width: 600px;
+  .history-panel {
+    height: calc(100vh - 32px);
+    position: relative;
   }
   </style>
 </head>
 
 <body unresolved>
   <template is="dom-bind" id="app">
-    <div class="vertical-section-container centered">
-      <h3>The `history-list`</h3>
-      <template is="dom-if" if="[[hasData]]" restamp="true">
-        <history-panel></history-panel>
-      </template>
-    </div>
+
+    <h3>The `history-list`</h3>
+    <input type="search" id="searchBar" on-search="_setSearch" placeholder="Search history"/>
+    <template is="dom-if" if="[[hasData]]" restamp="true">
+      <section class="history-panel">
+        <history-panel id="sp"></history-panel>
+      </section>
+    </template>
+
   </template>
   <script>
   (function(app) {
@@ -72,7 +76,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         'created': t,
         'updated': t
       };
-      item._id = encodeURIComponent(item.url) + '/' + item.method + '/' + today;
+      item._id = encodeURIComponent(item.url.toLowerCase()) + '/' +
+        item.method.toLowerCase() + '/' + today;
       if (!isHistory) {
         item.name = requestName;
       }
@@ -120,6 +125,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       d.setMinutes(0);
       d.setHours(0);
       return d.getTime();
+    };
+    app._setSearch = (e) => {
+      document.querySelector('history-panel').searchQuery = e.target.value;
     };
     app.produceData();
   })(document.querySelector('#app'));
