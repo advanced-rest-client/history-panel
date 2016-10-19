@@ -13,14 +13,27 @@ the License.
 -->
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../history-list-items/history-list-items.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../paper-styles/typography.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
 <link rel="import" href="pouchdb.html">
+<link rel="import" href="request-details-drawer.html">
 <!--
 `<history-panel>` ARC's requests history view
+
+This element is not ready to use with new system. It supports old system
+and eventually will be transformed to the new architecture.
+
+Please don't use it.
 
 ### Example
 ```
 <history-panel>
-  <data-source-element datasource></data-source-element>
 </history-panel>
 ```
 
@@ -41,18 +54,94 @@ Custom property | Description | Default
      :host {
       display: block;
     }
+    h1 {
+      @apply(--page-title-text);
+      @apply(--layout-flex);
+      color: var(--paper-blue-700);
+      font-weight: 300;
+    }
+    .table-options {
+      @apply(--layout-horizontal);
+    }
+    .selected-actions {
+      @apply(--layout-horizontal);
+      padding-right: 16px;
+      color: rgba(0, 0, 0, .57);
+    }
+    .empty {
+      height: 58px;
+      display: block;
+    }
+    paper-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
     </style>
-    <history-list-items id="history" items="[[list]]" selected-items="{{currentSelection}}" has-selection="{{hasSelection}}" on-history-list-threshold="loadNext"></history-list-items>
+    <paper-drawer-panel drawer-width="360px" id="details" force-narrow="[[narrowDrawer]]" right-drawer disable-edge-swipe disable-swipe>
+      <request-details-drawer is-history
+        request="{{detailedRequest}}"
+        on-request-details-drawer-open="_onOpenRequested"
+        on-close="closeDetailsPanel"
+        narrow="[[narrowDrawer]]"></request-details-drawer>
+      <div main>
+        <div class="status-bar">
+          <iron-pages selected="[[optionsState]]">
+            <section class="empty"></section>
+            <section class="table-options">
+              <h1>[[currentSelection.length]] item selected</h1>
+              <div class="selected-actions">
+                <paper-icon-button icon="file-download" id="exportSelected" on-tap="_exportSelected"></paper-icon-button>
+                <paper-icon-button icon="delete" id="deleteSelected" on-tap="_deleteSelected"></paper-icon-button>
+                <paper-tooltip for="exportSelected">Export selected to file</paper-tooltip>
+                <paper-tooltip for="deleteSelected">Delete selected</paper-tooltip>
+              </div>
+            </section>
+          </iron-pages>
+        </div>
+        <history-list-items
+          id="history"
+          items="[[historyData]]"
+          selected-items="{{currentSelection}}"
+          has-selection="{{hasSelection}}"
+          on-history-list-threshold="loadNext"
+          on-history-list-item-open="_onOpenRequested"
+          on-history-list-item-delete="_onDeleteRequested"
+          on-history-list-item-selection-changed="_selectionChanged"></history-list-items>
+
+      </div>
+    </paper-drawer-panel>
+    <paper-toast text="Select request first." id="noSelectionToast"></paper-toast>
+    <paper-progress indeterminate hidden$="[[!querying]]"></paper-progress>
   </template>
   <script>
   (function() {
     'use strict';
     Polymer({
       is: 'history-panel',
+      /**
+       * Fired when the user clicked on export requests button.
+       *
+       * @event history-panel-export-items
+       * @property {Array} items Array of items to be deleted
+       */
+      /**
+       * Fired when the user clicked on delete request/s button.
+       *
+       * @event history-panel-delete-items
+       * @property {Array} items Array of items to be deleted
+       */
+      /**
+       * Fired when the user want to open a request.
+       * @event history-panel-open-item
+       * @property {String} id The doc._id of the item.
+       */
       properties: {
         // Read history data.
         historyData: {
-          type: Array
+          type: Array,
+          value: []
         },
         // current query options
         queryOptions: {
@@ -64,37 +153,181 @@ Custom property | Description | Default
               descending: true,
               // jscs:disable
               include_docs: true
-                // jscs:enable
+              // jscs:enable
             };
           }
+        },
+        optionsState: {
+          type: Number,
+          value: 0
+        },
+        // Selected by the user elements on the lists
+        currentSelection: {
+          type: Array
+        },
+        detailedRequest: Object,
+        narrowDrawer: {
+          type: Boolean,
+          value: true
+        },
+        hasSelection: {
+          type: Boolean,
+          compute: '_hasSelection(currentSelection.length)'
+        },
+        // If set the panel will show the results matched for given query.
+        searchQuery: String,
+        querying: {
+          type: Boolean,
+          readOnly: true,
+          notify: true
         }
       },
+
+      observers: [
+        '_observeSelection(hasSelection)',
+        '_searchQueryChanged(searchQuery)'
+      ],
+
+      _observeSelection: function(hasSelection) {
+        if (hasSelection) {
+          this.optionsState = 1;
+        } else {
+          this.optionsState = 0;
+        }
+      },
+
       _getDb: function() {
         return new PouchDB('history-requests');
       },
 
-      loadNext() {
+      _searchQueryChanged: function(searchQuery) {
+        delete this.queryOptions.startkey;
+        delete this.queryOptions.skip;
+        this.set('historyData', []);
+        this.query(searchQuery);
+      },
+
+      // refreshes the state of the panel.
+      refresh() {
+        delete this.queryOptions.startkey;
+        delete this.queryOptions.skip;
+        this.set('historyData', []);
+        this.loadNext();
+      },
+
+      query(q) {
+        if (!q) {
+          return this.refresh();
+        }
+        let encodedQ = encodeURIComponent(q.toLowerCase());
         var db = this._getDb();
-        db.allDocs(this.queryOptions).then((response) => {
-            console.log(response);
-            if (response && response.rows.length > 0) {
-              this.queryOptions.startkey = response.rows[response.rows.length - 1].key;
-              this.queryOptions.skip = 1;
-              let res = response.rows.map((i) => i.doc);
-              res = this._processResults(res);
-              this.$.history.addItems(res);
-            }
-          })
-          .catch((e) => {
-            this.fire('app-log', {
-              message: ['Query history', e],
-              level: 'error'
-            });
-            console.error('Query history', e);
-          })
-          .then(() => {
-            db.close();
+        this._setQuerying(true);
+        db.allDocs().then((r) => {
+          let matches = r.rows.filter((i) => i.id.indexOf(encodedQ) !== -1);
+          if (!matches.length) {
+            this._setQuerying(false);
+            return;
+          }
+          var p = matches.map((i) => db.get(i.id));
+          return Promise.all(p);
+        })
+        .then((r) => {
+          this._setQuerying(false);
+          if (!r) {
+            return;
+          }
+          var ids = [];
+          r.forEach((item) => {
+            ids.push(item._id);
+            this.push('historyData', item);
           });
+          return ids;
+        })
+        .catch((e) => {
+          this._setQuerying(false);
+          this.fire('app-log', {
+            message: ['Query history', e],
+            level: 'error'
+          });
+          console.error('Query history', e);
+        })
+        .then((ids) => {
+          db.close();
+          this._fullSearch(q, ids);
+        });
+      },
+
+      _fullSearch: function(q, ids) {
+        var db = this._getDb();
+        this._setQuerying(true);
+
+        var mm = Math.round(100 / q.split(/\s/).length);
+        var db = this._getDb();
+        db.search({
+          query: q,
+          fields: ['headers', 'payload'],
+          // jscs:disable
+          include_docs: true,
+          // jscs:enable
+          mm: mm + '%'
+        }).then((r) => {
+          this._setQuerying(false);
+          if (!r || !r.rows || !r.rows.length) {
+            return;
+          }
+          if (ids && ids.length) {
+            r.rows = r.rows.filter((i) => ids.indexOf(i.id) === -1);
+          }
+          if (!r.rows.length) {
+            return;
+          }
+          r.rows.forEach((item) => {
+            this.push('historyData', item.doc);
+          });
+        })
+        .catch((e) => {
+          this._setQuerying(false);
+          this.fire('app-log', {
+            message: ['Query history', e],
+            level: 'error'
+          });
+          console.error('Query history', e);
+        })
+        .then(() => {
+          db.close();
+        });
+      },
+
+      loadNext() {
+        if (this.searchQuery) {
+          return;
+        }
+        var db = this._getDb();
+        this._setQuerying(true);
+        db.allDocs(this.queryOptions).then((response) => {
+          if (response && response.rows.length > 0) {
+            this.queryOptions.startkey =
+              response.rows[response.rows.length - 1].key;
+            this.queryOptions.skip = 1;
+            let res = response.rows.map((i) => i.doc);
+            res = this._processResults(res);
+            res.forEach((item) => {
+              this.push('historyData', item);
+            });
+            this._setQuerying(false);
+          }
+        })
+        .catch((e) => {
+          this._setQuerying(false);
+          this.fire('app-log', {
+            message: ['Query history', e],
+            level: 'error'
+          });
+          console.error('Query history', e);
+        })
+        .then(() => {
+          db.close();
+        });
       },
 
       _processResults: function(res) {
@@ -130,6 +363,65 @@ Custom property | Description | Default
           day: 'numeric'
         };
         return new Intl.DateTimeFormat(undefined, options).format(d);
+      },
+
+      _selectionChanged: function(e) {
+        var r = e.detail.item;
+        if (e.detail.selected) {
+          this.detailedRequest = r;
+          this.narrowDrawer = false;
+          this.$.details.openDrawer();
+        } else {
+          if (this.detailedRequest === r) {
+            this.closeDetailsPanel();
+            this.detailedRequest = null;
+          }
+        }
+      },
+
+      closeDetailsPanel: function() {
+        this.narrowDrawer = true;
+        this.$.details.closeDrawer();
+      },
+
+      _onOpenRequested: function(e) {
+        this.fire('history-panel-open-item', {
+          id: e.detail.item._id
+        });
+      },
+
+      _hasSelection(length) {
+        return !!length;
+      },
+
+      _onDeleteRequested: function(e) {
+        this.deleteItems([e.detail.item]);
+      },
+
+      _deleteSelected: function() {
+        if (!this.currentSelection ||
+          !this.currentSelection.length) {
+          this.$.noSelectionToast.open();
+          return;
+        }
+        this.deleteItems(this.currentSelection);
+      },
+
+      _exportSelected: function() {
+        if (!this.currentSelection ||
+          !this.currentSelection.length) {
+          this.$.noSelectionToast.open();
+          return;
+        }
+        this.fire('history-panel-export-items', {
+          items: this.currentSelection
+        });
+      },
+
+      deleteItems: function(items) {
+        this.fire('history-panel-delete-items', {
+          items: items
+        });
       }
     });
   })();
