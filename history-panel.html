@@ -314,8 +314,8 @@ Custom property | Description | Default
             res.forEach((item) => {
               this.push('historyData', item);
             });
-            this._setQuerying(false);
           }
+          this._setQuerying(false);
         })
         .catch((e) => {
           this._setQuerying(false);
