@@ -89,10 +89,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         list.push(app.generateHistoryItem(isHistory));
       }
       list.sort((a, b) => {
-        if (a.updated < b.updated) {
+        if (a.updated > b.updated) {
           return 1;
         }
-        if (a.updated > b.updated) {
+        if (a.updated < b.updated) {
           return -1;
         }
         return 0;
