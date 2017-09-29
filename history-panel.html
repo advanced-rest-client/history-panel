@@ -587,10 +587,10 @@ Custom property | Description | Default
      */
     _sortFn: function(a, b) {
       if (a.updated > b.updated) {
-        return 1;
+        return -1;
       }
       if (a.updated < b.updated) {
-        return -1;
+        return 1;
       }
       return 0;
     },

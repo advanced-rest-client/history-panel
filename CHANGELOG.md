@@ -1,3 +1,13 @@
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/advanced-rest-client/history-panel/compare/0.1.1...0.1.2) (2017-09-29)
+
+
+### Fix
+
+* Fixing sort order. ([5b1c99f46e3d94529a9bc210fb43d9147e392a1a](https://github.com/advanced-rest-client/history-panel/commit/5b1c99f46e3d94529a9bc210fb43d9147e392a1a))
+
+
+
 <a name="0.1.1"></a>
 ## 0.1.1 (2017-09-29)
 
