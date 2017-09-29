@@ -19,117 +19,113 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
   <link rel="import" href="../history-panel.html">
-  <script src="../../chance/dist/chance.min.js"></script>
+  <link rel="import" href="../../arc-data-export/arc-data-export.html">
+  <link rel="import" href="../../arc-demo-helpers/data-generator.html">
+  <link rel="import" href="../../request-saver/request-saver.html">
+
   <style is="custom-style" include="demo-pages-shared-styles">
-  .history-panel {
-    height: calc(100vh - 32px);
-    position: relative;
+  .vertical-section-container {
+    max-width: 1100px;
+  }
+
+  :root {
+    --arc-font-headline: {
+      @apply --paper-font-headline;
+    };
+    --arc-font-subhead: {
+      @apply --paper-font-subhead;
+    }
+    --arc-font-body1: {
+      @apply --paper-font-body1;
+    };
+    --primary-color: #00A2DF;
+    --history-list-item-selected-background-color: #f1f1f1;
+    --tutorial-toast-background-color: var(--primary-color);
+    --tutorial-toast-button-color: var(--primary-color);
+    --tutorial-toast-button-background-color: #fff;
+    --history-list-items-search-input: {
+      min-width: 200px;
+    };
+    --action-button: {
+      color: #fff;
+      background-color: var(--primary-color);
+    };
+    --history-list-items-body: {
+      margin-left: 12px;
+    };
+    --history-list-items-method-label-container: {
+      display: block;
+      min-width: 90px;
+    };
+    --history-list-items-selection-counter: {
+      margin-left: 30px;
+    };
+    --empty-info: {
+      color: rgba(0, 0, 0, 0.74);
+      font-size: 16px;
+    };
+  }
+
+  history-panel {
+    height: calc(100vh - 120px);
   }
   </style>
 </head>
 
 <body unresolved>
   <template is="dom-bind" id="app">
-
-    <h3>The `history-list`</h3>
-    <input type="search" id="searchBar" on-search="_setSearch" placeholder="Search history"/>
-    <template is="dom-if" if="[[hasData]]" restamp="true">
-      <section class="history-panel">
-        <history-panel id="sp"></history-panel>
-      </section>
-    </template>
-
+    <div class="vertical-section-container centered">
+      <history-panel></history-panel>
+      <div class="controls">
+        <button on-tap="generate">Generate 1000 request items</button>
+        <button on-tap="delete">Clear history</button>
+      </div>
+    </div>
   </template>
+  <paper-toast id="genToast" text="The request data has been generated"></paper-toast>
+  <paper-toast id="delToast" text="The request data has been removed"></paper-toast>
+  <paper-toast id="navToast" text="" duration="7000"></paper-toast>
+  <paper-toast id="exportToast" text="Export method view has been requested"></paper-toast>
+  <request-saver></request-saver>
+  <arc-data-export></arc-data-export>
   <script>
-  (function(app) {
-    'use strict';
-    app.hasData = false;
-    /* global chance */
-    app.generateHistoryItem = (isHistory) => {
-      var isPayload = chance.bool();
-      var payloadMethods = ['POST', 'PUT', 'DELETE', 'OPTIONS'];
-      var otherMethods = ['GET', 'HEAD'];
-      var headersSize = chance.integer({
-        min: 0,
-        max: 10
-      });
-      var headers = '';
-      for (var i = 0; i < headersSize; i++) {
-        headers += 'X-' + chance.word() + ': ' + chance.word() + '\n';
-      }
-      if (isPayload) {
-        headers += 'content-type: application/x-www-form-urlencoded';
-      }
-      var payload = isPayload ? chance.paragraph() : '';
-      var requestName = isHistory ? null : chance.sentence({
-        words: 2
-      });
-      var d = new Date();
-      var randomDay = chance.date({year: d.getFullYear(), 'month': d.getMonth()});
-      var t = randomDay.getTime();
-      var today = app.getDayToday(t);
-      var item = {
-        'url': chance.url(),
-        'method': chance.pick(isPayload ? payloadMethods : otherMethods),
-        'headers': headers,
-        'payload': payload,
-        'created': t,
-        'updated': t
-      };
-      item._id = encodeURIComponent(item.url.toLowerCase()) + '/' +
-        item.method.toLowerCase() + '/' + today;
-      if (!isHistory) {
-        item.name = requestName;
-      }
-      return item;
-    };
-    app.getRequestData = (dataSize, isHistory) => {
-      var list = [];
-      for (var i = 0; i < dataSize; i++) {
-        list.push(app.generateHistoryItem(isHistory));
-      }
-      list.sort((a, b) => {
-        if (a.updated > b.updated) {
-          return 1;
-        }
-        if (a.updated < b.updated) {
-          return -1;
-        }
-        return 0;
-      });
-      return list;
-    };
-    app.produceData = function() {
-      var db = new PouchDB('history-requests');
-      db.info().then(function(result) {
-        // jscs:disable
-        if (result.doc_count < 500) {
-          var d = app.getRequestData(1000, true);
-          return db.bulkDocs(d);
-        }
-        // jscs:enable
-      }).catch(function(err) {
-        console.log(err);
-      }).then(() => {
-        app.hasData = true;
+  /* global DataGenerator */
+  window.addEventListener('navigate', function(e) {
+    var toast = document.getElementById('navToast');
+    var d = e.detail;
+    toast.text = 'Navigation ocurred to: ' + d.base + ', and id: ' + d.id;
+    toast.opened = true;
+  });
+  window.addEventListener('export-data', function() {
+    var toast = document.getElementById('exportToast');
+    toast.opened = true;
+  });
+  (function(scope) {
+    scope.generate = function() {
+      DataGenerator.insertHistoryIfNotExists({
+        requestsSize: 1000
+      })
+      .then(() => {
+        document.getElementById('genToast').opened = true;
+        var e = new CustomEvent('data-imported', {
+          bubbles: true
+        });
+        document.body.dispatchEvent(e);
       });
     };
-    app.getDayToday = function(timestamp) {
-      var d = new Date(timestamp);
-      var tCheck = d.getTime();
-      if (tCheck !== tCheck) {
-        throw new Error('Invalid timestamp: ' + timestamp);
-      }
-      d.setMilliseconds(0);
-      d.setSeconds(0);
-      d.setMinutes(0);
-      d.setHours(0);
-      return d.getTime();
+    scope.delete = function() {
+      DataGenerator.destroyHistoryData()
+      .then(() => {
+        document.getElementById('delToast').opened = true;
+        var e = new CustomEvent('datastore-destroyed', {
+          bubbles: true,
+          detail: {
+            datastore: 'history-requests'
+          }
+        });
+        document.body.dispatchEvent(e);
+      });
     };
-    app._setSearch = (e) => {
-      document.querySelector('history-panel').searchQuery = e.target.value;
-    };
-    app.produceData();
   })(document.querySelector('#app'));
   </script>
 </body>

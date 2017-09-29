@@ -1,3 +1,14 @@
+<a name="0.1.1"></a>
+## 0.1.1 (2017-09-29)
+
+
+### Update
+
+* Added sauce configuration for tests ([40e3c0a65eec38732f401d67c39ea68a111e4b4b](https://github.com/advanced-rest-client/history-panel/commit/40e3c0a65eec38732f401d67c39ea68a111e4b4b))
+* Updated sort function to sort from newest to oldest ([12d9123e2d5dab6fe9ddf5c69149c1e0bc4c414d](https://github.com/advanced-rest-client/history-panel/commit/12d9123e2d5dab6fe9ddf5c69149c1e0bc4c414d))
+
+
+
 <a name="1.0.4"></a>
 ## 1.0.4 (2016-10-20)
 
