@@ -1,3 +1,13 @@
+<a name="0.1.4"></a>
+## [0.1.4](https://github.com/advanced-rest-client/history-panel/compare/0.1.2...0.1.4) (2017-10-01)
+
+
+### Update
+
+* Added positioning to the tutorial element. ([6e977aed1df55fbc94c9ce73581711287e62d830](https://github.com/advanced-rest-client/history-panel/commit/6e977aed1df55fbc94c9ce73581711287e62d830))
+
+
+
 <a name="0.1.3"></a>
 ## [0.1.3](https://github.com/advanced-rest-client/history-panel/compare/0.1.2...0.1.3) (2017-09-30)
 
