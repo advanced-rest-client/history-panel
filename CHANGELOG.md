@@ -1,3 +1,14 @@
+<a name="0.1.5"></a>
+## [0.1.5](https://github.com/advanced-rest-client/history-panel/compare/0.1.4...0.1.5) (2017-10-03)
+
+
+### Update
+
+* Added check if object is set when handling ityems array. ([967a7c3fa45c3e26b52272e886c6262f0a1ccd8b](https://github.com/advanced-rest-client/history-panel/commit/967a7c3fa45c3e26b52272e886c6262f0a1ccd8b))
+* Removed padding from bottom sheet definition. ([574215d8ac7bef6a7a35a57757b7cbb677e2f03d](https://github.com/advanced-rest-client/history-panel/commit/574215d8ac7bef6a7a35a57757b7cbb677e2f03d))
+
+
+
 <a name="0.1.4"></a>
 ## [0.1.4](https://github.com/advanced-rest-client/history-panel/compare/0.1.2...0.1.4) (2017-10-01)
 
