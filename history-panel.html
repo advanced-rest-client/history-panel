@@ -65,6 +65,7 @@ Custom property | Description | Default
 `--error-toast` | Mixin applied to the error toast | `{}`
 `--empty-info` | Mixin applied to the label rendered when no data is available. | `{}`
 `--history-panel-fab-background-color` | Color of the fab button in the details panel | `--primary-color`
+`--history-panel-bottom-sheet` | Mixin apllied to the `<bottom-sheet>` elements | `{}`
 
 @group UI Elements
 @element history-panel
@@ -160,6 +161,7 @@ Custom property | Description | Default
       min-width: 40%;
       max-width: 60%;
       left: 20%;
+      @apply --history-panel-bottom-sheet;
     }
 
     #requestDetailsContainer paper-fab {
@@ -215,7 +217,7 @@ Custom property | Description | Default
     <tutorial-toast opened="[[dataUnavailable]]">
       Send a request from the request panel and this request will appear here.
     </tutorial-toast>
-    <bottom-sheet id="requestDetailsContainer" with-backdrop on-iron-overlay-opened="_resizeSheetContent">
+    <bottom-sheet id="requestDetailsContainer" on-iron-overlay-opened="_resizeSheetContent">
       <paper-fab icon="arc:keyboard-arrow-right" data-action="load-request-detail" title="Load request" on-tap="_loadRequestDetails"></paper-fab>
       <saved-request-detail
         id="requestDetails"
@@ -223,7 +225,7 @@ Custom property | Description | Default
         on-delete-request="_deleteRequestDetails"
         on-edit-request="_editRequestDetails"></saved-request-detail>
     </bottom-sheet>
-    <bottom-sheet id="requestEditorContainer" with-backdrop on-iron-overlay-opened="_resizeEditorSheetContent">
+    <bottom-sheet id="requestEditorContainer" on-iron-overlay-opened="_resizeEditorSheetContent">
       <saved-request-editor
         id="requestEditor"
         is-history
