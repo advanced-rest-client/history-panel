@@ -1,3 +1,13 @@
+<a name="0.1.7"></a>
+## [0.1.7](https://github.com/advanced-rest-client/history-panel/compare/0.1.6...0.1.7) (2017-10-14)
+
+
+### Update
+
+* Removed `with-backdrop` property on bottom sheets and added styling option ([23ad38e9f368b71c0d51930c5def8e464de8577b](https://github.com/advanced-rest-client/history-panel/commit/23ad38e9f368b71c0d51930c5def8e464de8577b))
+
+
+
 <a name="0.1.6"></a>
 ## [0.1.6](https://github.com/advanced-rest-client/history-panel/compare/0.1.5...0.1.6) (2017-10-03)
 

@@ -33,6 +33,7 @@ Custom property | Description | Default
 `--error-toast` | Mixin applied to the error toast | `{}`
 `--empty-info` | Mixin applied to the label rendered when no data is available. | `{}`
 `--history-panel-fab-background-color` | Color of the fab button in the details panel | `--primary-color`
+`--history-panel-bottom-sheet` | Mixin apllied to the `<bottom-sheet>` elements | `{}`
 
 
 
