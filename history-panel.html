@@ -377,55 +377,104 @@ Custom property | Description | Default
     ],
 
     attached: function() {
+      this.listen(window, 'history-object-changed', '_historyChanged');
       this.listen(window, 'request-object-changed', '_handleObjectChanged');
       this.listen(window, 'request-object-deleted', '_handleObjectDeleted');
+      this.listen(window, 'request-objects-deleted', '_requestObjectsDeleted');
+      this.listen(window, 'data-imported', 'reset');
+      this.listen(window, 'datastore-destroyed', '_onDatabaseDestroy');
     },
 
     detached: function() {
+      this.unlisten(window, 'history-object-changed', '_historyChanged');
       this.unlisten(window, 'request-object-changed', '_handleObjectChanged');
       this.unlisten(window, 'request-object-deleted', '_handleObjectDeleted');
+      this.unlisten(window, 'request-objects-deleted', '_requestObjectsDeleted');
+      this.unlisten(window, 'data-imported', 'reset');
+      this.unlisten(window, 'datastore-destroyed', '_onDatabaseDestroy');
     },
-
+    /**
+     * Handler for the `request-objects-deleted` event. Removes deleted requests
+     * from the `items` list if they are on the list.
+     */
+    _requestObjectsDeleted: function(e) {
+      if (e.cancelable) {
+        // not yet saved
+        return;
+      }
+      var ids = e.detail.items;
+      if (!ids || !ids.length) {
+        return;
+      }
+      this._checkDeleted(ids);
+    },
     // Handler for the `request-object-deleted` custom event.
     _handleObjectDeleted: function(e) {
       if (e.cancelable || !this.items) {
         return;
       }
-      var id = e.detail.id;
-      var index = this.items.findIndex(item => item._id === id);
-      if (index === -1) {
+      this._checkDeleted([e.detail.id]);
+    },
+    /**
+     * Checks if any of the removed items is on current `data` list. Removes
+     * items that are in the `ids` list.
+     * @param {Array<String>} ids List of removed items IDs.
+     */
+    _checkDeleted: function(ids) {
+      ids = ids || [];
+      var items = this.items;
+      if (!items || !items.length) {
         return;
       }
-      this.splice('items', index, 1);
+      for (let i = items.length - 1; i >= 0; i--) {
+        if (~ids.indexOf(items[i]._id)) {
+          this.splice('items', i, 1);
+        }
+      }
+    },
+    // Handler for the `request-object-changed` event. This supports old API
+    // and soon it should be replaced with `request-object-changed` event.
+    _historyChanged: function(e) {
+      var id = e.detail.id;
+      var doc = e.detail.item;
+      this._processItemChanged(id, doc);
     },
     // Handler for the `request-object-change` event to update a saved item.
     _handleObjectChanged: function(e) {
       if (e.cancelable || e.detail.type !== 'history-requests') {
         return;
       }
+      this._processItemChanged(e.detail.oldId, e.detail.request);
+    },
+    /**
+     * Processes updated request / history item.
+     * If the request object is already on the list it will update the object.
+     * Otherwise the object will be added to the list.
+     *
+     * @param {String} id Database ID of updated object
+     * @param {Object} doc Database object.
+     */
+    _processItemChanged: function(id, doc) {
       if (this.isSearch) {
-        return this._objectChangedSearch(e.detail);
+        return this._objectChangedSearch(doc, id);
       }
-      var id = e.detail.oldId;
       if (this.items) {
         var index = this.items.findIndex(item => item._id === id);
         if (index >= 0) {
-          this.set(['items', index], e.detail.request);
+          this.set(['items', index], doc);
           return;
         }
       }
-      this._pushToItems(e.detail.request);
+      this._pushToItems(doc);
     },
-
     /**
      * A function to react on request object change when search is
      * performed.
      *
-     * @param {Object]} data `request-object-changed` event's `detail` object.
+     * @param {String} id Database ID of updated object
+     * @param {Object} doc Database object.
      */
-    _objectChangedSearch: function(data) {
-      var request = data.request;
-      var id = data.oldId;
+    _objectChangedSearch: function(request, id) {
       if (this._beforeQueryItems && this._beforeQueryItems.length) {
         let index = this._beforeQueryItems.findIndex(item => item._id === id);
         if (index > -1) {
@@ -488,6 +537,25 @@ Custom property | Description | Default
       this.set('items', Array.from(items));
       var view = this.$$('history-list-items');
       view.refresh();
+    },
+
+    // Handler for the `datastore-destroyed` custom event
+    _onDatabaseDestroy: function(e) {
+      var datastore = e.detail.datastore;
+      if (!datastore || !datastore.length) {
+        return;
+      }
+      if (typeof datastore === 'string') {
+        datastore = [datastore];
+      }
+      if (datastore.indexOf('history-requests') === -1 && datastore[0] !== 'all') {
+        return;
+      }
+
+      this.db.close()
+      .then(() => {
+        this.reset();
+      });
     },
 
     // Queries the datastore for a data if data are not set already.
