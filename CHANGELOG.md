@@ -1,3 +1,13 @@
+<a name="0.1.8"></a>
+## [0.1.8](https://github.com/advanced-rest-client/history-panel/compare/0.1.7...0.1.8) (2017-10-16)
+
+
+### New
+
+* Added request change handlers ([5eb6d2eb4128048c01876525c1607c4775bbf681](https://github.com/advanced-rest-client/history-panel/commit/5eb6d2eb4128048c01876525c1607c4775bbf681))
+
+
+
 <a name="0.1.7"></a>
 ## [0.1.7](https://github.com/advanced-rest-client/history-panel/compare/0.1.6...0.1.7) (2017-10-14)
 

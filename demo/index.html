@@ -77,8 +77,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="vertical-section-container centered">
       <history-panel></history-panel>
       <div class="controls">
-        <button on-tap="generate">Generate 1000 request items</button>
+        <button on-tap="generate">Generate 100 request items</button>
         <button on-tap="delete">Clear history</button>
+        <button on-tap="addSingle">Add new random</button>
       </div>
     </div>
   </template>
@@ -103,7 +104,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   (function(scope) {
     scope.generate = function() {
       DataGenerator.insertHistoryIfNotExists({
-        requestsSize: 1000
+        requestsSize: 100
       })
       .then(() => {
         document.getElementById('genToast').opened = true;
@@ -124,6 +125,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         });
         document.body.dispatchEvent(e);
+      });
+    };
+    scope.addSingle = function() {
+      /* global chance */
+      var time = Date.now();
+      var opts = {};
+      var isPayload = DataGenerator.generateIsPayload(opts);
+      var method = DataGenerator.generateMethod(isPayload, opts);
+      var contentType = isPayload ? DataGenerator.generateContentType() : undefined;
+      var headers = DataGenerator.generateHeaders(contentType, opts);
+      var payload = DataGenerator.generatePayload(contentType);
+      var url = chance.url();
+      var request = {
+        url: url,
+        method: method,
+        headers: headers,
+        created: time,
+        updated: time
+      };
+      if (payload) {
+        request.payload = payload;
+      }
+
+      request._id = DataGenerator.setMidninght(time) + '/' +
+        encodeURIComponent(url.toLowerCase()) + '/' +
+        method.toLowerCase();
+      var db = new PouchDB('history-requests');
+      return db.put(request)
+      .then(resp => {
+        request._rev = resp.rev;
+        scope.fire('request-object-changed', {
+          oldId: request._id,
+          request: request,
+          type: 'history-requests'
+        }, {
+          cancelable: false
+        });
       });
     };
   })(document.querySelector('#app'));
