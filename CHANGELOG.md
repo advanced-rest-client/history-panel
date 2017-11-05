@@ -1,3 +1,13 @@
+<a name="0.1.10"></a>
+## [0.1.10](https://github.com/advanced-rest-client/history-panel/compare/0.1.9...0.1.10) (2017-11-05)
+
+
+### New
+
+* Added export to Drive. ([4cfe9eae13c68a688141e6aa8cbbe0a8e598bd83](https://github.com/advanced-rest-client/history-panel/commit/4cfe9eae13c68a688141e6aa8cbbe0a8e598bd83))
+
+
+
 <a name="0.1.9"></a>
 ## [0.1.9](https://github.com/advanced-rest-client/history-panel/compare/0.1.8...0.1.9) (2017-10-16)
 
