@@ -63,7 +63,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           done();
         });
         var item = {_id: 'test'};
-        element._exportItems([item]);
+        element._exportItems([item], 'file');
+      });
+
+      test('Export destination is set', function(done) {
+        element.addEventListener('export-requests', function f(e) {
+          element.removeEventListener('export-requests', f);
+          assert.equal(e.detail.destination, 'file');
+          done();
+        });
+        var item = {_id: 'test'};
+        element._exportItems([item], 'file');
       });
     });
 
@@ -99,6 +109,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           done();
         });
         element._onExportAll();
+      });
+    });
+
+    suite('_onExportAllDrive()', function() {
+      var element;
+
+      setup(function() {
+        element = fixture('basic');
+        window.addEventListener('google-autorize', function() {
+          document.body.dispatchEvent(new CustomEvent('oauth-2-token-ready', {bubbles: true}));
+        });
+      });
+
+      test('Export destination is set', function(done) {
+        element.addEventListener('export-user-data', function f(e) {
+          element.removeEventListener('export-user-data', f);
+          assert.equal(e.detail.destination, 'drive');
+          done();
+        });
+        element._onExportAllDrive();
       });
     });
     </script>
