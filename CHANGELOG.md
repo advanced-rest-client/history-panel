@@ -1,3 +1,18 @@
+<a name="0.1.11"></a>
+## [0.1.11](https://github.com/advanced-rest-client/history-panel/compare/0.1.10...0.1.11) (2017-11-05)
+
+
+### Fic
+
+* Updated event handlers types for signin. ([8454c21d72a2592d4c120cf911268c6489154a1f](https://github.com/advanced-rest-client/history-panel/commit/8454c21d72a2592d4c120cf911268c6489154a1f))
+* Updated event handlers types for signin. ([27723b769383bc186742f86e092afd982788f86b](https://github.com/advanced-rest-client/history-panel/commit/27723b769383bc186742f86e092afd982788f86b))
+
+### Update
+
+* Added a proper way of handling events. ([0d3ee54716f573fd651d10b73e5f01ed748fa16e](https://github.com/advanced-rest-client/history-panel/commit/0d3ee54716f573fd651d10b73e5f01ed748fa16e))
+
+
+
 <a name="0.1.10"></a>
 ## [0.1.10](https://github.com/advanced-rest-client/history-panel/compare/0.1.9...0.1.10) (2017-11-05)
 
