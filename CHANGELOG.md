@@ -1,3 +1,13 @@
+<a name="0.1.13"></a>
+## [0.1.13](https://github.com/advanced-rest-client/history-panel/compare/0.1.12...0.1.13) (2017-11-06)
+
+
+### Fix
+
+* fixed error when history object change but view hasn't been initialized. ([e25eabf297bd07e0e70ccde3ba0d852d8ed9a12e](https://github.com/advanced-rest-client/history-panel/commit/e25eabf297bd07e0e70ccde3ba0d852d8ed9a12e))
+
+
+
 <a name="0.1.12"></a>
 ## [0.1.12](https://github.com/advanced-rest-client/history-panel/compare/0.1.11...0.1.12) (2017-11-05)
 
