@@ -536,12 +536,16 @@ Custom property | Description | Default
      * @param {Object} item Request object tp add.
      */
     _pushToItems: function(item) {
+      var view = this.$$('history-list-items');
+      if (!view) {
+        // View hasn't been initialized yet.
+        return;
+      }
       var items = this.items || [];
       items.push(item);
       items.sort(this._sortFn);
       items = this._processHeaders(items);
       this.set('items', Array.from(items));
-      var view = this.$$('history-list-items');
       view.refresh();
     },
 
