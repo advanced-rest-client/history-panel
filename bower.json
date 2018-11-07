@@ -41,7 +41,8 @@
     "requests-list-mixin": "advanced-rest-client/requests-list-mixin#2.0.0-preview",
     "iron-list": "PolymerElements/iron-list#^2.0.0",
     "paper-ripple": "PolymerElements/paper-ripple#^2.0.0",
-    "iron-scroll-threshold": "PolymerElements/iron-scroll-threshold#^2.0.0"
+    "iron-scroll-threshold": "PolymerElements/iron-scroll-threshold#^2.0.0",
+    "history-list-mixin": "advanced-rest-client/history-list-mixin#2.0.0-preview"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^3.0.1",

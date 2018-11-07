@@ -30,6 +30,7 @@ the License.
 <link rel="import" href="../requests-list-mixin/requests-list-mixin.html">
 <link rel="import" href="../paper-fab/paper-fab.html">
 <link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../history-list-mixin/history-list-mixin.html">
 <link rel="import" href="history-panel-list.html">
 <!--
 ARC's requests history view
@@ -290,71 +291,30 @@ Custom property | Description | Default
    * @memberof UiElements
    * @demo demo/index.html
    * @appliesMixin ArcComponents.RequestsListMixin
+   * @appliesMixin ArcComponents.HistoryListMixin
    */
-  class HistoryPanel extends ArcComponents.RequestsListMixin(Polymer.Element) {
+  class HistoryPanel extends ArcComponents.HistoryListMixin(
+    ArcComponents.RequestsListMixin(Polymer.Element)) {
     static get is() {
       return 'history-panel';
     }
 
     static get properties() {
       return {
-        // True when the element is querying the database for the data.
-        querying: {
-          type: Boolean,
-          readOnly: true,
-          notify: true
-        },
         /**
-         * Database query options for pagination.
-         * Override this value to change the query options like limit of the results in one call.
-         *
-         * This is query options passed to the PouchDB `allDocs` function. Note that it will not
-         * set `include_docs` option. A conviniet shortcut is to set the the `includeDocs` property
-         * and the directive will be added automatically.
+         * List of requests that has been recently removed
          */
-        queryOptions: {
-          type: Object,
-          readOnly: true,
-          value() {
-            return {
-              limit: 50,
-              descending: true,
-              // jscs:disable
-              include_docs: true
-              // jscs:enable
-            };
-          }
-        },
-        /**
-         * Computed value. True if query ended and there's no results.
-         */
-        dataUnavailable: {
-          type: Boolean,
-          computed: '_computeDataUnavailable(hasRequests, querying, isSearch)'
-        },
-        // List of requests that has been recently removed
         _latestDeleted: Array,
-        // Current search query.
-        isSearch: {
-          type: Boolean,
-          value: false
-        },
-        // Computed value, true if the requests lists is hidden.
+
+        /**
+         * Computed value, true if the requests lists is hidden.
+         */
         listHidden: {
           type: Boolean,
           value: true,
           computed: '_computeListHidden(hasRequests, isSearch)'
         },
-        /**
-         * Computed value. True when the query has been performed and no items
-         * has been returned. It is different from `listHidden` where less
-         * conditions has to be checked. It is set to true when it doesn't
-         * have items, is not loading and is search.
-         */
-        searchListEmpty: {
-          type: Boolean,
-          computed: '_computeSearchListEmpty(hasRequests, loading, isSearch)'
-        },
+
         /**
          * Selected items list.
          * @type {Array<Object>}
@@ -366,144 +326,26 @@ Custom property | Description | Default
       };
     }
 
-    // Returns a handler to the datastore instance
-    get _db() {
-      /* global PouchDB */
-      if (typeof PouchDB === 'undefined') {
-        console.error('PouchDB is not included into the application.');
-      }
-      return new PouchDB('history-requests');
-    }
-
     constructor() {
       super();
-      this._resetHandler = this._resetHandler.bind(this);
-      this._onDatabaseDestroy = this._onDatabaseDestroy.bind(this);
       this._navigateHandler = this._navigateHandler.bind(this);
       this._searchHandler = this._searchHandler.bind(this);
     }
 
     connectedCallback() {
-      if (!this.type) {
-        this.type = 'history';
-      }
       super.connectedCallback();
-      window.addEventListener('data-imported', this._resetHandler);
-      window.addEventListener('datastore-destroyed', this._onDatabaseDestroy);
       this.addEventListener('navigate', this._navigateHandler);
       const input = this.shadowRoot.querySelector('paper-input[type="search"]');
       input.inputElement.addEventListener('search', this._searchHandler);
-      if (!this.querying && !this.requests) {
-        this.loadNext();
-      }
     }
 
     disconnectedCallback() {
       super.disconnectedCallback();
       const input = this.shadowRoot.querySelector('paper-input[type="search"]');
       input.inputElement.removeEventListener('search', this._searchHandler);
-      window.removeEventListener('data-imported', this._resetHandler);
-      window.removeEventListener('datastore-destroyed', this._onDatabaseDestroy);
       this.removeEventListener('navigate', this._navigateHandler);
     }
 
-    // Handler for the `datastore-destroyed` custom event
-    _onDatabaseDestroy(e) {
-      let datastore = e.detail.datastore;
-      if (!datastore || !datastore.length) {
-        return;
-      }
-      if (typeof datastore === 'string') {
-        datastore = [datastore];
-      }
-      if (datastore.indexOf('history-requests') === -1 &&
-        datastore.indexOf('history') === -1 &&
-        datastore[0] !== 'all') {
-        return;
-      }
-
-      this._db.close()
-      .then(() => this.reset());
-    }
-
-    _resetHandler() {
-      this.reset();
-    }
-    /**
-     * Shortcut to `reset()` to be compatible with `history-menu` API.
-     */
-    refresh() {
-      this.reset();
-    }
-    /**
-     * Resets the state of the variables.
-     */
-    reset() {
-      if (this.queryOptions) {
-        delete this.queryOptions.startkey;
-        delete this.queryOptions.skip;
-      }
-      this.isSearch = false;
-      this._setQuerying(false);
-      this.set('requests', undefined);
-      this.loadNext();
-    }
-    /**
-     * Loads next page of results. It runs the task in a debouncer set
-     * to 10 miliseconds.
-     */
-    loadNext() {
-      if (this.isSearch) {
-        return;
-      }
-      if (this.__makingQuery) {
-        return;
-      }
-      this.__makingQuery = true;
-      setTimeout(() => {
-        this.__makingQuery = false;
-        this._loadPage();
-      }, 20);
-    }
-    /**
-     * Loads next page of results from the datastore.
-     * Pagination used here has been described in PouchDB pagination strategies
-     * document.
-     * @return {Promise}
-     */
-    _loadPage() {
-      if (this.isSearch) {
-        return;
-      }
-      const db = this._db;
-      this._setQuerying(true);
-
-      return db.allDocs(this.queryOptions)
-      .then((response) => {
-        this._setQuerying(false);
-        if (response && response.rows.length > 0) {
-          // Set up pagination.
-          this.queryOptions.startkey = response.rows[response.rows.length - 1].key;
-          this.queryOptions.skip = 1;
-          let res = response.rows.map((item) => item.doc);
-          res = this._processHistoryResults(res);
-          if (!this.requests) {
-            this.set('requests', res);
-          } else {
-            res.forEach((item) => {
-              this.push('requests', item);
-            });
-          }
-          Polymer.RenderStatus.afterNextRender(this, () => {
-            this.notifyResize();
-          });
-        }
-      })
-      .catch((error) => {
-        this._setQuerying(false);
-        this._handleError(error);
-      });
-    }
     /**
      * Notifies the list that the resize event occurred.
      * Should be called whhen content of the list changed but the list wasn't
@@ -518,22 +360,6 @@ Custom property | Description | Default
       }
     }
     /**
-     * Appends array items to the `items` property. It should be used instead of
-     * direct manipulation of the `items` array.
-     * @param {[type]} requests [description]
-     */
-    _appendItems(requests) {
-      if (!requests) {
-        return;
-      }
-      const existing = this.requests;
-      if (!existing) {
-        this.set('requests', requests);
-        return;
-      }
-      requests.forEach((item) => this.push('requests', item));
-    }
-    /**
      * Computes value of the `listHidden` property.
      * List is hidden when no requests are found and it is not searching.
      * @param {Boolean} hasRequests
@@ -545,20 +371,6 @@ Custom property | Description | Default
         return false;
       }
       return !hasRequests;
-    }
-    // Computes value for the `searchListEmpty` property
-    _computeSearchListEmpty(hasRequests, loading, isSearch) {
-      return isSearch && !loading && !hasRequests;
-    }
-    // Computes value for the `dataUnavailable` proeprty
-    _computeDataUnavailable(hasRequests, loading, isSearch) {
-      return !isSearch && !loading && !hasRequests;
-    }
-
-    _handleError(cause) {
-      this._setQuerying(false);
-      console.error('Querying saved requests', cause);
-      throw cause;
     }
     /**
      * Handler for navigate action from the list
@@ -783,55 +595,6 @@ Custom property | Description | Default
       this.query(value);
     }
     /**
-     * Performs a query on a saved items. The query is performewd on two stages.
-     * First stage searches through the meta properties saved in the object's
-     * `_id` property (url, method). This query is fast and
-     * reports results almost immidietly. Second stage is to perform full text
-     * search on the items. This required building an index and then performing
-     * the search so it may take a long time in cases of lots of data stored
-     * in the datastore.
-     *
-     * @param {String} query The query to performs. Pass empty stirng
-     * (or nothing) to reset quesy state.
-     * @return {Promise} Resolved promise when the query ends.
-     */
-    query(query) {
-      if (!query) {
-        if (this.isSearch) {
-          this.reset();
-        }
-        return Promise.resolve();
-      }
-      this.isSearch = true;
-      this._setQuerying(true);
-      this.set('requests', undefined);
-      const e = new CustomEvent('request-query', {
-        cancelable: true,
-        bubbles: true,
-        composed: true,
-        detail: {
-          q: query,
-          type: 'history'
-        }
-      });
-      this.dispatchEvent(e);
-
-      if (!e.defaultPrevented) {
-        this._handleError(new Error('Model not found.'));
-        return;
-      }
-
-      return e.detail.result
-      .then((result) => {
-        this._appendItems(result);
-        this._setQuerying(false);
-      })
-      .catch((error) => {
-        this._setQuerying(false);
-        this._handleError(error);
-      });
-    }
-    /**
      * Handler for delete all menu option click.
      */
     _deleteAllClick() {
@@ -884,15 +647,6 @@ Custom property | Description | Default
       this.$.requestDetails.request = undefined;
       this.detailsOpened = false;
       this.editorOpened = true;
-    }
-
-    _resetHistoryObject(request) {
-      request.type = 'history';
-      delete request.header;
-      delete request.hasHeader;
-      delete request.timeLabel;
-      delete request.today;
-      return request;
     }
 
     _resizeSheetContent(e) {
