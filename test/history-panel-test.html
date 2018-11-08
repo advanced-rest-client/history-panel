@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>history-panel test</title>
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../../app-pouchdb/pouchdb.html">
+  <link rel="import" href="../../arc-models/request-model.html">
+  <link rel="import" href="../../arc-models/project-model.html">
+  <link rel="import" href="../../arc-models/url-indexer.html">
+  <link rel="import" href="../../arc-data-generator/arc-data-generator.html">
+  <link rel="import" href="../history-panel.html">
+</head>
+<body>
+  <test-fixture id="Basic">
+    <template>
+      <project-model></project-model>
+      <request-model></request-model>
+      <url-indexer></url-indexer>
+      <history-panel></history-panel>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="NoAuto">
+    <template>
+      <project-model></project-model>
+      <request-model></request-model>
+      <url-indexer></url-indexer>
+      <history-panel no-auto></history-panel>
+    </template>
+  </test-fixture>
+
+  <script>
+  /* global DataGenerator */
+  suite('history-panel', () => {
+    suite('Basics', () => {
+      let element;
+      setup(() => {
+        element = fixture('NoAuto')[3];
+      });
+
+      test('listHidden is computed', () => {
+        assert.isTrue(element.listHidden);
+      });
+
+      test('hasSelection is computed', () => {
+        assert.isFalse(element.hasSelection);
+      });
+
+      test('empty-info is rendered', (done) => {
+        flush(() => {
+          const node = element.shadowRoot.querySelector('.selection-options');
+          assert.ok(node);
+          done();
+        });
+      });
+    });
+
+    suite('Data initialization', () => {
+      suiteSetup(() => {
+        return DataGenerator.insertHistoryRequestData();
+      });
+
+      suiteTeardown(() => {
+        return DataGenerator.destroyHistoryData();
+      });
+
+      let element;
+      setup(() => {
+        element = fixture('Basic')[3];
+      });
+
+      test('Queries for data', (done) => {
+        element.addEventListener('request-list', function f(e) {
+          element.removeEventListener('request-list', f);
+          e.preventDefault();
+          e.detail.result = Promise.resolve({
+            rows: []
+          });
+          done();
+        });
+      });
+
+      test('Progress bar is rendered when querying', (done) => {
+        element.addEventListener('request-list', function f(e) {
+          element.removeEventListener('request-list', f);
+          e.preventDefault();
+          e.detail.result = Promise.resolve({
+            rows: []
+          });
+          flush(() => {
+            const node = element.shadowRoot.querySelector('paper-progress');
+            assert.ok(node);
+            done();
+          });
+        });
+      });
+    });
+
+    suite('Data initialized', () => {
+      suiteSetup(() => {
+        return DataGenerator.insertHistoryRequestData();
+      });
+
+      suiteTeardown(() => {
+        return DataGenerator.destroyHistoryData();
+      });
+
+      let element;
+      setup((done) => {
+        element = fixture('Basic')[3];
+        element.addEventListener('has-requests-changed', function f(e) {
+          if (!e.detail.value) {
+            return;
+          }
+          element.removeEventListener('has-requests-changed', f);
+          done();
+        });
+      });
+
+      test('listHidden is computed', () => {
+        assert.isFalse(element.listHidden);
+      });
+
+      test('selectedItems is empty array', () => {
+        assert.typeOf(element.selectedItems, 'array');
+        assert.lengthOf(element.selectedItems, 0);
+      });
+
+      test('hasSelection is false', () => {
+        assert.isFalse(element.hasSelection);
+      });
+
+      test('history-panel-list is rendered', (done) => {
+        flush(() => {
+          const node = element.shadowRoot.querySelector('history-panel-list');
+          assert.isFalse(node.hasAttribute('hidden'));
+          done();
+        });
+      });
+
+      test('selection-options section is rendered', (done) => {
+        flush(() => {
+          const node = element.shadowRoot.querySelector('.selection-options');
+          assert.isFalse(node.hasAttribute('hidden'));
+          done();
+        });
+      });
+
+      test('empty-info is not rendered', (done) => {
+        flush(() => {
+          const node = element.shadowRoot.querySelector('.selection-options');
+          assert.equal(node.getAttribute('style', 'display:none'));
+          done();
+        });
+      });
+    });
+  });
+  </script>
+</body>
+</html>

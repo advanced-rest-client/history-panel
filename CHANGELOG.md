@@ -1,3 +1,9 @@
+<a name="2.0.0-preview"></a>
+# [2.0.0-preview](https://github.com/advanced-rest-client/history-panel/compare/0.1.13...2.0.0-preview) (2018-11-08)
+
+
+
+
 <a name="0.1.14"></a>
 ## [0.1.14](https://github.com/advanced-rest-client/history-panel/compare/0.1.13...0.1.14) (2017-11-06)
 
