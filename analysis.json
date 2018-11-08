@@ -611,11 +611,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 98,
+              "line": 118,
               "column": 8
             },
             "end": {
-              "line": 98,
+              "line": 118,
               "column": 23
             }
           },
@@ -632,11 +632,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 108,
+              "line": 128,
               "column": 8
             },
             "end": {
-              "line": 112,
+              "line": 132,
               "column": 9
             }
           },
@@ -654,11 +654,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 118,
+              "line": 138,
               "column": 8
             },
             "end": {
-              "line": 121,
+              "line": 141,
               "column": 9
             }
           },
@@ -676,11 +676,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 128,
+              "line": 148,
               "column": 8
             },
             "end": {
-              "line": 128,
+              "line": 148,
               "column": 29
             }
           },
@@ -697,11 +697,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 130,
+              "line": 150,
               "column": 8
             },
             "end": {
-              "line": 133,
+              "line": 153,
               "column": 9
             }
           },
@@ -709,6 +709,27 @@
             "polymer": {
               "notify": true,
               "attributeType": "Array"
+            }
+          }
+        },
+        {
+          "name": "hasTwoLines",
+          "type": "boolean | null | undefined",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 155,
+              "column": 8
+            },
+            "end": {
+              "line": 155,
+              "column": 28
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
             }
           }
         }
@@ -2762,11 +2783,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 141,
+              "line": 163,
               "column": 4
             },
             "end": {
-              "line": 144,
+              "line": 166,
               "column": 5
             }
           },
@@ -2782,11 +2803,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 146,
+              "line": 168,
               "column": 4
             },
             "end": {
-              "line": 149,
+              "line": 171,
               "column": 5
             }
           },
@@ -2893,11 +2914,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 156,
+              "line": 178,
               "column": 4
             },
             "end": {
-              "line": 158,
+              "line": 180,
               "column": 5
             }
           },
@@ -2913,16 +2934,20 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 160,
+              "line": 182,
               "column": 4
             },
             "end": {
-              "line": 163,
+              "line": 196,
               "column": 5
             }
           },
           "metadata": {},
-          "params": [],
+          "params": [
+            {
+              "name": "type"
+            }
+          ],
           "return": {
             "type": "void"
           }
@@ -2933,11 +2958,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 165,
+              "line": 198,
               "column": 4
             },
             "end": {
-              "line": 175,
+              "line": 208,
               "column": 5
             }
           },
@@ -2957,11 +2982,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 177,
+              "line": 210,
               "column": 4
             },
             "end": {
-              "line": 186,
+              "line": 219,
               "column": 5
             }
           },
@@ -2981,11 +3006,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 188,
+              "line": 221,
               "column": 4
             },
             "end": {
-              "line": 197,
+              "line": 230,
               "column": 5
             }
           },
@@ -3005,11 +3030,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 199,
+              "line": 232,
               "column": 4
             },
             "end": {
-              "line": 214,
+              "line": 247,
               "column": 5
             }
           },
@@ -3029,11 +3054,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 216,
+              "line": 249,
               "column": 4
             },
             "end": {
-              "line": 218,
+              "line": 251,
               "column": 5
             }
           },
@@ -3992,11 +4017,11 @@
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 92,
+          "line": 112,
           "column": 2
         },
         "end": {
-          "line": 219,
+          "line": 252,
           "column": 3
         }
       },
@@ -4009,11 +4034,11 @@
           "description": "",
           "sourceRange": {
             "start": {
-              "line": 98,
+              "line": 118,
               "column": 8
             },
             "end": {
-              "line": 98,
+              "line": 118,
               "column": 23
             }
           },
@@ -4025,11 +4050,11 @@
           "description": "Changes information density of list items.\nBy default it uses material's peper item with two lines (72px heigth)\nPossible values are:\n\n- `default` or empty - regular list view\n- `comfortable` - enables MD single line list item vie (52px heigth)\n- `compact` - enables list that has 40px heigth (touch recommended)",
           "sourceRange": {
             "start": {
-              "line": 108,
+              "line": 128,
               "column": 8
             },
             "end": {
-              "line": 112,
+              "line": 132,
               "column": 9
             }
           },
@@ -4041,11 +4066,11 @@
           "description": "A list lower treshold when the `history-list-threshold` will be\nfired. It should informa the app that the user nearly reached\nthe end of the list and new items should be loaded.",
           "sourceRange": {
             "start": {
-              "line": 118,
+              "line": 138,
               "column": 8
             },
             "end": {
-              "line": 121,
+              "line": 141,
               "column": 9
             }
           },
@@ -4057,16 +4082,32 @@
           "description": "List of selected items on the list.",
           "sourceRange": {
             "start": {
-              "line": 130,
+              "line": 150,
               "column": 8
             },
             "end": {
-              "line": 133,
+              "line": 153,
               "column": 9
             }
           },
           "metadata": {},
           "type": "Array | null | undefined"
+        },
+        {
+          "name": "has-two-lines",
+          "description": "",
+          "sourceRange": {
+            "start": {
+              "line": 155,
+              "column": 8
+            },
+            "end": {
+              "line": 155,
+              "column": 28
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined"
         }
       ],
       "events": [
@@ -4085,24 +4126,24 @@
       "tagname": "history-panel-list"
     },
     {
-      "description": "ARC's requests history view\n\nContains complete UI to support saved requests view.\nIt needs the following components to be present in the DOM to support full\nfunctionality:\n\n-   arc-data-export - to prepare export object\n-   chrome-file-export or any other file export element to save file to disk\n\n### Example\n\n```\n<history-panel></history-panel>\n```\n\n### Styling\n`<history-panel>` provides the following custom properties and mixins for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--history-panel` | Mixin applied to the element | `{}`\n`--arc-font-headline` | Mixin applied to the header | `{}`\n`--arc-font-subhead` | Mixin applied to the subheader | `{}`\n`--history-panel-loader` | Mixin applied to the loader element | `{}`\n`--history-panel-list` | Mixin apllied to the list element | `{}`\n`--history-panel-toast-revert-button` | Mixin appllied to the rever button in the data delete confirmation toast | `{}`\n`--warning-primary-color` | Main color of the warning messages | `#FF7043`\n`--warning-contrast-color` | Contrast color for the warning color | `#fff`\n`--error-toast` | Mixin applied to the error toast | `{}`\n`--empty-info` | Mixin applied to the label rendered when no data is available. | `{}`\n`--history-panel-fab-background-color` | Color of the fab button in the details panel | `--primary-color`\n`--history-panel-bottom-sheet` | Mixin apllied to the `<bottom-sheet>` elements | `{}`\n\nHistory panel screen for Advanced REST Client.",
+      "description": "History panel screen for Advanced REST Client.\n\n### Styling\n`<history-panel>` provides the following custom properties and mixins for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--history-panel` | Mixin applied to the element | `{}`\n`--arc-font-headline` | Mixin applied to the header | `{}`\n`--arc-font-subhead` | Mixin applied to the subheader | `{}`\n`--history-panel-loader` | Mixin applied to the loader element | `{}`\n`--history-panel-list` | Mixin apllied to the list element | `{}`\n`--history-panel-toast-revert-button` | Mixin appllied to the rever button | `{}`\n`--warning-primary-color` | Main color of the warning messages | `#FF7043`\n`--warning-contrast-color` | Contrast color for the warning color | `#fff`\n`--error-toast` | Mixin applied to the error toast | `{}`\n`--empty-info` | Mixin applied to the label rendered when no data is available. | `{}`\n`--history-panel-fab-background-color` | Bg color of fab button | `--primary-color`\n`--history-panel-bottom-sheet` | Mixin apllied to the `<bottom-sheet>` elements | `{}`",
       "summary": "",
       "path": "history-panel.html",
       "properties": [
         {
           "name": "requests",
           "type": "Array.<Object>",
-          "description": "The list of request to render.\nIt can be eirther saved, history or project items.",
+          "description": "The list of request to render.",
           "privacy": "public",
           "sourceRange": {
-            "file": "../requests-list-mixin/requests-list-mixin.html",
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 44,
-              "column": 8
+              "line": 43,
+              "column": 10
             },
             "end": {
-              "line": 44,
-              "column": 23
+              "line": 43,
+              "column": 25
             }
           },
           "metadata": {
@@ -4110,7 +4151,7 @@
               "attributeType": "Array"
             }
           },
-          "inheritedFrom": "ArcComponents.RequestsListMixin"
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "hasRequests",
@@ -4257,39 +4298,19 @@
           "inheritedFrom": "ArcComponents.RequestsListMixin"
         },
         {
-          "name": "_db",
-          "type": "?",
-          "description": " Returns a handler to the datastore instance",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 369,
-              "column": 4
-            },
-            "end": {
-              "line": 375,
-              "column": 5
-            }
-          },
-          "metadata": {
-            "polymer": {
-              "readOnly": true
-            }
-          }
-        },
-        {
           "name": "querying",
           "type": "boolean | null | undefined",
           "description": "True when the element is querying the database for the data.",
           "privacy": "public",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 301,
-              "column": 8
+              "line": 47,
+              "column": 10
             },
             "end": {
-              "line": 305,
-              "column": 9
+              "line": 51,
+              "column": 11
             }
           },
           "metadata": {
@@ -4298,21 +4319,93 @@
               "readOnly": true,
               "attributeType": "Boolean"
             }
-          }
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "pageLimit",
+          "type": "number | null | undefined",
+          "description": "Single page query limit.",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 55,
+              "column": 10
+            },
+            "end": {
+              "line": 58,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "defaultValue": "150",
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_queryStartKey",
+          "type": "string | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 59,
+              "column": 10
+            },
+            "end": {
+              "line": 59,
+              "column": 32
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "String"
+            }
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_querySkip",
+          "type": "number | null | undefined",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 60,
+              "column": 10
+            },
+            "end": {
+              "line": 60,
+              "column": 28
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Number"
+            }
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "queryOptions",
           "type": "Object | null | undefined",
-          "description": "Database query options for pagination.\nOverride this value to change the query options like limit of the results in one call.\n\nThis is query options passed to the PouchDB `allDocs` function. Note that it will not\nset `include_docs` option. A conviniet shortcut is to set the the `includeDocs` property\nand the directive will be added automatically.",
+          "description": "Computed value.\nDatabase query options for pagination.\nUse `pageLimit` to set pagination limit.",
           "privacy": "public",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 314,
-              "column": 8
+              "line": 66,
+              "column": 10
             },
             "end": {
-              "line": 326,
-              "column": 9
+              "line": 69,
+              "column": 11
             }
           },
           "metadata": {
@@ -4320,7 +4413,8 @@
               "readOnly": true,
               "attributeType": "Object"
             }
-          }
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "dataUnavailable",
@@ -4328,13 +4422,14 @@
           "description": "Computed value. True if query ended and there's no results.",
           "privacy": "public",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 330,
-              "column": 8
+              "line": 73,
+              "column": 10
             },
             "end": {
-              "line": 333,
-              "column": 9
+              "line": 76,
+              "column": 11
             }
           },
           "metadata": {
@@ -4342,7 +4437,79 @@
               "readOnly": true,
               "attributeType": "Boolean"
             }
-          }
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "isSearch",
+          "type": "boolean | null | undefined",
+          "description": "When set this component is in search mode.\nThis means that the list won't be loaded automatically and\nsome operations not related to search are disabled.",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 82,
+              "column": 10
+            },
+            "end": {
+              "line": 85,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "defaultValue": "false",
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "searchListEmpty",
+          "type": "boolean | null | undefined",
+          "description": "Computed value. True when the query has been performed and no items\nhas been returned. It is different from `listHidden` where less\nconditions has to be checked. It is set to true when it doesn't\nhave items, is not loading and is search.",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 92,
+              "column": 10
+            },
+            "end": {
+              "line": 95,
+              "column": 11
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true,
+              "attributeType": "Boolean"
+            }
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "noAuto",
+          "type": "boolean | null | undefined",
+          "description": "When set it won't query for data automatically when attached to the DOM.",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 99,
+              "column": 10
+            },
+            "end": {
+              "line": 99,
+              "column": 25
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "attributeType": "Boolean"
+            }
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "_latestDeleted",
@@ -4351,11 +4518,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 335,
+              "line": 269,
               "column": 8
             },
             "end": {
-              "line": 335,
+              "line": 269,
               "column": 29
             }
           },
@@ -4366,39 +4533,17 @@
           }
         },
         {
-          "name": "isSearch",
-          "type": "boolean | null | undefined",
-          "description": "Current search query.",
-          "privacy": "public",
-          "sourceRange": {
-            "start": {
-              "line": 337,
-              "column": 8
-            },
-            "end": {
-              "line": 340,
-              "column": 9
-            }
-          },
-          "metadata": {
-            "polymer": {
-              "attributeType": "Boolean"
-            }
-          },
-          "defaultValue": "false"
-        },
-        {
           "name": "listHidden",
           "type": "boolean | null | undefined",
           "description": "Computed value, true if the requests lists is hidden.",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 342,
+              "line": 274,
               "column": 8
             },
             "end": {
-              "line": 346,
+              "line": 278,
               "column": 9
             }
           },
@@ -4411,39 +4556,17 @@
           "defaultValue": "true"
         },
         {
-          "name": "searchListEmpty",
-          "type": "boolean | null | undefined",
-          "description": "Computed value. True when the query has been performed and no items\nhas been returned. It is different from `listHidden` where less\nconditions has to be checked. It is set to true when it doesn't\nhave items, is not loading and is search.",
-          "privacy": "public",
-          "sourceRange": {
-            "start": {
-              "line": 353,
-              "column": 8
-            },
-            "end": {
-              "line": 356,
-              "column": 9
-            }
-          },
-          "metadata": {
-            "polymer": {
-              "readOnly": true,
-              "attributeType": "Boolean"
-            }
-          }
-        },
-        {
           "name": "selectedItems",
           "type": "Array.<Object>",
           "description": "Selected items list.",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 361,
+              "line": 284,
               "column": 8
             },
             "end": {
-              "line": 361,
+              "line": 284,
               "column": 28
             }
           },
@@ -4456,15 +4579,15 @@
         {
           "name": "hasSelection",
           "type": "boolean | null | undefined",
-          "description": "",
+          "description": "Computed value, true when the user made a selection on the list.",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 362,
+              "line": 288,
               "column": 8
             },
             "end": {
-              "line": 362,
+              "line": 288,
               "column": 93
             }
           },
@@ -4478,15 +4601,15 @@
         {
           "name": "editorOpened",
           "type": "boolean | null | undefined",
-          "description": "",
+          "description": "When true the editor panel is rendered",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 363,
+              "line": 292,
               "column": 8
             },
             "end": {
-              "line": 363,
+              "line": 292,
               "column": 29
             }
           },
@@ -4499,15 +4622,15 @@
         {
           "name": "detailsOpened",
           "type": "boolean | null | undefined",
-          "description": "",
+          "description": "When true the details panel is rendered",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 364,
+              "line": 296,
               "column": 8
             },
             "end": {
-              "line": 364,
+              "line": 296,
               "column": 30
             }
           },
@@ -4525,11 +4648,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 385,
+              "line": 306,
               "column": 4
             },
             "end": {
-              "line": 398,
+              "line": 311,
               "column": 5
             }
           },
@@ -4545,11 +4668,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 400,
+              "line": 313,
               "column": 4
             },
             "end": {
-              "line": 407,
+              "line": 318,
               "column": 5
             }
           },
@@ -4570,7 +4693,7 @@
               "column": 4
             },
             "end": {
-              "line": 138,
+              "line": 140,
               "column": 5
             }
           },
@@ -4587,8 +4710,8 @@
           "inheritedFrom": "ArcComponents.RequestsListMixin"
         },
         {
-          "name": "_requestChangedHandler",
-          "description": "Handler for `request-object-changed` custom event.\nDepending on the `type` property it updates / adds / removes item from\nthe requests list.",
+          "name": "_itemDeleted",
+          "description": "Removes an item from the list by given id.",
           "privacy": "protected",
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
@@ -4597,7 +4720,63 @@
               "column": 4
             },
             "end": {
-              "line": 161,
+              "line": 153,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "id",
+              "type": "String",
+              "description": "Request ID to remove"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "ArcComponents.RequestsListMixin"
+        },
+        {
+          "name": "_historyItemDeleted",
+          "description": "Removes a history item from the list by given id.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../requests-list-mixin/requests-list-mixin.html",
+            "start": {
+              "line": 158,
+              "column": 4
+            },
+            "end": {
+              "line": 172,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "id",
+              "type": "String",
+              "description": "Request ID to remove"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "ArcComponents.RequestsListMixin"
+        },
+        {
+          "name": "_requestChangedHandler",
+          "description": "Handler for `request-object-changed` custom event.\nDepending on the `type` property it updates / adds / removes item from\nthe requests list.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../requests-list-mixin/requests-list-mixin.html",
+            "start": {
+              "line": 179,
+              "column": 4
+            },
+            "end": {
+              "line": 195,
               "column": 5
             }
           },
@@ -4620,11 +4799,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 166,
+              "line": 200,
               "column": 4
             },
             "end": {
-              "line": 191,
+              "line": 225,
               "column": 5
             }
           },
@@ -4648,11 +4827,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 198,
+              "line": 232,
               "column": 4
             },
             "end": {
-              "line": 209,
+              "line": 243,
               "column": 5
             }
           },
@@ -4675,11 +4854,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 214,
+              "line": 248,
               "column": 4
             },
             "end": {
-              "line": 240,
+              "line": 274,
               "column": 5
             }
           },
@@ -4703,11 +4882,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 245,
+              "line": 279,
               "column": 4
             },
             "end": {
-              "line": 272,
+              "line": 306,
               "column": 5
             }
           },
@@ -4731,11 +4910,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 279,
+              "line": 313,
               "column": 4
             },
             "end": {
-              "line": 283,
+              "line": 317,
               "column": 5
             }
           },
@@ -4759,11 +4938,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 288,
+              "line": 322,
               "column": 4
             },
             "end": {
-              "line": 301,
+              "line": 335,
               "column": 5
             }
           },
@@ -4787,11 +4966,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 307,
+              "line": 341,
               "column": 4
             },
             "end": {
-              "line": 356,
+              "line": 390,
               "column": 5
             }
           },
@@ -4816,11 +4995,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 365,
+              "line": 399,
               "column": 4
             },
             "end": {
-              "line": 379,
+              "line": 413,
               "column": 5
             }
           },
@@ -4847,11 +5026,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 386,
+              "line": 420,
               "column": 4
             },
             "end": {
-              "line": 389,
+              "line": 423,
               "column": 5
             }
           },
@@ -4876,11 +5055,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 395,
+              "line": 429,
               "column": 4
             },
             "end": {
-              "line": 423,
+              "line": 457,
               "column": 5
             }
           },
@@ -4905,11 +5084,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 425,
+              "line": 459,
               "column": 4
             },
             "end": {
-              "line": 427,
+              "line": 461,
               "column": 5
             }
           },
@@ -4928,11 +5107,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 433,
+              "line": 467,
               "column": 4
             },
             "end": {
-              "line": 438,
+              "line": 472,
               "column": 5
             }
           },
@@ -4956,11 +5135,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 444,
+              "line": 478,
               "column": 4
             },
             "end": {
-              "line": 457,
+              "line": 491,
               "column": 5
             }
           },
@@ -4977,218 +5156,17 @@
           "inheritedFrom": "ArcComponents.RequestsListMixin"
         },
         {
-          "name": "_groupHistory",
-          "description": "Creates a headers for each day and group requests in each day group.\nThis is relevant for history type",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "../requests-list-mixin/requests-list-mixin.html",
-            "start": {
-              "line": 467,
-              "column": 4
-            },
-            "end": {
-              "line": 492,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "requests",
-              "type": "Array.<Object>"
-            },
-            {
-              "name": "today",
-              "type": "Number",
-              "description": "Timestamp of today"
-            },
-            {
-              "name": "yesterday",
-              "type": "Number",
-              "description": "Timestamp of yesterday"
-            }
-          ],
-          "return": {
-            "type": "Array.<Object>"
-          },
-          "inheritedFrom": "ArcComponents.RequestsListMixin"
-        },
-        {
-          "name": "_computeHistoryTime",
-          "description": "Computes time information for a history item. This is later used to\npresent history list item.",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "../requests-list-mixin/requests-list-mixin.html",
-            "start": {
-              "line": 502,
-              "column": 4
-            },
-            "end": {
-              "line": 528,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "date",
-              "type": "Number",
-              "description": "Timestamp of when the item was created / updated"
-            }
-          ],
-          "return": {
-            "type": "Object",
-            "desc": "Various time formats:\n- formatted - Formatted date string\n- time - Parsed timestamp\n- timeLabel - secondary list item"
-          },
-          "inheritedFrom": "ArcComponents.RequestsListMixin"
-        },
-        {
-          "name": "_getTodayTimestamp",
-          "description": "Creates a timestamp fot today, midnight",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "../requests-list-mixin/requests-list-mixin.html",
-            "start": {
-              "line": 533,
-              "column": 4
-            },
-            "end": {
-              "line": 537,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [],
-          "return": {
-            "type": "Number"
-          },
-          "inheritedFrom": "ArcComponents.RequestsListMixin"
-        },
-        {
-          "name": "_getYesterdayTimestamp",
-          "description": "Computes yesterday's midninght based on today's mignight timestamp",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "../requests-list-mixin/requests-list-mixin.html",
-            "start": {
-              "line": 543,
-              "column": 4
-            },
-            "end": {
-              "line": 545,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "todayTimestamp",
-              "type": "Number",
-              "description": "Timestamp of current daty at midnight"
-            }
-          ],
-          "return": {
-            "type": "Number",
-            "desc": "Timestamp 24 hours earlier."
-          },
-          "inheritedFrom": "ArcComponents.RequestsListMixin"
-        },
-        {
-          "name": "_processHistoryResults",
-          "description": "Processes query results to generate view data model.",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "../requests-list-mixin/requests-list-mixin.html",
-            "start": {
-              "line": 551,
-              "column": 4
-            },
-            "end": {
-              "line": 558,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "res",
-              "type": "Array",
-              "description": "List of history requests retreived from the datastore."
-            }
-          ],
-          "return": {
-            "type": "Array",
-            "desc": "Processed data requests."
-          },
-          "inheritedFrom": "ArcComponents.RequestsListMixin"
-        },
-        {
-          "name": "_ensureTimestamps",
-          "description": "Ensures that the history objects have the `updated` property\nrequired by further computations while processing results.",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "../requests-list-mixin/requests-list-mixin.html",
-            "start": {
-              "line": 567,
-              "column": 4
-            },
-            "end": {
-              "line": 581,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "requests",
-              "type": "Array.<Object>",
-              "description": "List of history requests"
-            }
-          ],
-          "return": {
-            "type": "Array.<Object>",
-            "desc": "The same array but all requests will have `updated`\nproperty."
-          },
-          "inheritedFrom": "ArcComponents.RequestsListMixin"
-        },
-        {
-          "name": "_sortHistoryResults",
-          "description": "Sorts the query results by `updated` property.",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "../requests-list-mixin/requests-list-mixin.html",
-            "start": {
-              "line": 583,
-              "column": 4
-            },
-            "end": {
-              "line": 591,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "a"
-            },
-            {
-              "name": "b"
-            }
-          ],
-          "inheritedFrom": "ArcComponents.RequestsListMixin"
-        },
-        {
           "name": "_persistRequestsOrder",
           "description": "Stores current order of requests in the project.\nThis shouls be only called wshen `project` property is set.",
           "privacy": "protected",
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 597,
+              "line": 497,
               "column": 4
             },
             "end": {
-              "line": 610,
+              "line": 510,
               "column": 5
             }
           },
@@ -5206,11 +5184,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 618,
+              "line": 518,
               "column": 4
             },
             "end": {
-              "line": 632,
+              "line": 532,
               "column": 5
             }
           },
@@ -5234,11 +5212,11 @@
           "sourceRange": {
             "file": "../requests-list-mixin/requests-list-mixin.html",
             "start": {
-              "line": 638,
+              "line": 538,
               "column": 4
             },
             "end": {
-              "line": 648,
+              "line": 548,
               "column": 5
             }
           },
@@ -5255,128 +5233,623 @@
           "inheritedFrom": "ArcComponents.RequestsListMixin"
         },
         {
-          "name": "_onDatabaseDestroy",
-          "description": "Handler for the `datastore-destroyed` custom event",
+          "name": "_computeQueryOptions",
+          "description": "Computes pagination options.\nThis resets pagination status.",
           "privacy": "protected",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 410,
-              "column": 4
+              "line": 134,
+              "column": 6
             },
             "end": {
-              "line": 426,
-              "column": 5
+              "line": 149,
+              "column": 7
             }
           },
           "metadata": {},
           "params": [
             {
-              "name": "e"
+              "name": "limit",
+              "type": "Number",
+              "description": "Items per page limit."
+            },
+            {
+              "name": "startKey",
+              "type": "String",
+              "description": "Query start key"
+            },
+            {
+              "name": "skip",
+              "type": "Number",
+              "description": "Number of records to skip."
             }
           ],
           "return": {
-            "type": "void"
-          }
+            "type": "Object",
+            "desc": "Pagination options for PouchDB."
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
-          "name": "_resetHandler",
-          "description": "",
+          "name": "_computeDataUnavailable",
+          "description": "Computes value for the `dataUnavailable` proeprty",
           "privacy": "protected",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 428,
-              "column": 4
+              "line": 158,
+              "column": 6
             },
             "end": {
-              "line": 430,
-              "column": 5
+              "line": 160,
+              "column": 7
             }
           },
           "metadata": {},
-          "params": [],
+          "params": [
+            {
+              "name": "hasRequests",
+              "type": "Boolean",
+              "description": "[description]"
+            },
+            {
+              "name": "loading",
+              "type": "Booelan",
+              "description": "[description]"
+            },
+            {
+              "name": "isSearch",
+              "type": "Boolean",
+              "description": "[description]"
+            }
+          ],
           "return": {
-            "type": "void"
-          }
+            "type": "Boolean"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_computeSearchListEmpty",
+          "description": "Computes value for the `searchListEmpty` property",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 169,
+              "column": 6
+            },
+            "end": {
+              "line": 171,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "hasRequests",
+              "type": "Boolean",
+              "description": "[description]"
+            },
+            {
+              "name": "loading",
+              "type": "Booelan",
+              "description": "[description]"
+            },
+            {
+              "name": "isSearch",
+              "type": "Boolean",
+              "description": "[description]"
+            }
+          ],
+          "return": {
+            "type": "Boolean"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "refresh",
-          "description": "Shortcut to `reset()` to be compatible with `history-menu` API.",
+          "description": "Refreshes the data from the datastore.\nIt resets the query options, clears requests and makes a query to the datastore.",
           "privacy": "public",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 434,
-              "column": 4
+              "line": 177,
+              "column": 6
             },
             "end": {
-              "line": 436,
-              "column": 5
+              "line": 180,
+              "column": 7
             }
           },
           "metadata": {},
           "params": [],
           "return": {
             "type": "void"
-          }
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "reset",
           "description": "Resets the state of the variables.",
           "privacy": "public",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 440,
-              "column": 4
+              "line": 184,
+              "column": 6
             },
             "end": {
-              "line": 449,
-              "column": 5
+              "line": 200,
+              "column": 7
             }
           },
           "metadata": {},
           "params": [],
           "return": {
             "type": "void"
-          }
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_dataImportHandler",
+          "description": "Handler for `data-imported` cutom event.\nRefreshes data state.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 205,
+              "column": 6
+            },
+            "end": {
+              "line": 207,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_onDatabaseDestroy",
+          "description": "Handler for the `datastore-destroyed` custom event.\nIf one of destroyed databases is history store then it refreshes the sate.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 213,
+              "column": 6
+            },
+            "end": {
+              "line": 227,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "e",
+              "type": "CustomEvent"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "loadNext",
-          "description": "Loads next page of results. It runs the task in a debouncer set\nto 10 miliseconds.",
+          "description": "Loads next page of results. It runs the task in a debouncer set to\nnext render frame so it's safe to call it more than once at the time.",
           "privacy": "public",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 454,
-              "column": 4
+              "line": 232,
+              "column": 6
             },
             "end": {
-              "line": 466,
-              "column": 5
+              "line": 244,
+              "column": 7
             }
           },
           "metadata": {},
           "params": [],
           "return": {
             "type": "void"
-          }
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_appendItems",
+          "description": "Appends array items to the `requests` property.\nIt should be used instead of direct manipulation of the `items` array.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 250,
+              "column": 6
+            },
+            "end": {
+              "line": 260,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requests",
+              "type": "Array.<Object>",
+              "description": "List of requests to appenmd"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "_loadPage",
           "description": "Loads next page of results from the datastore.\nPagination used here has been described in PouchDB pagination strategies\ndocument.",
           "privacy": "protected",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 473,
-              "column": 4
+              "line": 267,
+              "column": 6
             },
             "end": {
-              "line": 505,
-              "column": 5
+              "line": 301,
+              "column": 7
             }
           },
           "metadata": {},
           "params": [],
           "return": {
             "type": "Promise"
-          }
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_dispatchListEvent",
+          "description": "Dispatches `request-list` custom event and returns the event.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 306,
+              "column": 6
+            },
+            "end": {
+              "line": 318,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "CustomEvent"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_handleError",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 320,
+              "column": 6
+            },
+            "end": {
+              "line": 323,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "cause"
+            }
+          ],
+          "return": {
+            "type": "void"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_processHistoryResults",
+          "description": "Processes query results to generate view data model.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 329,
+              "column": 6
+            },
+            "end": {
+              "line": 342,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "res",
+              "type": "Array",
+              "description": "List of history requests retreived from the datastore."
+            }
+          ],
+          "return": {
+            "type": "Array",
+            "desc": "Processed data requests."
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_ensureTimestamps",
+          "description": "Ensures that the history objects have the `updated` property\nrequired by further computations while processing results.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 351,
+              "column": 6
+            },
+            "end": {
+              "line": 361,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requests",
+              "type": "Array.<Object>",
+              "description": "List of history requests"
+            }
+          ],
+          "return": {
+            "type": "Array.<Object>",
+            "desc": "The same array but all requests will have `updated`\nproperty."
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_sortHistoryResults",
+          "description": "Sorts the query results by `updated` property.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 368,
+              "column": 6
+            },
+            "end": {
+              "line": 376,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "a",
+              "type": "Object"
+            },
+            {
+              "name": "b",
+              "type": "Object"
+            }
+          ],
+          "return": {
+            "type": "Number"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_getTodayTimestamp",
+          "description": "Creates a timestamp fot today, midnight",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 381,
+              "column": 6
+            },
+            "end": {
+              "line": 385,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "Number"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_getYesterdayTimestamp",
+          "description": "Computes yesterday's midninght based on today's mignight timestamp",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 391,
+              "column": 6
+            },
+            "end": {
+              "line": 393,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "todayTimestamp",
+              "type": "Number",
+              "description": "Timestamp of current daty at midnight"
+            }
+          ],
+          "return": {
+            "type": "Number",
+            "desc": "Timestamp 24 hours earlier."
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_groupHistory",
+          "description": "Creates headers for each day and group requests in each day group.\nThis is relevant for history type",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 403,
+              "column": 6
+            },
+            "end": {
+              "line": 428,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "requests",
+              "type": "Array.<Object>"
+            },
+            {
+              "name": "today",
+              "type": "Number",
+              "description": "Timestamp of today"
+            },
+            {
+              "name": "yesterday",
+              "type": "Number",
+              "description": "Timestamp of yesterday"
+            }
+          ],
+          "return": {
+            "type": "Array.<Object>"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_computeHistoryTime",
+          "description": "Computes time information for a history item. This is later used to\npresent history list item.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 438,
+              "column": 6
+            },
+            "end": {
+              "line": 464,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "date",
+              "type": "Number",
+              "description": "Timestamp of when the item was created / updated"
+            }
+          ],
+          "return": {
+            "type": "Object",
+            "desc": "Various time formats:\n- formatted - Formatted date string\n- time - Parsed timestamp\n- timeLabel - secondary list item"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_resetHistoryObject",
+          "description": "Resets history object by removing items that has been added\nwhen processing response.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 471,
+              "column": 6
+            },
+            "end": {
+              "line": 478,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "request",
+              "type": "Object",
+              "description": "ARC request object"
+            }
+          ],
+          "return": {
+            "type": "Object"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "query",
+          "description": "Dispatches `request-query` custom event to `request-model`\nto perform a query.",
+          "privacy": "public",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 488,
+              "column": 6
+            },
+            "end": {
+              "line": 515,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "query",
+              "type": "String",
+              "description": "The query to performs. Pass empty stirng\n(or nothing) to reset query state."
+            }
+          ],
+          "return": {
+            "type": "Promise",
+            "desc": "Resolved promise when the query ends."
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "_dispatchQueryEvent",
+          "description": "Dispatches `request-query` custom event.\nThis event is handled by `request-mode` element to query the\ndatastore for user search term.",
+          "privacy": "protected",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 523,
+              "column": 6
+            },
+            "end": {
+              "line": 535,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [
+            {
+              "name": "q",
+              "type": "String",
+              "description": "Query passed to event detail."
+            }
+          ],
+          "return": {
+            "type": "CustomEvent"
+          },
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "notifyResize",
@@ -5384,42 +5857,16 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 511,
+              "line": 325,
               "column": 4
             },
             "end": {
-              "line": 518,
+              "line": 332,
               "column": 5
             }
           },
           "metadata": {},
           "params": [],
-          "return": {
-            "type": "void"
-          }
-        },
-        {
-          "name": "_appendItems",
-          "description": "Appends array items to the `items` property. It should be used instead of\ndirect manipulation of the `items` array.",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 524,
-              "column": 4
-            },
-            "end": {
-              "line": 534,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "requests",
-              "type": "[type]",
-              "description": "[description]"
-            }
-          ],
           "return": {
             "type": "void"
           }
@@ -5430,11 +5877,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 542,
+              "line": 340,
               "column": 4
             },
             "end": {
-              "line": 547,
+              "line": 345,
               "column": 5
             }
           },
@@ -5454,94 +5901,16 @@
           }
         },
         {
-          "name": "_computeSearchListEmpty",
-          "description": "Computes value for the `searchListEmpty` property",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 549,
-              "column": 4
-            },
-            "end": {
-              "line": 551,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "hasRequests"
-            },
-            {
-              "name": "loading"
-            },
-            {
-              "name": "isSearch"
-            }
-          ]
-        },
-        {
-          "name": "_computeDataUnavailable",
-          "description": "Computes value for the `dataUnavailable` proeprty",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 553,
-              "column": 4
-            },
-            "end": {
-              "line": 555,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "hasRequests"
-            },
-            {
-              "name": "loading"
-            },
-            {
-              "name": "isSearch"
-            }
-          ]
-        },
-        {
-          "name": "_handleError",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 557,
-              "column": 4
-            },
-            "end": {
-              "line": 561,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "cause"
-            }
-          ],
-          "return": {
-            "type": "void"
-          }
-        },
-        {
           "name": "_navigateHandler",
           "description": "Handler for navigate action from the list",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 565,
+              "line": 349,
               "column": 4
             },
             "end": {
-              "line": 569,
+              "line": 353,
               "column": 5
             }
           },
@@ -5557,11 +5926,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 571,
+              "line": 355,
               "column": 4
             },
             "end": {
-              "line": 577,
+              "line": 361,
               "column": 5
             }
           },
@@ -5574,11 +5943,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 579,
+              "line": 363,
               "column": 4
             },
             "end": {
-              "line": 583,
+              "line": 367,
               "column": 5
             }
           },
@@ -5591,11 +5960,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 590,
+              "line": 374,
               "column": 4
             },
             "end": {
-              "line": 626,
+              "line": 410,
               "column": 5
             }
           },
@@ -5618,11 +5987,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 633,
+              "line": 417,
               "column": 4
             },
             "end": {
-              "line": 658,
+              "line": 442,
               "column": 5
             }
           },
@@ -5635,15 +6004,15 @@
         },
         {
           "name": "_closeSelectionMenu",
-          "description": "",
+          "description": "Forces selection menu to close.",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 660,
+              "line": 446,
               "column": 4
             },
             "end": {
-              "line": 671,
+              "line": 457,
               "column": 5
             }
           },
@@ -5655,15 +6024,15 @@
         },
         {
           "name": "_exportSelected",
-          "description": "",
+          "description": "Calles `_exportItems()` with default destination (`file`)",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 673,
+              "line": 461,
               "column": 4
             },
             "end": {
-              "line": 675,
+              "line": 463,
               "column": 5
             }
           },
@@ -5675,15 +6044,15 @@
         },
         {
           "name": "_exportSelectedDrive",
-          "description": "",
+          "description": "Calles `_exportItems()` with destination set to `drive`",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 677,
+              "line": 467,
               "column": 4
             },
             "end": {
-              "line": 679,
+              "line": 469,
               "column": 5
             }
           },
@@ -5695,15 +6064,15 @@
         },
         {
           "name": "_closeMainMenu",
-          "description": "",
+          "description": "Forces main menu to close.",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 681,
+              "line": 473,
               "column": 4
             },
             "end": {
-              "line": 684,
+              "line": 476,
               "column": 5
             }
           },
@@ -5715,15 +6084,15 @@
         },
         {
           "name": "_onExportAllDrive",
-          "description": "Menu item handler to export all project data to Drive",
+          "description": "Menu handler to export all project data to Drive",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 687,
+              "line": 480,
               "column": 4
             },
             "end": {
-              "line": 690,
+              "line": 483,
               "column": 5
             }
           },
@@ -5735,15 +6104,15 @@
         },
         {
           "name": "_onExportAll",
-          "description": "Menu item handler to export all project data to file",
+          "description": "Menu handler to export all project data to file",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 692,
+              "line": 487,
               "column": 4
             },
             "end": {
-              "line": 695,
+              "line": 490,
               "column": 5
             }
           },
@@ -5755,22 +6124,24 @@
         },
         {
           "name": "_exportAll",
-          "description": "Menu item handler to export all project data",
+          "description": "Requests application to export all data to `destination`.\nThis works with `arc-data-export` element.",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 697,
+              "line": 498,
               "column": 4
             },
             "end": {
-              "line": 718,
+              "line": 519,
               "column": 5
             }
           },
           "metadata": {},
           "params": [
             {
-              "name": "destination"
+              "name": "destination",
+              "type": "String",
+              "description": "One of the supporting destinations\nin `arc-data-export`."
             }
           ],
           "return": {
@@ -5783,11 +6154,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 724,
+              "line": 525,
               "column": 4
             },
             "end": {
-              "line": 754,
+              "line": 555,
               "column": 5
             }
           },
@@ -5808,11 +6179,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 759,
+              "line": 560,
               "column": 4
             },
             "end": {
-              "line": 762,
+              "line": 563,
               "column": 5
             }
           },
@@ -5833,11 +6204,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 766,
+              "line": 567,
               "column": 4
             },
             "end": {
-              "line": 778,
+              "line": 579,
               "column": 5
             }
           },
@@ -5853,11 +6224,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 780,
+              "line": 581,
               "column": 4
             },
             "end": {
-              "line": 783,
+              "line": 584,
               "column": 5
             }
           },
@@ -5872,43 +6243,16 @@
           }
         },
         {
-          "name": "query",
-          "description": "Performs a query on a saved items. The query is performewd on two stages.\nFirst stage searches through the meta properties saved in the object's\n`_id` property (url, method). This query is fast and\nreports results almost immidietly. Second stage is to perform full text\nsearch on the items. This required building an index and then performing\nthe search so it may take a long time in cases of lots of data stored\nin the datastore.",
-          "privacy": "public",
-          "sourceRange": {
-            "start": {
-              "line": 797,
-              "column": 4
-            },
-            "end": {
-              "line": 832,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "query",
-              "type": "String",
-              "description": "The query to performs. Pass empty stirng\n(or nothing) to reset quesy state."
-            }
-          ],
-          "return": {
-            "type": "Promise",
-            "desc": "Resolved promise when the query ends."
-          }
-        },
-        {
           "name": "_deleteAllClick",
           "description": "Handler for delete all menu option click.",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 836,
+              "line": 588,
               "column": 4
             },
             "end": {
-              "line": 840,
+              "line": 592,
               "column": 5
             }
           },
@@ -5924,11 +6268,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 845,
+              "line": 597,
               "column": 4
             },
             "end": {
-              "line": 850,
+              "line": 602,
               "column": 5
             }
           },
@@ -5949,11 +6293,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 854,
+              "line": 606,
               "column": 4
             },
             "end": {
-              "line": 874,
+              "line": 626,
               "column": 5
             }
           },
@@ -5969,11 +6313,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 879,
+              "line": 631,
               "column": 4
             },
             "end": {
-              "line": 886,
+              "line": 638,
               "column": 5
             }
           },
@@ -5984,37 +6328,16 @@
           }
         },
         {
-          "name": "_resetHistoryObject",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 888,
-              "column": 4
-            },
-            "end": {
-              "line": 895,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "request"
-            }
-          ]
-        },
-        {
           "name": "_resizeSheetContent",
           "description": "",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 897,
+              "line": 640,
               "column": 4
             },
             "end": {
-              "line": 903,
+              "line": 646,
               "column": 5
             }
           },
@@ -6034,11 +6357,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 905,
+              "line": 648,
               "column": 4
             },
             "end": {
-              "line": 907,
+              "line": 650,
               "column": 5
             }
           },
@@ -6054,11 +6377,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 911,
+              "line": 654,
               "column": 4
             },
             "end": {
-              "line": 914,
+              "line": 657,
               "column": 5
             }
           },
@@ -6074,11 +6397,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 916,
+              "line": 659,
               "column": 4
             },
             "end": {
-              "line": 918,
+              "line": 661,
               "column": 5
             }
           },
@@ -6095,20 +6418,16 @@
         {
           "url": "demo/index.html",
           "description": ""
-        },
-        {
-          "url": "demo/index.html",
-          "description": ""
         }
       ],
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 293,
+          "line": 258,
           "column": 2
         },
         "end": {
-          "line": 964,
+          "line": 702,
           "column": 3
         }
       },
@@ -6118,21 +6437,21 @@
       "attributes": [
         {
           "name": "requests",
-          "description": "The list of request to render.\nIt can be eirther saved, history or project items.",
+          "description": "The list of request to render.",
           "sourceRange": {
-            "file": "../requests-list-mixin/requests-list-mixin.html",
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 44,
-              "column": 8
+              "line": 43,
+              "column": 10
             },
             "end": {
-              "line": 44,
-              "column": 23
+              "line": 43,
+              "column": 25
             }
           },
           "metadata": {},
           "type": "Array.<Object>",
-          "inheritedFrom": "ArcComponents.RequestsListMixin"
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "has-requests",
@@ -6228,92 +6547,138 @@
           "name": "querying",
           "description": "True when the element is querying the database for the data.",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 301,
-              "column": 8
+              "line": 47,
+              "column": 10
             },
             "end": {
-              "line": 305,
-              "column": 9
+              "line": 51,
+              "column": 11
             }
           },
           "metadata": {},
-          "type": "boolean | null | undefined"
+          "type": "boolean | null | undefined",
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "page-limit",
+          "description": "Single page query limit.",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 55,
+              "column": 10
+            },
+            "end": {
+              "line": 58,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "number | null | undefined",
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "query-options",
-          "description": "Database query options for pagination.\nOverride this value to change the query options like limit of the results in one call.\n\nThis is query options passed to the PouchDB `allDocs` function. Note that it will not\nset `include_docs` option. A conviniet shortcut is to set the the `includeDocs` property\nand the directive will be added automatically.",
+          "description": "Computed value.\nDatabase query options for pagination.\nUse `pageLimit` to set pagination limit.",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 314,
-              "column": 8
+              "line": 66,
+              "column": 10
             },
             "end": {
-              "line": 326,
-              "column": 9
+              "line": 69,
+              "column": 11
             }
           },
           "metadata": {},
-          "type": "Object | null | undefined"
+          "type": "Object | null | undefined",
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "data-unavailable",
           "description": "Computed value. True if query ended and there's no results.",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 330,
-              "column": 8
+              "line": 73,
+              "column": 10
             },
             "end": {
-              "line": 333,
-              "column": 9
+              "line": 76,
+              "column": 11
             }
           },
           "metadata": {},
-          "type": "boolean | null | undefined"
+          "type": "boolean | null | undefined",
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "is-search",
-          "description": "Current search query.",
+          "description": "When set this component is in search mode.\nThis means that the list won't be loaded automatically and\nsome operations not related to search are disabled.",
           "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
             "start": {
-              "line": 337,
-              "column": 8
+              "line": 82,
+              "column": 10
             },
             "end": {
-              "line": 340,
-              "column": 9
+              "line": 85,
+              "column": 11
             }
           },
           "metadata": {},
-          "type": "boolean | null | undefined"
+          "type": "boolean | null | undefined",
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "search-list-empty",
+          "description": "Computed value. True when the query has been performed and no items\nhas been returned. It is different from `listHidden` where less\nconditions has to be checked. It is set to true when it doesn't\nhave items, is not loading and is search.",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 92,
+              "column": 10
+            },
+            "end": {
+              "line": 95,
+              "column": 11
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined",
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "name": "no-auto",
+          "description": "When set it won't query for data automatically when attached to the DOM.",
+          "sourceRange": {
+            "file": "../history-list-mixin/history-list-mixin.html",
+            "start": {
+              "line": 99,
+              "column": 10
+            },
+            "end": {
+              "line": 99,
+              "column": 25
+            }
+          },
+          "metadata": {},
+          "type": "boolean | null | undefined",
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
         },
         {
           "name": "list-hidden",
           "description": "Computed value, true if the requests lists is hidden.",
           "sourceRange": {
             "start": {
-              "line": 342,
+              "line": 274,
               "column": 8
             },
             "end": {
-              "line": 346,
-              "column": 9
-            }
-          },
-          "metadata": {},
-          "type": "boolean | null | undefined"
-        },
-        {
-          "name": "search-list-empty",
-          "description": "Computed value. True when the query has been performed and no items\nhas been returned. It is different from `listHidden` where less\nconditions has to be checked. It is set to true when it doesn't\nhave items, is not loading and is search.",
-          "sourceRange": {
-            "start": {
-              "line": 353,
-              "column": 8
-            },
-            "end": {
-              "line": 356,
+              "line": 278,
               "column": 9
             }
           },
@@ -6325,11 +6690,11 @@
           "description": "Selected items list.",
           "sourceRange": {
             "start": {
-              "line": 361,
+              "line": 284,
               "column": 8
             },
             "end": {
-              "line": 361,
+              "line": 284,
               "column": 28
             }
           },
@@ -6338,14 +6703,14 @@
         },
         {
           "name": "has-selection",
-          "description": "",
+          "description": "Computed value, true when the user made a selection on the list.",
           "sourceRange": {
             "start": {
-              "line": 362,
+              "line": 288,
               "column": 8
             },
             "end": {
-              "line": 362,
+              "line": 288,
               "column": 93
             }
           },
@@ -6354,14 +6719,14 @@
         },
         {
           "name": "editor-opened",
-          "description": "",
+          "description": "When true the editor panel is rendered",
           "sourceRange": {
             "start": {
-              "line": 363,
+              "line": 292,
               "column": 8
             },
             "end": {
-              "line": 363,
+              "line": 292,
               "column": 29
             }
           },
@@ -6370,14 +6735,14 @@
         },
         {
           "name": "details-opened",
-          "description": "",
+          "description": "When true the details panel is rendered",
           "sourceRange": {
             "start": {
-              "line": 364,
+              "line": 296,
               "column": 8
             },
             "end": {
-              "line": 364,
+              "line": 296,
               "column": 30
             }
           },
@@ -6386,6 +6751,20 @@
         }
       ],
       "events": [
+        {
+          "type": "CustomEvent",
+          "name": "request-list",
+          "description": "Dispatched when the element requests next page of results.",
+          "metadata": {},
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
+        {
+          "type": "CustomEvent",
+          "name": "request-query",
+          "description": "Dispatched when search was requested.",
+          "metadata": {},
+          "inheritedFrom": "ArcComponents.HistoryListMixin"
+        },
         {
           "type": "CustomEvent",
           "name": "destroy-model",
@@ -6415,18 +6794,6 @@
           "name": "request-objects-undeleted",
           "description": "Fired when the \"revert\" delete button has been used.\nInforms the requests model to restore the data.",
           "metadata": {}
-        },
-        {
-          "type": "CustomEvent",
-          "name": "request-query",
-          "description": "Dispatched to ask the data model for query data.",
-          "metadata": {}
-        },
-        {
-          "type": "CustomEvent",
-          "name": "querying-changed",
-          "description": "Fired when the `querying` property changes.",
-          "metadata": {}
         }
       ],
       "styling": {
@@ -6436,7 +6803,8 @@
       "slots": [],
       "tagname": "history-panel",
       "mixins": [
-        "ArcComponents.RequestsListMixin"
+        "ArcComponents.RequestsListMixin",
+        "ArcComponents.HistoryListMixin"
       ]
     }
   ]

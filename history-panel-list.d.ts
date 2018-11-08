@@ -9,6 +9,7 @@
  */
 
 /// <reference path="../polymer/types/polymer-element.d.ts" />
+/// <reference path="../polymer/types/lib/utils/render-status.d.ts" />
 /// <reference path="../paper-item/paper-icon-item.d.ts" />
 /// <reference path="../paper-item/paper-item-body.d.ts" />
 /// <reference path="../paper-ripple/paper-ripple.d.ts" />
@@ -65,6 +66,7 @@ declare namespace ApiElements {
      * List of selected items on the list.
      */
     selectedItems: any[]|null|undefined;
+    hasTwoLines: boolean|null|undefined;
     connectedCallback(): void;
     disconnectedCallback(): void;
 
@@ -74,7 +76,7 @@ declare namespace ApiElements {
      * visible at the time.
      */
     notifyResize(): void;
-    _updateListStyles(): void;
+    _updateListStyles(type: any): void;
     _thresholdHandler(e: any): void;
     _requestsChanged(record: any): void;
     _requestDetails(e: any): void;

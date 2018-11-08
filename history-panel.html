@@ -12,6 +12,7 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/utils/render-status.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
@@ -32,44 +33,7 @@ the License.
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../history-list-mixin/history-list-mixin.html">
 <link rel="import" href="history-panel-list.html">
-<!--
-ARC's requests history view
 
-Contains complete UI to support saved requests view.
-It needs the following components to be present in the DOM to support full
-functionality:
-
--   arc-data-export - to prepare export object
--   chrome-file-export or any other file export element to save file to disk
-
-### Example
-
-```
-<history-panel></history-panel>
-```
-
-### Styling
-`<history-panel>` provides the following custom properties and mixins for styling:
-
-Custom property | Description | Default
-----------------|-------------|----------
-`--history-panel` | Mixin applied to the element | `{}`
-`--arc-font-headline` | Mixin applied to the header | `{}`
-`--arc-font-subhead` | Mixin applied to the subheader | `{}`
-`--history-panel-loader` | Mixin applied to the loader element | `{}`
-`--history-panel-list` | Mixin apllied to the list element | `{}`
-`--history-panel-toast-revert-button` | Mixin appllied to the rever button in the data delete confirmation toast | `{}`
-`--warning-primary-color` | Main color of the warning messages | `#FF7043`
-`--warning-contrast-color` | Contrast color for the warning color | `#fff`
-`--error-toast` | Mixin applied to the error toast | `{}`
-`--empty-info` | Mixin applied to the label rendered when no data is available. | `{}`
-`--history-panel-fab-background-color` | Color of the fab button in the details panel | `--primary-color`
-`--history-panel-bottom-sheet` | Mixin apllied to the `<bottom-sheet>` elements | `{}`
-
-@group UI Elements
-@element history-panel
-@demo demo/index.html
--->
 <dom-module id="history-panel">
   <template>
     <style>
@@ -78,6 +42,10 @@ Custom property | Description | Default
       position: relative;
       @apply --layout-vertical;
       @apply --history-panel;
+    }
+
+    [hidden] {
+      display: none !important;
     }
 
     .header {
@@ -94,16 +62,8 @@ Custom property | Description | Default
       @apply --arc-font-subhead;
     }
 
-    paper-button>iron-icon {
-      margin-left: 12px;
-    }
-
     paper-listbox iron-icon {
       color: rgba(0, 0, 0, 0.54);
-    }
-
-    [hidden] {
-      display: none !important;
     }
 
     paper-progress {
@@ -118,12 +78,6 @@ Custom property | Description | Default
     .revert-button {
       height: 38px;
       @apply --history-panel-toast-revert-button;
-    }
-
-    .secondary-action {
-      color: var(--primary-color);
-      height: 36px;
-      font-size: 14px;
     }
 
     #dataClearDialog {
@@ -147,10 +101,6 @@ Custom property | Description | Default
       @apply --empty-info;
     }
 
-    .command {
-      margin: 0 8px;
-    }
-
     #requestDetailsContainer,
     #requestEditorContainer {
       min-width: 40%;
@@ -163,14 +113,7 @@ Custom property | Description | Default
       position: absolute;
       right: 16px;
       top: -28px;
-    }
-
-    #requestDetailsContainer paper-fab {
       --paper-fab-background: var(--history-panel-fab-background-color, var(--primary-color));
-    }
-
-    tutorial-toast {
-      position: absolute;
     }
 
     .selection-options {
@@ -242,6 +185,7 @@ Custom property | Description | Default
       hidden$="[[listHidden]]"
       requests="[[requests]]"
       list-type="[[listType]]"
+      has-two-lines="[[_hasTwoLines]]"
       selected-items="{{selectedItems}}"
       on-list-items-threshold="loadNext"
       on-list-item-details="_onDetails"></history-panel-list>
@@ -286,6 +230,25 @@ Custom property | Description | Default
   <script>
   /**
    * History panel screen for Advanced REST Client.
+   *
+   * ### Styling
+   * `<history-panel>` provides the following custom properties and mixins for styling:
+   *
+   * Custom property | Description | Default
+   * ----------------|-------------|----------
+   * `--history-panel` | Mixin applied to the element | `{}`
+   * `--arc-font-headline` | Mixin applied to the header | `{}`
+   * `--arc-font-subhead` | Mixin applied to the subheader | `{}`
+   * `--history-panel-loader` | Mixin applied to the loader element | `{}`
+   * `--history-panel-list` | Mixin apllied to the list element | `{}`
+   * `--history-panel-toast-revert-button` | Mixin appllied to the rever button | `{}`
+   * `--warning-primary-color` | Main color of the warning messages | `#FF7043`
+   * `--warning-contrast-color` | Contrast color for the warning color | `#fff`
+   * `--error-toast` | Mixin applied to the error toast | `{}`
+   * `--empty-info` | Mixin applied to the label rendered when no data is available. | `{}`
+   * `--history-panel-fab-background-color` | Bg color of fab button | `--primary-color`
+   * `--history-panel-bottom-sheet` | Mixin apllied to the `<bottom-sheet>` elements | `{}`
+   *
    * @polymer
    * @customElement
    * @memberof UiElements
@@ -320,8 +283,17 @@ Custom property | Description | Default
          * @type {Array<Object>}
          */
         selectedItems: Array,
+        /**
+         * Computed value, true when the user made a selection on the list.
+         */
         hasSelection: {type: Boolean, computed: '_computeHasSelection(selectedItems.length)'},
+        /**
+         * When true the editor panel is rendered
+         */
         editorOpened: Boolean,
+        /**
+         * When true the details panel is rendered
+         */
         detailsOpened: Boolean
       };
     }
@@ -469,7 +441,9 @@ Custom property | Description | Default
         this._handleError(cause);
       });
     }
-
+    /**
+     * Forces selection menu to close.
+     */
     _closeSelectionMenu() {
       const menu = this.shadowRoot.querySelector('#historyListMenu');
       if (!menu) {
@@ -482,31 +456,46 @@ Custom property | Description | Default
       }
       options.selected = -1;
     }
-
+    /**
+     * Calles `_exportItems()` with default destination (`file`)
+     */
     _exportSelected() {
       this._exportItems('file');
     }
-
+    /**
+     * Calles `_exportItems()` with destination set to `drive`
+     */
     _exportSelectedDrive() {
       this._exportItems('drive');
     }
-
+    /**
+     * Forces main menu to close.
+     */
     _closeMainMenu() {
       this.$.mainMenu.opened = false;
       this.$.mainMenuOptions.selected = -1;
     }
-
-    // Menu item handler to export all project data to Drive
+    /**
+     * Menu handler to export all project data to Drive
+     */
     _onExportAllDrive() {
       this._closeMainMenu();
       this._exportAll('drive');
     }
-    // Menu item handler to export all project data to file
+    /**
+     * Menu handler to export all project data to file
+     */
     _onExportAll() {
       this._closeMainMenu();
       this._exportAll('file');
     }
-    // Menu item handler to export all project data
+    /**
+     * Requests application to export all data to `destination`.
+     * This works with `arc-data-export` element.
+     *
+     * @param {String} destination One of the supporting destinations
+     * in `arc-data-export`.
+     */
     _exportAll(destination) {
       const e = new CustomEvent('export-data', {
         cancelable: true,
@@ -641,7 +630,7 @@ Custom property | Description | Default
      * Opens request details editor in place of the request details applet.
      */
     _editRequestDetails() {
-      const request = Object.assign({}, this.$.requestDetails.request);
+      const request = Object.assign({}, this.$.requeexport-datastDetails.request);
       this._resetHistoryObject(request);
       this.$.requestEditor.request = request;
       this.$.requestDetails.request = undefined;
@@ -699,11 +688,6 @@ Custom property | Description | Default
      * Dispatched when the user requested to clear the data.
      * @event destroy-model
      * @param {Array<String>} models
-     */
-    /**
-     * Dispatched to ask the data model for query data.
-     * @event request-query
-     * @param {String} q
      */
     /**
      * Dispatched to export history data to file / drive

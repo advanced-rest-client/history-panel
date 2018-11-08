@@ -9,6 +9,7 @@
  */
 
 /// <reference path="../polymer/types/polymer-element.d.ts" />
+/// <reference path="../polymer/types/lib/utils/render-status.d.ts" />
 /// <reference path="../iron-flex-layout/iron-flex-layout.d.ts" />
 /// <reference path="../paper-button/paper-button.d.ts" />
 /// <reference path="../iron-icon/iron-icon.d.ts" />
@@ -26,25 +27,13 @@
 /// <reference path="../requests-list-mixin/requests-list-mixin.d.ts" />
 /// <reference path="../paper-fab/paper-fab.d.ts" />
 /// <reference path="../paper-input/paper-input.d.ts" />
+/// <reference path="../history-list-mixin/history-list-mixin.d.ts" />
 /// <reference path="history-panel-list.d.ts" />
 
 declare namespace UiElements {
 
   /**
-   * ARC's requests history view
-   *
-   * Contains complete UI to support saved requests view.
-   * It needs the following components to be present in the DOM to support full
-   * functionality:
-   *
-   * -   arc-data-export - to prepare export object
-   * -   chrome-file-export or any other file export element to save file to disk
-   *
-   * ### Example
-   *
-   * ```
-   * <history-panel></history-panel>
-   * ```
+   * History panel screen for Advanced REST Client.
    *
    * ### Styling
    * `<history-panel>` provides the following custom properties and mixins for styling:
@@ -56,44 +45,18 @@ declare namespace UiElements {
    * `--arc-font-subhead` | Mixin applied to the subheader | `{}`
    * `--history-panel-loader` | Mixin applied to the loader element | `{}`
    * `--history-panel-list` | Mixin apllied to the list element | `{}`
-   * `--history-panel-toast-revert-button` | Mixin appllied to the rever button in the data delete confirmation toast | `{}`
+   * `--history-panel-toast-revert-button` | Mixin appllied to the rever button | `{}`
    * `--warning-primary-color` | Main color of the warning messages | `#FF7043`
    * `--warning-contrast-color` | Contrast color for the warning color | `#fff`
    * `--error-toast` | Mixin applied to the error toast | `{}`
    * `--empty-info` | Mixin applied to the label rendered when no data is available. | `{}`
-   * `--history-panel-fab-background-color` | Color of the fab button in the details panel | `--primary-color`
+   * `--history-panel-fab-background-color` | Bg color of fab button | `--primary-color`
    * `--history-panel-bottom-sheet` | Mixin apllied to the `<bottom-sheet>` elements | `{}`
-   *
-   * History panel screen for Advanced REST Client.
    */
   class HistoryPanel extends
     ArcComponents.RequestsListMixin(
-    Object) {
-
-    /**
-     *  Returns a handler to the datastore instance
-     */
-    readonly _db: any;
-
-    /**
-     * True when the element is querying the database for the data.
-     */
-    readonly querying: boolean|null|undefined;
-
-    /**
-     * Database query options for pagination.
-     * Override this value to change the query options like limit of the results in one call.
-     *
-     * This is query options passed to the PouchDB `allDocs` function. Note that it will not
-     * set `include_docs` option. A conviniet shortcut is to set the the `includeDocs` property
-     * and the directive will be added automatically.
-     */
-    readonly queryOptions: object|null|undefined;
-
-    /**
-     * Computed value. True if query ended and there's no results.
-     */
-    readonly dataUnavailable: boolean|null|undefined;
+    ArcComponents.HistoryListMixin(
+    Object)) {
 
     /**
      * List of requests that has been recently removed
@@ -101,61 +64,31 @@ declare namespace UiElements {
     _latestDeleted: any[]|null|undefined;
 
     /**
-     * Current search query.
-     */
-    isSearch: boolean|null|undefined;
-
-    /**
      * Computed value, true if the requests lists is hidden.
      */
     readonly listHidden: boolean|null|undefined;
 
     /**
-     * Computed value. True when the query has been performed and no items
-     * has been returned. It is different from `listHidden` where less
-     * conditions has to be checked. It is set to true when it doesn't
-     * have items, is not loading and is search.
-     */
-    readonly searchListEmpty: boolean|null|undefined;
-
-    /**
      * Selected items list.
      */
     selectedItems: Array<object|null>|null;
+
+    /**
+     * Computed value, true when the user made a selection on the list.
+     */
     readonly hasSelection: boolean|null|undefined;
+
+    /**
+     * When true the editor panel is rendered
+     */
     editorOpened: boolean|null|undefined;
+
+    /**
+     * When true the details panel is rendered
+     */
     detailsOpened: boolean|null|undefined;
     connectedCallback(): void;
     disconnectedCallback(): void;
-
-    /**
-     * Handler for the `datastore-destroyed` custom event
-     */
-    _onDatabaseDestroy(e: any): void;
-    _resetHandler(): void;
-
-    /**
-     * Shortcut to `reset()` to be compatible with `history-menu` API.
-     */
-    refresh(): void;
-
-    /**
-     * Resets the state of the variables.
-     */
-    reset(): void;
-
-    /**
-     * Loads next page of results. It runs the task in a debouncer set
-     * to 10 miliseconds.
-     */
-    loadNext(): void;
-
-    /**
-     * Loads next page of results from the datastore.
-     * Pagination used here has been described in PouchDB pagination strategies
-     * document.
-     */
-    _loadPage(): Promise<any>|null;
 
     /**
      * Notifies the list that the resize event occurred.
@@ -165,29 +98,10 @@ declare namespace UiElements {
     notifyResize(): void;
 
     /**
-     * Appends array items to the `items` property. It should be used instead of
-     * direct manipulation of the `items` array.
-     *
-     * @param requests [description]
-     */
-    _appendItems(requests: any): void;
-
-    /**
      * Computes value of the `listHidden` property.
      * List is hidden when no requests are found and it is not searching.
      */
     _computeListHidden(hasRequests: Boolean|null, isSearch: Boolean|null): Boolean|null;
-
-    /**
-     * Computes value for the `searchListEmpty` property
-     */
-    _computeSearchListEmpty(hasRequests: any, loading: any, isSearch: any): any;
-
-    /**
-     * Computes value for the `dataUnavailable` proeprty
-     */
-    _computeDataUnavailable(hasRequests: any, loading: any, isSearch: any): any;
-    _handleError(cause: any): void;
 
     /**
      * Handler for navigate action from the list
@@ -219,25 +133,45 @@ declare namespace UiElements {
      * @returns A promise resolved when objects were restored
      */
     revertDeleted(): Promise<any>|null;
+
+    /**
+     * Forces selection menu to close.
+     */
     _closeSelectionMenu(): void;
+
+    /**
+     * Calles `_exportItems()` with default destination (`file`)
+     */
     _exportSelected(): void;
+
+    /**
+     * Calles `_exportItems()` with destination set to `drive`
+     */
     _exportSelectedDrive(): void;
+
+    /**
+     * Forces main menu to close.
+     */
     _closeMainMenu(): void;
 
     /**
-     * Menu item handler to export all project data to Drive
+     * Menu handler to export all project data to Drive
      */
     _onExportAllDrive(): void;
 
     /**
-     * Menu item handler to export all project data to file
+     * Menu handler to export all project data to file
      */
     _onExportAll(): void;
 
     /**
-     * Menu item handler to export all project data
+     * Requests application to export all data to `destination`.
+     * This works with `arc-data-export` element.
+     *
+     * @param destination One of the supporting destinations
+     * in `arc-data-export`.
      */
-    _exportAll(destination: any): void;
+    _exportAll(destination: String|null): void;
 
     /**
      * Dispatches the `export-project` event with relevant data.
@@ -254,21 +188,6 @@ declare namespace UiElements {
      */
     _loadRequestDetails(): void;
     _searchHandler(e: any): void;
-
-    /**
-     * Performs a query on a saved items. The query is performewd on two stages.
-     * First stage searches through the meta properties saved in the object's
-     * `_id` property (url, method). This query is fast and
-     * reports results almost immidietly. Second stage is to perform full text
-     * search on the items. This required building an index and then performing
-     * the search so it may take a long time in cases of lots of data stored
-     * in the datastore.
-     *
-     * @param query The query to performs. Pass empty stirng
-     * (or nothing) to reset quesy state.
-     * @returns Resolved promise when the query ends.
-     */
-    query(query: String|null): Promise<any>|null;
 
     /**
      * Handler for delete all menu option click.
@@ -289,7 +208,6 @@ declare namespace UiElements {
      * Opens request details editor in place of the request details applet.
      */
     _editRequestDetails(): void;
-    _resetHistoryObject(request: any): any;
     _resizeSheetContent(e: any): void;
     _cancelRequestEdit(): void;
 

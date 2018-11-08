@@ -1,4 +1,18 @@
+<!--
+@license
+Copyright 2018 The Advanced REST client authors <arc@mulesoft.com>
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+-->
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/utils/render-status.html">
 <link rel="import" href="../paper-item/paper-icon-item.html">
 <link rel="import" href="../paper-item/paper-item-body.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
@@ -39,6 +53,12 @@
       @apply --history-panel-list-method-label;
     }
 
+    .secondary-action {
+      color: var(--primary-color);
+      height: 36px;
+      font-size: 14px;
+    }
+
     :host([list-type="comfortable"]) .list-action-button {
       height: 32px;
     }
@@ -56,7 +76,7 @@
           <paper-icon-item on-click="_toggleSelection">
             <paper-checkbox slot="item-icon" checked="{{selected}}"></paper-checkbox>
             <http-method-label method="[[item.method]]"></http-method-label>
-            <paper-item-body two-line$="[[_hasTwoLines]]">
+            <paper-item-body two-line$="[[hasTwoLines]]">
               <div class="url">[[item.url]]</div>
               <div secondary>[[item.timeLabel]]</div>
               <paper-ripple></paper-ripple>
@@ -131,7 +151,9 @@
         selectedItems: {
           type: Array,
           notify: true
-        }
+        },
+
+        hasTwoLines: Boolean
       };
     }
 
@@ -158,8 +180,19 @@
       this.$.list.notifyResize();
     }
 
-    _updateListStyles() {
-      this.updateStyles({});
+    _updateListStyles(type) {
+      let size;
+      switch (type) {
+        case 'comfortable': size = 48; break;
+        case 'compact': size = 36; break;
+        default: size = 72; break;
+      }
+      this.updateStyles({
+        '--paper-item-icon-width': `${size}px`
+      });
+      if (this.notifyResize) {
+        this.notifyResize();
+      }
       this.notifyResize();
     }
 
