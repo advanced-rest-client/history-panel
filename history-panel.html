@@ -501,9 +501,12 @@ the License.
         composed: true,
         bubbles: true,
         detail: {
-          type: 'history',
+          type: 'arc-export',
           destination,
-          file: 'arc-history-export.json'
+          file: 'arc-history-export.json',
+          data: {
+            history: true
+          }
         }
       });
       this.dispatchEvent(e);
@@ -533,11 +536,11 @@ the License.
         composed: true,
         bubbles: true,
         detail: {
-          type: 'items-export',
+          type: 'arc-export',
           destination,
           file: 'arc-history-export.json',
           kind: 'ARC#HistoryExport',
-          items: {
+          data: {
             history: data
           }
         }
