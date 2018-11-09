@@ -134,7 +134,7 @@ the License.
           <paper-listbox slot="dropdown-content" id="mainMenuOptions">
             <paper-icon-item on-click="_onExportAll">
               <iron-icon icon="arc:archive" slot="item-icon"></iron-icon>
-              Export all
+              Export all to file
             </paper-icon-item>
             <paper-icon-item on-click="_onExportAllDrive" data-action="export-selected-drive">
               <iron-icon icon="arc:drive-color" slot="item-icon"></iron-icon>
@@ -632,7 +632,7 @@ the License.
      * Opens request details editor in place of the request details applet.
      */
     _editRequestDetails() {
-      const request = Object.assign({}, this.$.requeexport-datastDetails.request);
+      const request = Object.assign({}, this.$.requestDetails.request);
       this._resetHistoryObject(request);
       this.$.requestEditor.request = request;
       this.$.requestDetails.request = undefined;
