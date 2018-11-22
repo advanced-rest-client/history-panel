@@ -29,6 +29,7 @@ the License.
     :host {
       display: block;
       position: relative;
+      @apply --arc-font-body1;
       @apply --layout-flex;
       @apply --layout-vertical;
       @apply --history-panel-list;
@@ -54,7 +55,7 @@ the License.
     }
 
     .secondary-action {
-      color: var(--primary-color);
+      color: var(--history-panel-list-secondary-action-color, var(--primary-color));
       height: 36px;
       font-size: 14px;
     }
@@ -104,6 +105,10 @@ the License.
    * Custom property | Description | Default
    * ----------------|-------------|----------
    * `--history-panel-list` | Mixin applied to this elment | `{}`
+   * `--history-panel-list-list` | Mixin applied to the list container | `{}`
+   * `--history-panel-list-secondary-action-color` | Color of the secondary action button | `--primary-color`
+   * `--history-panel-list-url-label` | Mixin applied to the URL label | `{}`
+   * `--history-panel-list-method-label` | Mixin applied to the method label | `{}`
    *
    * @customElement
    * @polymer

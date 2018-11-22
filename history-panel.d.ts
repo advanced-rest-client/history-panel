@@ -52,6 +52,14 @@ declare namespace UiElements {
    * `--empty-info` | Mixin applied to the label rendered when no data is available. | `{}`
    * `--history-panel-fab-background-color` | Bg color of fab button | `--primary-color`
    * `--history-panel-bottom-sheet` | Mixin apllied to the `<bottom-sheet>` elements | `{}`
+   * `--context-menu-item-color` | Color of the dropdown menu items | ``
+   * `--context-menu-item-background-color` | Background olor of the dropdown menu items | ``
+   * `--context-menu-item-color-hover` | Color of the dropdown menu items when hovering | ``
+   * `--context-menu-item-background-color-hover` | Background olor of the dropdown menu items when hovering | ``
+   * `--bottom-sheet-width` | Width of the `<bottom-sheet>` element | `100%`
+   * `--bottom-sheet-max-width` | Max width of the `<bottom-sheet>` element | `700px`
+   * `--history-panel-bottom-sheet-right` | Right position of the `<bottom-sheet>` element | `40px`
+   * `--history-panel-bottom-sheet-left` | Left position of the `<bottom-sheet>` element | `auto`
    */
   class HistoryPanel extends
     ArcComponents.RequestsListMixin(
