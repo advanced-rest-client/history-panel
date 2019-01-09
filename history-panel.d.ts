@@ -52,6 +52,14 @@ declare namespace UiElements {
    * `--empty-info` | Mixin applied to the label rendered when no data is available. | `{}`
    * `--history-panel-fab-background-color` | Bg color of fab button | `--primary-color`
    * `--history-panel-bottom-sheet` | Mixin apllied to the `<bottom-sheet>` elements | `{}`
+   * `--context-menu-item-color` | Color of the dropdown menu items | ``
+   * `--context-menu-item-background-color` | Background olor of the dropdown menu items | ``
+   * `--context-menu-item-color-hover` | Color of the dropdown menu items when hovering | ``
+   * `--context-menu-item-background-color-hover` | Background olor of the dropdown menu items when hovering | ``
+   * `--bottom-sheet-width` | Width of the `<bottom-sheet>` element | `100%`
+   * `--bottom-sheet-max-width` | Max width of the `<bottom-sheet>` element | `700px`
+   * `--history-panel-bottom-sheet-right` | Right position of the `<bottom-sheet>` element | `40px`
+   * `--history-panel-bottom-sheet-left` | Left position of the `<bottom-sheet>` element | `auto`
    */
   class HistoryPanel extends
     ArcComponents.RequestsListMixin(
@@ -87,6 +95,11 @@ declare namespace UiElements {
      * When true the details panel is rendered
      */
     detailsOpened: boolean|null|undefined;
+
+    /**
+     * Passed to the request editor
+     */
+    noAutoProjects: boolean|null|undefined;
     connectedCallback(): void;
     disconnectedCallback(): void;
 
@@ -127,12 +140,27 @@ declare namespace UiElements {
     _delete(deleted: Array<object|null>|null): any;
 
     /**
+     * Dispatches `request-objects-deleted` event.
+     *
+     * @param deleted List of requests to delete.
+     */
+    _dispatchDelete(deleted: Array<object|null>|null): CustomEvent|null;
+
+    /**
      * Restores removed requests.
      * It does nothing if `_latestDeleted` is not set or empty.
      *
      * @returns A promise resolved when objects were restored
      */
     revertDeleted(): Promise<any>|null;
+
+    /**
+     * Dispatches `request-objects-undeleted` event.
+     *
+     * @param items List of deleted requests. The list
+     * contains objects with `_id` and `_rev` properties.
+     */
+    _dispatchUndelete(items: Array<object|null>|null): CustomEvent|null;
 
     /**
      * Forces selection menu to close.
@@ -174,6 +202,13 @@ declare namespace UiElements {
     _exportAll(destination: String|null): void;
 
     /**
+     * Dispatches `export-data` event and returns it.
+     *
+     * @param destination A place where export the data (file, drive)
+     */
+    _dispatchExportData(destination: String|null, requests: Array<object|null>|Boolean|null): CustomEvent|null;
+
+    /**
      * Dispatches the `export-project` event with relevant data.
      */
     _exportItems(destination: String|null): void;
@@ -203,6 +238,11 @@ declare namespace UiElements {
      * Removes all data from the datastore and then fires
      */
     _clearDatastore(): void;
+
+    /**
+     * Dispatches `destroy-model` with `saved` on the models list.
+     */
+    _dispatchDeleteModel(): CustomEvent|null;
 
     /**
      * Opens request details editor in place of the request details applet.
