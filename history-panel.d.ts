@@ -95,6 +95,11 @@ declare namespace UiElements {
      * When true the details panel is rendered
      */
     detailsOpened: boolean|null|undefined;
+
+    /**
+     * Passed to the request editor
+     */
+    noAutoProjects: boolean|null|undefined;
     connectedCallback(): void;
     disconnectedCallback(): void;
 
@@ -135,12 +140,27 @@ declare namespace UiElements {
     _delete(deleted: Array<object|null>|null): any;
 
     /**
+     * Dispatches `request-objects-deleted` event.
+     *
+     * @param deleted List of requests to delete.
+     */
+    _dispatchDelete(deleted: Array<object|null>|null): CustomEvent|null;
+
+    /**
      * Restores removed requests.
      * It does nothing if `_latestDeleted` is not set or empty.
      *
      * @returns A promise resolved when objects were restored
      */
     revertDeleted(): Promise<any>|null;
+
+    /**
+     * Dispatches `request-objects-undeleted` event.
+     *
+     * @param items List of deleted requests. The list
+     * contains objects with `_id` and `_rev` properties.
+     */
+    _dispatchUndelete(items: Array<object|null>|null): CustomEvent|null;
 
     /**
      * Forces selection menu to close.
@@ -182,6 +202,13 @@ declare namespace UiElements {
     _exportAll(destination: String|null): void;
 
     /**
+     * Dispatches `export-data` event and returns it.
+     *
+     * @param destination A place where export the data (file, drive)
+     */
+    _dispatchExportData(destination: String|null, requests: Array<object|null>|Boolean|null): CustomEvent|null;
+
+    /**
      * Dispatches the `export-project` event with relevant data.
      */
     _exportItems(destination: String|null): void;
@@ -211,6 +238,11 @@ declare namespace UiElements {
      * Removes all data from the datastore and then fires
      */
     _clearDatastore(): void;
+
+    /**
+     * Dispatches `destroy-model` with `saved` on the models list.
+     */
+    _dispatchDeleteModel(): CustomEvent|null;
 
     /**
      * Opens request details editor in place of the request details applet.
