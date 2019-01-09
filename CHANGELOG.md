@@ -1,3 +1,13 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/advanced-rest-client/history-panel/compare/0.1.13...2.0.0) (2019-01-09)
+
+
+### Fix
+
+* Fixing `type` property  value for `navigate` event. ([3a1855eee3749bcdb8d3cfbb0d03ef457b709c1c](https://github.com/advanced-rest-client/history-panel/commit/3a1855eee3749bcdb8d3cfbb0d03ef457b709c1c))
+
+
+
 <a name="2.0.0-preview"></a>
 # [2.0.0-preview](https://github.com/advanced-rest-client/history-panel/compare/0.1.13...2.0.0-preview) (2018-11-08)
 
