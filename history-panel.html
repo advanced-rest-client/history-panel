@@ -40,6 +40,7 @@ the License.
     :host {
       display: block;
       position: relative;
+      @apply --arc-font-body1;
       @apply --layout-vertical;
       @apply --history-panel;
     }
@@ -63,7 +64,22 @@ the License.
     }
 
     paper-listbox iron-icon {
-      color: rgba(0, 0, 0, 0.54);
+      color: var(--context-menu-item-color);
+    }
+
+    paper-listbox paper-icon-item {
+      color: var(--context-menu-item-color);
+      background-color: var(--context-menu-item-background-color);
+      cursor: pointer;
+    }
+
+    paper-listbox paper-icon-item:hover {
+      color: var(--context-menu-item-color-hover);
+      background-color: var(--context-menu-item-background-color-hover);
+    }
+
+    paper-listbox paper-icon-item:hover iron-icon {
+      color: var(--context-menu-item-color-hover);
     }
 
     paper-progress {
@@ -86,8 +102,8 @@ the License.
     }
 
     #dataClearDialog paper-button {
-      color: #fff;
-      background-color: transparent;
+      color: var(--warning-dialog-button-color, #fff);
+      background-color: var(--warning-dialog-button-background-color, transparent);
     }
 
     .error-toast {
@@ -103,9 +119,10 @@ the License.
 
     #requestDetailsContainer,
     #requestEditorContainer {
-      min-width: 40%;
-      max-width: 60%;
-      left: 20%;
+      width: var(--bottom-sheet-width, 100%);
+      max-width: var(--bottom-sheet-max-width, 700px);
+      right: var(--history-panel-bottom-sheet-right, 40px);
+      left: var(--history-panel-bottom-sheet-left, auto);
       @apply --history-panel-bottom-sheet;
     }
 
@@ -134,7 +151,7 @@ the License.
           <paper-listbox slot="dropdown-content" id="mainMenuOptions">
             <paper-icon-item on-click="_onExportAll">
               <iron-icon icon="arc:archive" slot="item-icon"></iron-icon>
-              Export all
+              Export all to file
             </paper-icon-item>
             <paper-icon-item on-click="_onExportAllDrive" data-action="export-selected-drive">
               <iron-icon icon="arc:drive-color" slot="item-icon"></iron-icon>
@@ -203,8 +220,9 @@ the License.
       <saved-request-editor
         id="requestEditor"
         is-history
+        no-auto-projects="[[noAutoProjects]]"
         on-cancel-request-edit="_cancelRequestEdit"
-        on-save-request="_saveRequestEdit"></saved-request-detail>
+        on-save-request="_saveRequestEdit"></saved-request-editor>
     </bottom-sheet>
 
     <paper-toast id="noModel" class="error-toast" text="Model not found. Please, report an issue."></paper-toast>
@@ -248,6 +266,14 @@ the License.
    * `--empty-info` | Mixin applied to the label rendered when no data is available. | `{}`
    * `--history-panel-fab-background-color` | Bg color of fab button | `--primary-color`
    * `--history-panel-bottom-sheet` | Mixin apllied to the `<bottom-sheet>` elements | `{}`
+   * `--context-menu-item-color` | Color of the dropdown menu items | ``
+   * `--context-menu-item-background-color` | Background olor of the dropdown menu items | ``
+   * `--context-menu-item-color-hover` | Color of the dropdown menu items when hovering | ``
+   * `--context-menu-item-background-color-hover` | Background olor of the dropdown menu items when hovering | ``
+   * `--bottom-sheet-width` | Width of the `<bottom-sheet>` element | `100%`
+   * `--bottom-sheet-max-width` | Max width of the `<bottom-sheet>` element | `700px`
+   * `--history-panel-bottom-sheet-right` | Right position of the `<bottom-sheet>` element | `40px`
+   * `--history-panel-bottom-sheet-left` | Left position of the `<bottom-sheet>` element | `auto`
    *
    * @polymer
    * @customElement
@@ -293,7 +319,11 @@ the License.
         /**
          * When true the details panel is rendered
          */
-        detailsOpened: Boolean
+        detailsOpened: Boolean,
+        /**
+         * Passed to the request editor
+         */
+        noAutoProjects: Boolean
       };
     }
 
@@ -353,6 +383,7 @@ the License.
     }
     // Handles items delete event.
     _deleteSelected() {
+      this._closeSelectionMenu();
       const data = this.selectedItems;
       if (!data.length) {
         return;
@@ -372,19 +403,10 @@ the License.
      * @return {[type]} [description]
      */
     _delete(deleted) {
-      const e = new CustomEvent('request-objects-deleted', {
-        bubbles: true,
-        composed: true,
-        cancelable: true,
-        detail: {
-          type: 'history',
-          items: deleted.map((item) => item._id)
-        }
-      });
-      this.dispatchEvent(e);
+      const e = this._dispatchDelete(deleted);
       if (!e.defaultPrevented) {
         this.$.noModel.opened = true;
-        return;
+        return Promise.reject(new Error('Model not found'));
       }
       return e.detail.result
       .then((updated) => {
@@ -409,6 +431,24 @@ the License.
       });
     }
     /**
+     * Dispatches `request-objects-deleted` event.
+     * @param {Array<Object>} deleted List of requests to delete.
+     * @return {CustomEvent}
+     */
+    _dispatchDelete(deleted) {
+      const e = new CustomEvent('request-objects-deleted', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        detail: {
+          type: this.type,
+          items: deleted.map((item) => item._id)
+        }
+      });
+      this.dispatchEvent(e);
+      return e;
+    }
+    /**
      * Restores removed requests.
      * It does nothing if `_latestDeleted` is not set or empty.
      *
@@ -420,16 +460,7 @@ the License.
       if (!deleted || !deleted.length) {
         return Promise.resolve();
       }
-      const e = new CustomEvent('request-objects-undeleted', {
-        bubbles: true,
-        composed: true,
-        cancelable: true,
-        detail: {
-          type: 'history',
-          items: deleted
-        }
-      });
-      this.dispatchEvent(e);
+      const e = this._dispatchUndelete(deleted);
       if (!e.defaultPrevented) {
         this.$.noModel.opened = true;
         return Promise.reject(new Error('Model not found'));
@@ -441,11 +472,31 @@ the License.
       });
     }
     /**
+     * Dispatches `request-objects-undeleted` event.
+     * @param {Array<Object>} items List of deleted requests. The list
+     * contains objects with `_id` and `_rev` properties.
+     * @return {CustomEvent}
+     */
+    _dispatchUndelete(items) {
+      const e = new CustomEvent('request-objects-undeleted', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        detail: {
+          type: this.type,
+          items
+        }
+      });
+      this.dispatchEvent(e);
+      return e;
+    }
+    /**
      * Forces selection menu to close.
      */
     _closeSelectionMenu() {
       const menu = this.shadowRoot.querySelector('#historyListMenu');
       if (!menu) {
+        console.warn('Menu not found in the DOM');
         return;
       }
       menu.opened = false;
@@ -496,17 +547,7 @@ the License.
      * in `arc-data-export`.
      */
     _exportAll(destination) {
-      const e = new CustomEvent('export-data', {
-        cancelable: true,
-        composed: true,
-        bubbles: true,
-        detail: {
-          type: 'history',
-          destination,
-          file: 'arc-history-export.json'
-        }
-      });
-      this.dispatchEvent(e);
+      const e = this._dispatchExportData(destination, true);
       if (!e.defaultPrevented) {
         this.$.noExport.opened = true;
         return;
@@ -516,6 +557,30 @@ the License.
           this.$.driveSaved.opened = true;
         }
       });
+    }
+    /**
+     * Dispatches `export-data` event and returns it.
+     * @param {String} destination A place where export the data (file, drive)
+     * @param {Array<Object>|Boolean} requests
+     * @return {CustomEvent}
+     */
+    _dispatchExportData(destination, requests) {
+      const e = new CustomEvent('export-data', {
+        cancelable: true,
+        composed: true,
+        bubbles: true,
+        detail: {
+          type: 'arc-export',
+          destination,
+          file: 'arc-history-export.json',
+          kind: 'ARC#HistoryExport',
+          data: {
+            requests
+          }
+        }
+      });
+      this.dispatchEvent(e);
+      return e;
     }
     /**
      * Dispatches the `export-project` event with relevant data.
@@ -528,21 +593,7 @@ the License.
       if (!data.length) {
         return;
       }
-      const e = new CustomEvent('export-data', {
-        cancelable: true,
-        composed: true,
-        bubbles: true,
-        detail: {
-          type: 'items-export',
-          destination,
-          file: 'arc-history-export.json',
-          kind: 'ARC#HistoryExport',
-          items: {
-            history: data
-          }
-        }
-      });
-      this.dispatchEvent(e);
+      const e = this._dispatchExportData(destination, data);
       if (!e.defaultPrevented) {
         this.$.noExport.opened = true;
         return;
@@ -604,15 +655,7 @@ the License.
      * Removes all data from the datastore and then fires
      */
     _clearDatastore() {
-      const e = new CustomEvent('destroy-model', {
-        bubbles: true,
-        composed: true,
-        cancelable: true,
-        detail: {
-          models: ['history']
-        }
-      });
-      this.dispatchEvent(e);
+      const e = this._dispatchDeleteModel();
       if (!e.detail.result) {
         this.$.dataClearErrorToast.opened = true;
         this._handleError(new Error('Model not found.'));
@@ -624,12 +667,27 @@ the License.
         this._handleError(cause);
       });
     }
-
+    /**
+     * Dispatches `destroy-model` with `saved` on the models list.
+     * @return {CustomEvent}
+     */
+    _dispatchDeleteModel() {
+      const e = new CustomEvent('destroy-model', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        detail: {
+          models: ['history']
+        }
+      });
+      this.dispatchEvent(e);
+      return e;
+    }
     /**
      * Opens request details editor in place of the request details applet.
      */
     _editRequestDetails() {
-      const request = Object.assign({}, this.$.requeexport-datastDetails.request);
+      const request = Object.assign({}, this.$.requestDetails.request);
       this._resetHistoryObject(request);
       this.$.requestEditor.request = request;
       this.$.requestDetails.request = undefined;

@@ -33,6 +33,10 @@ declare namespace ApiElements {
    * Custom property | Description | Default
    * ----------------|-------------|----------
    * `--history-panel-list` | Mixin applied to this elment | `{}`
+   * `--history-panel-list-list` | Mixin applied to the list container | `{}`
+   * `--history-panel-list-secondary-action-color` | Color of the secondary action button | `--primary-color`
+   * `--history-panel-list-url-label` | Mixin applied to the URL label | `{}`
+   * `--history-panel-list-method-label` | Mixin applied to the method label | `{}`
    */
   class HistoryPanelList extends Polymer.Element {
     requests: any[]|null|undefined;
