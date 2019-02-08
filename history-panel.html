@@ -32,6 +32,7 @@ the License.
 <link rel="import" href="../paper-fab/paper-fab.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../history-list-mixin/history-list-mixin.html">
+<link rel="import" href="../export-options/export-options.html">
 <link rel="import" href="history-panel-list.html">
 
 <dom-module id="history-panel">
@@ -63,22 +64,22 @@ the License.
       @apply --arc-font-subhead;
     }
 
-    paper-listbox iron-icon {
+    .menu-item iron-icon {
       color: var(--context-menu-item-color);
     }
 
-    paper-listbox paper-icon-item {
+    .menu-item {
       color: var(--context-menu-item-color);
       background-color: var(--context-menu-item-background-color);
       cursor: pointer;
     }
 
-    paper-listbox paper-icon-item:hover {
+    .menu-item:hover {
       color: var(--context-menu-item-color-hover);
       background-color: var(--context-menu-item-background-color-hover);
     }
 
-    paper-listbox paper-icon-item:hover iron-icon {
+    .menu-item:hover iron-icon {
       color: var(--context-menu-item-color-hover);
     }
 
@@ -118,7 +119,8 @@ the License.
     }
 
     #requestDetailsContainer,
-    #requestEditorContainer {
+    #requestEditorContainer,
+    #exportOptionsContainer {
       width: var(--bottom-sheet-width, 100%);
       max-width: var(--bottom-sheet-max-width, 700px);
       right: var(--history-panel-bottom-sheet-right, 40px);
@@ -149,18 +151,8 @@ the License.
         <paper-menu-button dynamic-align id="mainMenu">
           <paper-icon-button icon="arc:more-vert" slot="dropdown-trigger"></paper-icon-button>
           <paper-listbox slot="dropdown-content" id="mainMenuOptions">
-            <paper-icon-item on-click="_onExportAll">
-              <iron-icon icon="arc:archive" slot="item-icon"></iron-icon>
-              Export all to file
-            </paper-icon-item>
-            <paper-icon-item on-click="_onExportAllDrive" data-action="export-selected-drive">
-              <iron-icon icon="arc:drive-color" slot="item-icon"></iron-icon>
-              Export all to Google Drive
-            </paper-icon-item>
-            <paper-icon-item on-click="_deleteAllClick">
-              <iron-icon icon="arc:delete" slot="item-icon"></iron-icon>
-              Delete all
-            </paper-icon-item>
+            <paper-icon-item class="menu-item" on-click="openExportAll"><iron-icon icon="arc:export-variant" slot="item-icon"></iron-icon>Export all</paper-icon-item>
+            <paper-icon-item class="menu-item" on-click="_deleteAllClick"><iron-icon icon="arc:delete" slot="item-icon"></iron-icon>Delete all</paper-icon-item>
           </paper-listbox>
         </paper-menu-button>
       </div>
@@ -179,15 +171,8 @@ the License.
         <paper-menu-button dynamic-align id="historyListMenu">
           <paper-icon-button icon="arc:more-vert" slot="dropdown-trigger"></paper-icon-button>
           <paper-listbox slot="dropdown-content" id="historyListMenuOptions">
-            <paper-icon-item on-click="_exportSelected" data-action="export-selected-file">
-              <iron-icon icon="arc:archive" slot="item-icon"></iron-icon>
-              Save selected to file
-            </paper-icon-item>
-            <paper-icon-item on-click="_exportSelectedDrive" data-action="export-selected-drive">
-              <iron-icon icon="arc:drive-color" slot="item-icon"></iron-icon>
-              Save selected to Google Drive
-            </paper-icon-item>
-            <paper-icon-item data-action="delete-all" on-click="_deleteSelected">
+            <paper-icon-item class="menu-item" on-click="_onExportSelected"><iron-icon icon="arc:export-variant" slot="item-icon"></iron-icon>Export selected</paper-icon-item>
+            <paper-icon-item class="menu-item" data-action="delete-all" on-click="_deleteSelected">
               <iron-icon icon="arc:delete" slot="item-icon"></iron-icon>
               Delete selected
             </paper-icon-item>
@@ -201,7 +186,7 @@ the License.
     <history-panel-list
       hidden$="[[listHidden]]"
       requests="[[requests]]"
-      list-type="[[listType]]"
+      list-type$="[[listType]]"
       has-two-lines="[[_hasTwoLines]]"
       selected-items="{{selectedItems}}"
       on-list-items-threshold="loadNext"
@@ -225,6 +210,10 @@ the License.
         on-save-request="_saveRequestEdit"></saved-request-editor>
     </bottom-sheet>
 
+    <bottom-sheet id="exportOptionsContainer" opened="{{_exportOptionsOpened}}" on-iron-overlay-opened="_resizeSheetContent">
+      <export-options file="{{_exportOptions.file}}" provider="{{_exportOptions.provider}}" provider-options="{{_exportOptions.providerOptions}}" on-accept="_acceptExportOptions" on-cancel="_cancelExportOptions"></export-options>
+    </bottom-sheet>
+
     <paper-toast id="noModel" class="error-toast" text="Model not found. Please, report an issue."></paper-toast>
     <paper-toast id="errorToast" class="error-toast" duration="5000"></paper-toast>
     <paper-toast id="revertError" class="error-toast" text="Unable to revert changes. Please, report an issue."></paper-toast>
@@ -240,6 +229,7 @@ the License.
       <p>This will remove all data from the data store. Without option to restore it.</p>
       <p>Maybe you should create a backup first?</p>
       <div class="buttons">
+        <paper-button on-click="_exportAllFile">Create backup file</paper-button>
         <paper-button dialog-dismiss autofocus>Cancel</paper-button>
         <paper-button dialog-confirm class="action-button">Destroy</paper-button>
       </div>
@@ -323,7 +313,23 @@ the License.
         /**
          * Passed to the request editor
          */
-        noAutoProjects: Boolean
+        noAutoProjects: Boolean,
+        /**
+         * Indicates that the export options panel is currently rendered.
+         */
+        _exportOptionsOpened: Boolean,
+        _exportOptions: {
+          type: Object,
+          value: function() {
+            return {
+              file: this._generateFileName(),
+              provider: 'file',
+              providerOptions: {
+                parents: ['My Drive']
+              }
+            };
+          }
+        }
       };
     }
 
@@ -335,6 +341,7 @@ the License.
 
     connectedCallback() {
       super.connectedCallback();
+      this.type = 'history';
       this.addEventListener('navigate', this._navigateHandler);
       const input = this.shadowRoot.querySelector('paper-input[type="search"]');
       input.inputElement.addEventListener('search', this._searchHandler);
@@ -354,11 +361,7 @@ the License.
      */
     notifyResize() {
       const list = this.shadowRoot.querySelector('history-panel-list');
-      if (list) {
-        list.notifyResize();
-      } else {
-        console.warn('history-panel-list not in the DOM');
-      }
+      list.notifyResize();
     }
     /**
      * Computes value of the `listHidden` property.
@@ -381,7 +384,10 @@ the License.
         this.detailsOpened = false;
       }
     }
-    // Handles items delete event.
+    /**
+     * Handles items delete event from item click.
+     * @return {Promise}
+     */
     _deleteSelected() {
       this._closeSelectionMenu();
       const data = this.selectedItems;
@@ -390,7 +396,10 @@ the License.
       }
       return this._delete(data);
     }
-    // Deletes a request from the details panel.
+    /**
+     * Deletes a request from the details panel.
+     * @return {Promise}
+     */
     _deleteRequestDetails() {
       const data = [this.$.requestDetails.request];
       this.detailsOpened = false;
@@ -501,22 +510,7 @@ the License.
       }
       menu.opened = false;
       const options = this.shadowRoot.querySelector('#historyListMenuOptions');
-      if (!options) {
-        return;
-      }
       options.selected = -1;
-    }
-    /**
-     * Calles `_exportItems()` with default destination (`file`)
-     */
-    _exportSelected() {
-      this._exportItems('file');
-    }
-    /**
-     * Calles `_exportItems()` with destination set to `drive`
-     */
-    _exportSelectedDrive() {
-      this._exportItems('drive');
     }
     /**
      * Forces main menu to close.
@@ -526,83 +520,73 @@ the License.
       this.$.mainMenuOptions.selected = -1;
     }
     /**
-     * Menu handler to export all project data to Drive
+     * Toggles export options panel and sets export items to all currently loaded requests.
      */
-    _onExportAllDrive() {
+    openExportAll() {
       this._closeMainMenu();
-      this._exportAll('drive');
+      this._exportOptionsOpened = true;
+      this._exportItems = true;
+    }
+
+    _cancelExportOptions() {
+      this._exportOptionsOpened = false;
+      this._exportItems = undefined;
     }
     /**
-     * Menu handler to export all project data to file
+     * Creates export file for all items.
+     * @return {Promise} Result of calling `_doExportItems()`
      */
-    _onExportAll() {
-      this._closeMainMenu();
-      this._exportAll('file');
-    }
-    /**
-     * Requests application to export all data to `destination`.
-     * This works with `arc-data-export` element.
-     *
-     * @param {String} destination One of the supporting destinations
-     * in `arc-data-export`.
-     */
-    _exportAll(destination) {
-      const e = this._dispatchExportData(destination, true);
-      if (!e.defaultPrevented) {
-        this.$.noExport.opened = true;
-        return;
-      }
-      e.detail.result.then(() => {
-        if (destination === 'drive') {
-          this.$.driveSaved.opened = true;
-        }
-      });
-    }
-    /**
-     * Dispatches `export-data` event and returns it.
-     * @param {String} destination A place where export the data (file, drive)
-     * @param {Array<Object>|Boolean} requests
-     * @return {CustomEvent}
-     */
-    _dispatchExportData(destination, requests) {
-      const e = new CustomEvent('export-data', {
-        cancelable: true,
-        composed: true,
-        bubbles: true,
-        detail: {
-          type: 'arc-export',
-          destination,
-          file: 'arc-history-export.json',
+    _exportAllFile() {
+      const detail = {
+        options: {
+          file: this._generateFileName(),
           kind: 'ARC#HistoryExport',
-          data: {
-            requests
-          }
+          provider: 'file'
         }
-      });
-      this.dispatchEvent(e);
-      return e;
+      };
+      return this._doExportItems(true, detail);
     }
     /**
-     * Dispatches the `export-project` event with relevant data.
-     *
-     * @param {String} destination
+     * Handler for `accept` event dispatched by export options element.
+     * @param {CustomEvent} e
+     * @return {Promise} Result of calling `_doExportItems()`
      */
-    _exportItems(destination) {
-      this._closeSelectionMenu();
-      const data = this.selectedItems.map((item) => this._resetHistoryObject(item));
-      if (!data.length) {
-        return;
-      }
-      const e = this._dispatchExportData(destination, data);
-      if (!e.defaultPrevented) {
-        this.$.noExport.opened = true;
-        return;
-      }
-      e.detail.result.then(() => {
-        if (destination === 'drive') {
+    _acceptExportOptions(e) {
+      this._exportOptionsOpened = false;
+      const detail = e.detail;
+      return this._doExportItems(this._exportItems, detail);
+    }
+
+    /**
+     * Calls `_dispatchExportData()` from requests lists mixin with
+     * prepared arguments
+     *
+     * @param {Array<Object>} requests List of request to export with the project.
+     * @param {String} detail Export configuration
+     * @return {Promise}
+     */
+    _doExportItems(requests, detail) {
+      detail.options.kind = 'ARC#HistoryExport';
+      const request = this._dispatchExportData(requests, detail);
+      return request.detail.result
+      .then(() => {
+        if (detail.options.provider === 'drive') {
+          // TODO: Render link to the folder
           this.$.driveSaved.opened = true;
         }
+        this._exportItems = undefined;
+      })
+      .catch((cause) => {
+        this.$.errorToast.text = cause.message;
+        this.$.errorToast.opened = true;
+        console.warn(cause);
       });
+    }
+
+    _onExportSelected() {
+      this._closeSelectionMenu();
+      this._exportOptionsOpened = true;
+      this._exportItems = this.selectedItems || [];
     }
     /**
      * Opens the request details applet with the request.
@@ -616,19 +600,14 @@ the License.
      * Fires `navigate` event for currently loaded in the details request.
      */
     _loadRequestDetails() {
-      this.dispatchEvent(new CustomEvent('navigate', {
-        bubbles: true,
-        composed: true,
-        cancelable: true,
-        detail: {
-          base: 'request',
-          type: this.type,
-          id: this.$.requestDetails.request._id
-        }
-      }));
+      this._openRequest(this.$.requestDetails.request._id);
       this.detailsOpened = false;
     }
-
+    /**
+     * Handler for the `search` event on the search input.
+     * Calls `query()` with input's value as argument.
+     * @param {Event} e
+     */
     _searchHandler(e) {
       const {value} = e.target;
       this.query(value);
@@ -694,10 +673,13 @@ the License.
       this.detailsOpened = false;
       this.editorOpened = true;
     }
-
+    /**
+     * Resizes `bottom-sheet` content by calling `notifyResize()` on each content panel.
+     * @param {CustomEvent} e
+     */
     _resizeSheetContent(e) {
       const panel = e.target.querySelector(
-          'saved-request-editor,saved-request-detail');
+          'saved-request-editor,saved-request-detail,export-options');
       if (panel && panel.notifyResize) {
         panel.notifyResize();
       }
@@ -713,11 +695,36 @@ the License.
       this.editorOpened = false;
       this.$.requestEditor.request = undefined;
     }
-
+    /**
+     * Checks if selection has items.
+     * @param {Number} length Current size of selection
+     * @return {Boolean} True if there is a selection.
+     */
     _computeHasSelection(length) {
       return !!length;
     }
-
+    /**
+     * Updates icon size CSS variable and notifies resize on the list when
+     * list type changes.
+     * @param {?String} type
+     */
+    _updateListStyles(type) {
+      let size;
+      switch (type) {
+        case 'comfortable': size = 40; break;
+        case 'compact': size = 36; break;
+        default: size = 56; break;
+      }
+      const list = this.shadowRoot.querySelector('history-panel-list');
+      this._applyListStyles(size, list);
+    }
+    /**
+     * Generates file name for the export options panel.
+     * @return {String}
+     */
+    _generateFileName() {
+      return 'arc-history-export.json';
+    }
     /**
      * Fired when navigation was requested
      *

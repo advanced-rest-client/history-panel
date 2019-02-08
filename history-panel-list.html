@@ -29,6 +29,7 @@ the License.
     :host {
       display: block;
       position: relative;
+      --paper-item-icon-width: 56px;
       @apply --arc-font-body1;
       @apply --layout-flex;
       @apply --layout-vertical;
@@ -47,26 +48,6 @@ the License.
       font-size: 14px;
       @apply --history-menu-url-label;
     }
-
-    http-method-label {
-      margin-right: 12px;
-      margin-bottom: 0;
-      @apply --history-panel-list-method-label;
-    }
-
-    .secondary-action {
-      color: var(--history-panel-list-secondary-action-color, var(--primary-color));
-      height: 36px;
-      font-size: 14px;
-    }
-
-    :host([list-type="comfortable"]) .list-action-button {
-      height: 32px;
-    }
-
-    :host([list-type="compact"]) .list-action-button {
-      height: 24px;
-    }
     </style>
     <iron-list items="[[requests]]" id="list" selected-items="{{selectedItems}}" multi-selection>
       <template>
@@ -74,7 +55,7 @@ the License.
           <template is="dom-if" if="[[item.hasHeader]]">
             <div class="history-group-header">[[item.header]]</div>
           </template>
-          <paper-icon-item on-click="_toggleSelection">
+          <paper-icon-item on-click="_toggleSelection" class$="request-list-item [[_computeRowClass(selected)]]">
             <paper-checkbox slot="item-icon" checked="{{selected}}"></paper-checkbox>
             <http-method-label method="[[item.method]]"></http-method-label>
             <paper-item-body two-line$="[[hasTwoLines]]">
@@ -82,8 +63,8 @@ the License.
               <div secondary>[[item.timeLabel]]</div>
               <paper-ripple></paper-ripple>
             </paper-item-body>
-            <paper-button class="list-action-button secondary-action" data-action="item-detail" on-click="_requestDetails">Details</paper-button>
-            <paper-button class="list-action-button main-action" data-action="open-item" on-click="_navigateItem" raised>Open</paper-button>
+            <paper-button class="list-action-button list-secondary-action" data-action="item-detail" on-click="_requestDetails">Details</paper-button>
+            <paper-button class="list-action-button list-main-action" data-action="open-item" on-click="_navigateItem" raised>Open</paper-button>
           </paper-icon-item>
         </div>
       </template>
@@ -122,20 +103,6 @@ the License.
     static get properties() {
       return {
         requests: Array,
-        /**
-         * Changes information density of list items.
-         * By default it uses material's peper item with two lines (72px heigth)
-         * Possible values are:
-         *
-         * - `default` or empty - regular list view
-         * - `comfortable` - enables MD single line list item vie (52px heigth)
-         * - `compact` - enables list that has 40px heigth (touch recommended)
-         */
-        listType: {
-          type: String,
-          reflectToAttribute: true,
-          observer: '_updateListStyles'
-        },
         /**
          * A list lower treshold when the `history-list-threshold` will be
          * fired. It should informa the app that the user nearly reached
@@ -183,22 +150,6 @@ the License.
      */
     notifyResize() {
       this.$.list.notifyResize();
-    }
-
-    _updateListStyles(type) {
-      let size;
-      switch (type) {
-        case 'comfortable': size = 48; break;
-        case 'compact': size = 36; break;
-        default: size = 72; break;
-      }
-      this.updateStyles({
-        '--paper-item-icon-width': `${size}px`
-      });
-      if (this.notifyResize) {
-        this.notifyResize();
-      }
-      this.notifyResize();
     }
 
     _thresholdHandler(e) {
@@ -254,6 +205,15 @@ the License.
 
     _toggleSelection(e) {
       this.$.list.toggleSelectionForIndex(e.model.get('index'));
+    }
+
+    /**
+     * Computes list item row class
+     * @param {Boolean} selected True if the item was selected
+     * @return {String} Item class name dependeing on selection state
+     */
+    _computeRowClass(selected) {
+      return selected ? 'iron-selected' : '';
     }
   }
   window.customElements.define(HistoryPanelList.is, HistoryPanelList);

@@ -8,6 +8,10 @@
  *   history-panel.html
  */
 
+
+// tslint:disable:variable-name Describing an API that's defined elsewhere.
+// tslint:disable:no-any describes the API as best we are able today
+
 /// <reference path="../polymer/types/polymer-element.d.ts" />
 /// <reference path="../polymer/types/lib/utils/render-status.d.ts" />
 /// <reference path="../iron-flex-layout/iron-flex-layout.d.ts" />
@@ -28,6 +32,7 @@
 /// <reference path="../paper-fab/paper-fab.d.ts" />
 /// <reference path="../paper-input/paper-input.d.ts" />
 /// <reference path="../history-list-mixin/history-list-mixin.d.ts" />
+/// <reference path="../export-options/export-options.d.ts" />
 /// <reference path="history-panel-list.d.ts" />
 
 declare namespace UiElements {
@@ -100,8 +105,20 @@ declare namespace UiElements {
      * Passed to the request editor
      */
     noAutoProjects: boolean|null|undefined;
+
+    /**
+     * Indicates that the export options panel is currently rendered.
+     */
+    _exportOptionsOpened: boolean|null|undefined;
+    _exportOptions: object|null|undefined;
     connectedCallback(): void;
     disconnectedCallback(): void;
+
+    /**
+     * Updates icon size CSS variable and notifies resize on the list when
+     * list type changes.
+     */
+    _updateListStyles(type: String|null): void;
 
     /**
      * Notifies the list that the resize event occurred.
@@ -122,14 +139,14 @@ declare namespace UiElements {
     _navigateHandler(): void;
 
     /**
-     * Handles items delete event.
+     * Handles items delete event from item click.
      */
-    _deleteSelected(): any;
+    _deleteSelected(): Promise<any>|null;
 
     /**
      * Deletes a request from the details panel.
      */
-    _deleteRequestDetails(): any;
+    _deleteRequestDetails(): Promise<any>|null;
 
     /**
      * Performs a delete action of request items.
@@ -168,50 +185,39 @@ declare namespace UiElements {
     _closeSelectionMenu(): void;
 
     /**
-     * Calles `_exportItems()` with default destination (`file`)
-     */
-    _exportSelected(): void;
-
-    /**
-     * Calles `_exportItems()` with destination set to `drive`
-     */
-    _exportSelectedDrive(): void;
-
-    /**
      * Forces main menu to close.
      */
     _closeMainMenu(): void;
 
     /**
-     * Menu handler to export all project data to Drive
+     * Toggles export options panel and sets export items to all currently loaded requests.
      */
-    _onExportAllDrive(): void;
+    openExportAll(): void;
+    _cancelExportOptions(): void;
 
     /**
-     * Menu handler to export all project data to file
-     */
-    _onExportAll(): void;
-
-    /**
-     * Requests application to export all data to `destination`.
-     * This works with `arc-data-export` element.
+     * Creates export file for all items.
      *
-     * @param destination One of the supporting destinations
-     * in `arc-data-export`.
+     * @returns Result of calling `_doExportItems()`
      */
-    _exportAll(destination: String|null): void;
+    _exportAllFile(): Promise<any>|null;
 
     /**
-     * Dispatches `export-data` event and returns it.
+     * Handler for `accept` event dispatched by export options element.
      *
-     * @param destination A place where export the data (file, drive)
+     * @returns Result of calling `_doExportItems()`
      */
-    _dispatchExportData(destination: String|null, requests: Array<object|null>|Boolean|null): CustomEvent|null;
+    _acceptExportOptions(e: CustomEvent|null): Promise<any>|null;
 
     /**
-     * Dispatches the `export-project` event with relevant data.
+     * Calls `_dispatchExportData()` from requests lists mixin with
+     * prepared arguments
+     *
+     * @param requests List of request to export with the project.
+     * @param detail Export configuration
      */
-    _exportItems(destination: String|null): void;
+    _doExportItems(requests: Array<object|null>|null, detail: String|null): Promise<any>|null;
+    _onExportSelected(): void;
 
     /**
      * Opens the request details applet with the request.
@@ -222,7 +228,12 @@ declare namespace UiElements {
      * Fires `navigate` event for currently loaded in the details request.
      */
     _loadRequestDetails(): void;
-    _searchHandler(e: any): void;
+
+    /**
+     * Handler for the `search` event on the search input.
+     * Calls `query()` with input's value as argument.
+     */
+    _searchHandler(e: Event|null): void;
 
     /**
      * Handler for delete all menu option click.
@@ -248,14 +259,30 @@ declare namespace UiElements {
      * Opens request details editor in place of the request details applet.
      */
     _editRequestDetails(): void;
-    _resizeSheetContent(e: any): void;
+
+    /**
+     * Resizes `bottom-sheet` content by calling `notifyResize()` on each content panel.
+     */
+    _resizeSheetContent(e: CustomEvent|null): void;
     _cancelRequestEdit(): void;
 
     /**
      * Handler fro save request event from the editor.
      */
     _saveRequestEdit(): void;
-    _computeHasSelection(length: any): any;
+
+    /**
+     * Checks if selection has items.
+     *
+     * @param length Current size of selection
+     * @returns True if there is a selection.
+     */
+    _computeHasSelection(length: Number|null): Boolean|null;
+
+    /**
+     * Generates file name for the export options panel.
+     */
+    _generateFileName(): String|null;
   }
 }
 

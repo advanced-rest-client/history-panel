@@ -42,7 +42,8 @@
     "iron-list": "PolymerElements/iron-list#^2.0.0",
     "paper-ripple": "PolymerElements/paper-ripple#^2.0.0",
     "iron-scroll-threshold": "PolymerElements/iron-scroll-threshold#^2.0.0",
-    "history-list-mixin": "advanced-rest-client/history-list-mixin#^2.0.0"
+    "history-list-mixin": "advanced-rest-client/history-list-mixin#^2.0.0",
+    "export-options": "advanced-rest-client/export-options#^2.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^3.0.1",
