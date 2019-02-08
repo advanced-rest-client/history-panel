@@ -169,3 +169,16 @@
 
 
 
+# [2.0.0](https://github.com/advanced-rest-client/history-panel/compare/0.1.13...2.0.0) (2019-02-08)
+
+
+### Fix
+
+* Fixing `type` property  value for `navigate` event. ([3a1855eee3749bcdb8d3cfbb0d03ef457b709c1c](https://github.com/advanced-rest-client/history-panel/commit/3a1855eee3749bcdb8d3cfbb0d03ef457b709c1c))
+
+### Update
+
+* The component use current mixins and APIs ([def39c37cfe7ddaa33d8dde7b2c7cf270d664709](https://github.com/advanced-rest-client/history-panel/commit/def39c37cfe7ddaa33d8dde7b2c7cf270d664709))
+
+
+
