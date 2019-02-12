@@ -191,6 +191,23 @@
     });
   });
 
+  class MockedDataTransfer {
+    constructor() {
+      this._data = {};
+      this.effectAllowed = 'none';
+      this.dropEffect = 'none';
+    }
+    setData(type, data) {
+      this._data[type] = String(data);
+    }
+    getData(type) {
+      return this._data[type] || '';
+    }
+    get types() {
+      return Object.keys(this._data);
+    }
+  }
+
   suite('_dragStart()', () => {
     let element;
     setup(function(done) {
@@ -204,7 +221,7 @@
     function dispatch(element) {
       const node = element.shadowRoot.querySelector('paper-icon-item');
       const e = new Event('dragstart');
-      e.dataTransfer = new DataTransfer();
+      e.dataTransfer = new MockedDataTransfer();
       node.dispatchEvent(e);
     }
 
