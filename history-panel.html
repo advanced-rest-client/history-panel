@@ -186,6 +186,7 @@ the License.
     <history-panel-list
       hidden$="[[listHidden]]"
       requests="[[requests]]"
+      draggable-enabled="[[draggableEnabled]]"
       list-type$="[[listType]]"
       has-two-lines="[[_hasTwoLines]]"
       selected-items="{{selectedItems}}"
@@ -269,6 +270,7 @@ the License.
    * @customElement
    * @memberof UiElements
    * @demo demo/index.html
+   * @demo demo/dnd.html Drag and drop
    * @appliesMixin ArcComponents.RequestsListMixin
    * @appliesMixin ArcComponents.HistoryListMixin
    */
@@ -314,6 +316,10 @@ the License.
          * Passed to the request editor
          */
         noAutoProjects: Boolean,
+        /**
+         * Enables the comonent to accept drop action with a request.
+         */
+        draggableEnabled: {type: Boolean},
         /**
          * Indicates that the export options panel is currently rendered.
          */

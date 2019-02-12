@@ -38,6 +38,12 @@
     </template>
   </test-fixture>
 
+  <test-fixture id="Draggable">
+    <template>
+      <history-panel-list draggable-enabled></history-panel-list>
+    </template>
+  </test-fixture>
+
   <script>
   /* global DataGenerator, MockInteractions */
   suite('_thresholdHandler()', () => {
@@ -146,6 +152,101 @@
       element.addEventListener('list-item-details', spy);
       MockInteractions.tap(node);
       assert.typeOf(spy.args[0][0].detail.request, 'object');
+    });
+  });
+
+  suite('_computeDraggableValue()', () => {
+    let element;
+    setup(function() {
+      element = fixture('Basic');
+    });
+
+    test('Returns "true" when draggableEnabled is set', () => {
+      const result = element._computeDraggableValue(true);
+      assert.equal(result, 'true');
+    });
+
+    test('Returns "false" when draggableEnabled is not set', () => {
+      const result = element._computeDraggableValue(false);
+      assert.equal(result, 'false');
+    });
+
+    test('Request item has dragging disabled by default', (done) => {
+      element.requests = [DataGenerator.generateSavedItem()];
+      flush(() => {
+        const node = element.shadowRoot.querySelector('.request-list-item');
+        assert.equal(node.getAttribute('draggable'), 'false');
+        done();
+      });
+    });
+
+    test('Request item has dragging enabled', (done) => {
+      element.draggableEnabled = true;
+      element.requests = [DataGenerator.generateHistoryObject()];
+      flush(() => {
+        const node = element.shadowRoot.querySelector('.request-list-item');
+        assert.equal(node.getAttribute('draggable'), 'true');
+        done();
+      });
+    });
+  });
+
+  suite('_dragStart()', () => {
+    let element;
+    setup(function(done) {
+      element = fixture('Draggable');
+      element.requests = DataGenerator.generateHistoryRequestsData({
+        requestsSize: 2
+      });
+      flush(() => done());
+    });
+
+    function dispatch(element) {
+      const node = element.shadowRoot.querySelector('paper-icon-item');
+      const e = new Event('dragstart');
+      e.dataTransfer = new DataTransfer();
+      node.dispatchEvent(e);
+    }
+
+    test('Calls _dragStart()', () => {
+      const spy = sinon.spy(element, '_dragStart');
+      dispatch(element);
+      assert.isTrue(spy.called);
+    });
+
+    test('Sets arc/request-object transfer data', () => {
+      const spy = sinon.spy(element, '_dragStart');
+      dispatch(element);
+      const data = spy.args[0][0].dataTransfer.getData('arc/request-object');
+      assert.typeOf(data, 'string');
+    });
+
+    test('Sets arc/history-request data', () => {
+      const spy = sinon.spy(element, '_dragStart');
+      dispatch(element);
+      const data = spy.args[0][0].dataTransfer.getData('arc/history-request');
+      assert.equal(data, element.requests[0]._id);
+    });
+
+    test('Sets arc-source/history-panel transfer data', () => {
+      const spy = sinon.spy(element, '_dragStart');
+      dispatch(element);
+      const data = spy.args[0][0].dataTransfer.getData('arc-source/history-panel');
+      assert.equal(data, element.requests[0]._id);
+    });
+
+    test('Ignores event when draggableEnabled not set', () => {
+      element.draggableEnabled = false;
+      const spy = sinon.spy(element, '_dragStart');
+      dispatch(element);
+      assert.isUndefined(spy.args[0][0].dropEffect);
+    });
+
+    test('Ignores event when draggableEnabled not set', () => {
+      element.draggableEnabled = false;
+      const spy = sinon.spy(element, '_dragStart');
+      dispatch(element);
+      assert.isUndefined(spy.args[0][0].dropEffect);
     });
   });
   </script>

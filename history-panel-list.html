@@ -55,7 +55,7 @@ the License.
           <template is="dom-if" if="[[item.hasHeader]]">
             <div class="history-group-header">[[item.header]]</div>
           </template>
-          <paper-icon-item on-click="_toggleSelection" class$="request-list-item [[_computeRowClass(selected)]]">
+          <paper-icon-item on-click="_toggleSelection" class$="request-list-item [[_computeRowClass(selected)]]" draggable$="[[_computeDraggableValue(draggableEnabled)]]" on-dragstart="_dragStart">
             <paper-checkbox slot="item-icon" checked="{{selected}}"></paper-checkbox>
             <http-method-label method="[[item.method]]"></http-method-label>
             <paper-item-body two-line$="[[hasTwoLines]]">
@@ -94,6 +94,7 @@ the License.
    * @customElement
    * @polymer
    * @demo demo/index.html
+   * @demo demo/dnd.html Drag and drop
    * @memberof ApiElements
    */
   class HistoryPanelList extends Polymer.Element {
@@ -125,7 +126,11 @@ the License.
           notify: true
         },
 
-        hasTwoLines: Boolean
+        hasTwoLines: Boolean,
+        /**
+         * Enables the comonent to accept drop action with a request.
+         */
+        draggableEnabled: {type: Boolean, value: false}
       };
     }
 
@@ -214,6 +219,34 @@ the License.
      */
     _computeRowClass(selected) {
       return selected ? 'iron-selected' : '';
+    }
+    /**
+     * Handler for the `dragstart` event added to the list item when `draggableEnabled`
+     * is set to true.
+     * This function sets request data on the `dataTransfer` object with `arc/request-object`
+     * mime type. The request data is a serialized JSON with request model.
+     * @param {Event} e
+     */
+    _dragStart(e) {
+      if (!this.draggableEnabled) {
+        return;
+      }
+      const request = e.model.get('item');
+      const data = JSON.stringify(request);
+      e.dataTransfer.setData('arc/request-object', data);
+      e.dataTransfer.setData('arc/history-request', request._id);
+      e.dataTransfer.setData('arc-source/history-panel', request._id);
+      e.dataTransfer.effectAllowed = 'copy';
+    }
+    /**
+     * Computes value for the `draggable` property of the list item.
+     * When `draggableEnabled` is set it returns true which is one of the
+     * conditions to enable drag and drop on an element.
+     * @param {Boolean} draggableEnabled Current value of `draggableEnabled`
+     * @return {String} `true` or `false` (as string) depending on the argument.
+     */
+    _computeDraggableValue(draggableEnabled) {
+      return draggableEnabled ? 'true' : 'false';
     }
   }
   window.customElements.define(HistoryPanelList.is, HistoryPanelList);
