@@ -182,3 +182,26 @@
 
 
 
+## [2.0.1](https://github.com/advanced-rest-client/history-panel/compare/0.1.13...2.0.1) (2019-02-12)
+
+
+### Docs
+
+* Updating typpings and Polymer docs ([a825d661adeebde76a166278f80f83e709db6d06](https://github.com/advanced-rest-client/history-panel/commit/a825d661adeebde76a166278f80f83e709db6d06))
+
+### Fix
+
+* Fixing `type` property  value for `navigate` event. ([3a1855eee3749bcdb8d3cfbb0d03ef457b709c1c](https://github.com/advanced-rest-client/history-panel/commit/3a1855eee3749bcdb8d3cfbb0d03ef457b709c1c))
+
+### New
+
+* Adding experimental drag and drop ([91f3b05c14a6ba9103bcfeb5993a92bab3b20f62](https://github.com/advanced-rest-client/history-panel/commit/91f3b05c14a6ba9103bcfeb5993a92bab3b20f62))
+
+### Update
+
+* Removing old CI files ([b95bdd230340ea5cde182fed13d5b40dcf320cd9](https://github.com/advanced-rest-client/history-panel/commit/b95bdd230340ea5cde182fed13d5b40dcf320cd9))
+* The component use current mixins and APIs ([def39c37cfe7ddaa33d8dde7b2c7cf270d664709](https://github.com/advanced-rest-client/history-panel/commit/def39c37cfe7ddaa33d8dde7b2c7cf270d664709))
+* Updating tests to fit more browsers ([68bac57c49a2f9aed99b4846bcb9ce77409c03d5](https://github.com/advanced-rest-client/history-panel/commit/68bac57c49a2f9aed99b4846bcb9ce77409c03d5))
+
+
+
