@@ -64,6 +64,11 @@ declare namespace ApiElements {
      */
     selectedItems: any[]|null|undefined;
     hasTwoLines: boolean|null|undefined;
+
+    /**
+     * Enables the comonent to accept drop action with a request.
+     */
+    draggableEnabled: boolean|null|undefined;
     connectedCallback(): void;
     disconnectedCallback(): void;
 
@@ -86,6 +91,24 @@ declare namespace ApiElements {
      * @returns Item class name dependeing on selection state
      */
     _computeRowClass(selected: Boolean|null): String|null;
+
+    /**
+     * Handler for the `dragstart` event added to the list item when `draggableEnabled`
+     * is set to true.
+     * This function sets request data on the `dataTransfer` object with `arc/request-object`
+     * mime type. The request data is a serialized JSON with request model.
+     */
+    _dragStart(e: Event|null): void;
+
+    /**
+     * Computes value for the `draggable` property of the list item.
+     * When `draggableEnabled` is set it returns true which is one of the
+     * conditions to enable drag and drop on an element.
+     *
+     * @param draggableEnabled Current value of `draggableEnabled`
+     * @returns `true` or `false` (as string) depending on the argument.
+     */
+    _computeDraggableValue(draggableEnabled: Boolean|null): String|null;
   }
 }
 

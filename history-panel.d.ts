@@ -107,6 +107,11 @@ declare namespace UiElements {
     noAutoProjects: boolean|null|undefined;
 
     /**
+     * Enables the comonent to accept drop action with a request.
+     */
+    draggableEnabled: boolean|null|undefined;
+
+    /**
      * Indicates that the export options panel is currently rendered.
      */
     _exportOptionsOpened: boolean|null|undefined;
