@@ -5,12 +5,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
   <title>history-panel-list test</title>
-  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-  <script src="../../web-component-tester/browser.js"></script>
-  <link rel="import" href="../../arc-data-generator/arc-data-generator.html">
-  <link rel="import" href="../../neon-animation/web-animations.html">
-  <link rel="import" href="../../iron-test-helpers/mock-interactions.html">
-  <link rel="import" href="../history-panel-list.html">
+
+  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../../@polymer/test-fixture/test-fixture.js"></script>
+  <script src="../../../mocha/mocha.js"></script>
+  <script src="../../../chai/chai.js"></script>
+  <script src="../../../wct-mocha/wct-mocha.js"></script>
+
+  <script src="../../../web-animations-js/web-animations-next.min.js"></script>
 </head>
 
 <body>
@@ -44,8 +46,12 @@
     </template>
   </test-fixture>
 
-  <script>
-  /* global DataGenerator, MockInteractions */
+  <script type="module">
+  import * as MockInteractions from '../../../@polymer/iron-test-helpers/mock-interactions.js';
+  import {DataGenerator} from '../../../@advanced-rest-client/arc-data-generator/arc-data-generator.js';
+  import sinon from '../../../sinon/pkg/sinon-esm.js';
+  import '../history-panel-list.js';
+  import {afterNextRender} from '../../../@polymer/polymer/lib/utils/render-status.js';
   suite('_thresholdHandler()', () => {
     let element;
     setup(() => {
@@ -92,7 +98,11 @@
       element.requests = DataGenerator.generateRequests({
         requestsSize: 5
       });
-      flush(() => done());
+      afterNextRender(element, () => {
+        setTimeout(() => {
+          flush(() => done());
+        });
+      });
     });
 
     test('Dispatches "navigate" event when opend button click', () => {
@@ -135,7 +145,11 @@
       element.requests = DataGenerator.generateRequests({
         requestsSize: 5
       });
-      flush(() => done());
+      afterNextRender(element, () => {
+        setTimeout(() => {
+          flush(() => done());
+        });
+      });
     });
 
     test('Dispatches "list-item-details"', () => {
@@ -183,10 +197,14 @@
     test('Request item has dragging enabled', (done) => {
       element.draggableEnabled = true;
       element.requests = [DataGenerator.generateHistoryObject()];
-      flush(() => {
-        const node = element.shadowRoot.querySelector('.request-list-item');
-        assert.equal(node.getAttribute('draggable'), 'true');
-        done();
+      afterNextRender(element, () => {
+        setTimeout(() => {
+          flush(() => {
+            const node = element.shadowRoot.querySelector('.request-list-item');
+            assert.equal(node.getAttribute('draggable'), 'true');
+            done();
+          });
+        });
       });
     });
   });
@@ -215,7 +233,11 @@
       element.requests = DataGenerator.generateHistoryRequestsData({
         requestsSize: 2
       });
-      flush(() => done());
+      afterNextRender(element, () => {
+        setTimeout(() => {
+          flush(() => done());
+        });
+      });
     });
 
     function dispatch(element) {

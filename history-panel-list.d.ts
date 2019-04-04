@@ -5,25 +5,12 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   history-panel-list.html
+ *   history-panel-list.js
  */
 
 
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
 // tslint:disable:no-any describes the API as best we are able today
-
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../polymer/types/lib/utils/render-status.d.ts" />
-/// <reference path="../paper-item/paper-icon-item.d.ts" />
-/// <reference path="../paper-item/paper-item-body.d.ts" />
-/// <reference path="../paper-ripple/paper-ripple.d.ts" />
-/// <reference path="../requests-list-mixin/requests-list-styles.d.ts" />
-/// <reference path="../iron-list/iron-list.d.ts" />
-/// <reference path="../http-method-label/http-method-label.d.ts" />
-/// <reference path="../iron-flex-layout/iron-flex-layout.d.ts" />
-/// <reference path="../iron-scroll-threshold/iron-scroll-threshold.d.ts" />
-/// <reference path="../paper-button/paper-button.d.ts" />
-/// <reference path="../paper-checkbox/paper-checkbox.d.ts" />
 
 declare namespace ApiElements {
 
@@ -42,7 +29,7 @@ declare namespace ApiElements {
    * `--history-panel-list-url-label` | Mixin applied to the URL label | `{}`
    * `--history-panel-list-method-label` | Mixin applied to the method label | `{}`
    */
-  class HistoryPanelList extends Polymer.Element {
+  class HistoryPanelList extends PolymerElement {
     requests: any[]|null|undefined;
 
     /**
@@ -112,6 +99,11 @@ declare namespace ApiElements {
   }
 }
 
-interface HTMLElementTagNameMap {
-  "history-panel-list": ApiElements.HistoryPanelList;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "history-panel-list": ApiElements.HistoryPanelList;
+  }
 }
+
+export {};
