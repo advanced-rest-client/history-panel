@@ -749,7 +749,17 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
    * @return {String}
    */
   _generateFileName() {
-    return 'arc-history-export.json';
+    const d = new Date();
+    const year = d.getFullYear();
+    let month = d.getMonth() + 1;
+    let day = d.getDate();
+    if (month < 10) {
+      month = '0' + month;
+    }
+    if (day < 10) {
+      day = '0' + day;
+    }
+    return `arc-history-export-${year}-${month}-${day}.arc`;
   }
   /**
    * Fired when navigation was requested
