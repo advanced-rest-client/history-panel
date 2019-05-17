@@ -267,8 +267,8 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
     <bottom-sheet id="exportOptionsContainer"
       opened="{{_exportOptionsOpened}}"
       on-iron-overlay-opened="_resizeSheetContent">
-      <export-options f
-        ile="{{_exportOptions.file}}"
+      <export-options
+        file="{{_exportOptions.file}}"
         provider="{{_exportOptions.provider}}"
         provider-options="{{_exportOptions.providerOptions}}"
         on-accept="_acceptExportOptions"
