@@ -11,28 +11,27 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
-import '../../@polymer/polymer/lib/utils/render-status.js';
-import '../../@polymer/paper-button/paper-button.js';
-import '../../@polymer/iron-icon/iron-icon.js';
-import '../../@advanced-rest-client/arc-icons/arc-icons.js';
-import '../../@polymer/paper-menu-button/paper-menu-button.js';
-import '../../@polymer/paper-icon-button/paper-icon-button.js';
-import '../../@polymer/paper-listbox/paper-listbox.js';
-import '../../@polymer/paper-item/paper-icon-item.js';
-import '../../@polymer/paper-progress/paper-progress.js';
-import '../../@polymer/paper-toast/paper-toast.js';
-import '../../@polymer/paper-dialog/paper-dialog.js';
-import '../../@advanced-rest-client/bottom-sheet/bottom-sheet.js';
-import '../../@advanced-rest-client/saved-request-detail/saved-request-detail.js';
-import '../../@advanced-rest-client/saved-request-editor/saved-request-editor.js';
-import {RequestsListMixin} from '../../@advanced-rest-client/requests-list-mixin/requests-list-mixin.js';
-import '../../@polymer/paper-fab/paper-fab.js';
-import '../../@polymer/paper-input/paper-input.js';
-import {HistoryListMixin} from '../../@advanced-rest-client/history-list-mixin/history-list-mixin.js';
-import '../../@advanced-rest-client/export-options/export-options.js';
+import { LitElement, html, css } from 'lit-element';
+import { RequestsListMixin } from '@advanced-rest-client/requests-list-mixin/requests-list-mixin.js';
+import { HistoryListMixin } from '@advanced-rest-client/history-list-mixin/history-list-mixin.js';
+import { cache } from 'lit-html/directives/cache.js';
+import '@anypoint-web-components/anypoint-button/anypoint-button.js';
+import '@anypoint-web-components/anypoint-menu-button/anypoint-menu-button.js';
+import '@anypoint-web-components/anypoint-button/anypoint-icon-button.js';
+import '@anypoint-web-components/anypoint-listbox/anypoint-listbox.js';
+import '@anypoint-web-components/anypoint-item/anypoint-icon-item.js';
+import '@anypoint-web-components/anypoint-dialog/anypoint-dialog.js';
+import '@advanced-rest-client/bottom-sheet/bottom-sheet.js';
+import '@advanced-rest-client/saved-request-detail/saved-request-detail.js';
+import '@advanced-rest-client/saved-request-editor/saved-request-editor.js';
+import '@advanced-rest-client/export-options/export-options.js';
+import '@advanced-rest-client/arc-icons/arc-icons.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/paper-progress/paper-progress.js';
+import '@polymer/paper-toast/paper-toast.js';
+import '@polymer/paper-fab/paper-fab.js';
+import '@anypoint-web-components/anypoint-input/anypoint-input.js';
 import './history-panel-list.js';
-import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
 /**
  * History panel screen for Advanced REST Client.
  *
@@ -62,7 +61,6 @@ import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
  * `--history-panel-bottom-sheet-right` | Right position of the `<bottom-sheet>` element | `40px`
  * `--history-panel-bottom-sheet-left` | Left position of the `<bottom-sheet>` element | `auto`
  *
- * @polymer
  * @customElement
  * @memberof UiElements
  * @demo demo/index.html
@@ -70,22 +68,17 @@ import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
  * @appliesMixin RequestsListMixin
  * @appliesMixin HistoryListMixin
  */
-class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
-  static get template() {
-    return html`
-    <style>
+class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)) {
+  static get styles() {
+    return css`
     :host {
-      display: block;
-      position: relative;
+      flex-direction: column;
+      display: flex;
+
       font-size: var(--arc-font-body1-font-size);
       font-weight: var(--arc-font-body1-font-weight);
       line-height: var(--arc-font-body1-line-height);
-      display: flex;
-      flex-direction: column;
-    }
-
-    [hidden] {
-      display: none !important;
+      position: relative;
     }
 
     .header {
@@ -134,20 +127,11 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
 
     history-panel-list {
       overflow: auto;
+      flex: 1;
     }
 
     .revert-button {
       height: 38px;
-    }
-
-    #dataClearDialog {
-      background-color: var(--warning-primary-color, #FF7043);
-      color: var(--warning-contrast-color, #fff);
-    }
-
-    #dataClearDialog paper-button {
-      color: var(--warning-dialog-button-color, #fff);
-      background-color: var(--warning-dialog-button-background-color, transparent);
     }
 
     .error-toast {
@@ -186,97 +170,189 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
     .spacer {
       flex: 1;
       flex-basis: 0.000000001px;
-    }
-    </style>
-    <div class="header">
+    }`;
+  }
+
+  _headerTemplate() {
+    const { compatibility } = this;
+    return html`<div class="header">
       <h2>History</h2>
       <div class="header-actions">
-        <paper-menu-button dynamic-align="" id="mainMenu">
-          <paper-icon-button icon="arc:more-vert" slot="dropdown-trigger"></paper-icon-button>
-          <paper-listbox slot="dropdown-content" id="mainMenuOptions">
-            <paper-icon-item class="menu-item" on-click="openExportAll">
+        <anypoint-menu-button
+          dynamicalign
+          id="mainMenu"
+          ?compatibility="${compatibility}">
+          <anypoint-icon-button
+            aria-label="Activate to open context menu"
+            slot="dropdown-trigger"
+            ?compatibility="${compatibility}">
+            <iron-icon icon="arc:more-vert" alt="more"></iron-icon>
+          </anypoint-icon-button>
+          <anypoint-listbox
+            slot="dropdown-content"
+            id="mainMenuOptions"
+            ?compatibility="${compatibility}">
+            <anypoint-icon-item
+              class="menu-item"
+              @click="${this.openExportAll}">
               <iron-icon icon="arc:export-variant" slot="item-icon"></iron-icon>Export all
-            </paper-icon-item>
-            <paper-icon-item class="menu-item" on-click="_deleteAllClick">
+            </anypoint-icon-item>
+            <anypoint-icon-item
+              class="menu-item"
+              @click="${this._deleteAllClick}">
               <iron-icon icon="arc:delete" slot="item-icon"></iron-icon>Delete all
-            </paper-icon-item>
-          </paper-listbox>
-        </paper-menu-button>
+            </anypoint-icon-item>
+          </anypoint-listbox>
+        </anypoint-menu-button>
       </div>
-    </div>
-    <template is="dom-if" if="[[querying]]">
-      <paper-progress indeterminate=""></paper-progress>
-    </template>
-    <template is="dom-if" if="[[dataUnavailable]]">
-      <p class="empty-info">The requests list is empty.</p>
-      <p class="empty-info">Send a request from the request panel and it will appear here.</p>
-    </template>
+    </div>`;
+  }
 
-    <section class="selection-options" hidden\$="[[listHidden]]">
-      <p class="selection-label">Selected: [[selectedItems.length]]</p>
-      <template is="dom-if" if="[[hasSelection]]">
-        <paper-menu-button dynamic-align="" id="historyListMenu">
-          <paper-icon-button icon="arc:more-vert" slot="dropdown-trigger"></paper-icon-button>
-          <paper-listbox slot="dropdown-content" id="historyListMenuOptions">
-            <paper-icon-item class="menu-item" on-click="_onExportSelected">
-              <iron-icon icon="arc:export-variant" slot="item-icon"></iron-icon>Export selected
-            </paper-icon-item>
-            <paper-icon-item class="menu-item" data-action="delete-all" on-click="_deleteSelected">
-              <iron-icon icon="arc:delete" slot="item-icon"></iron-icon>
-              Delete selected
-            </paper-icon-item>
-          </paper-listbox>
-        </paper-menu-button>
-      </template>
+  _busyTemplate() {
+    if (!this.querying) {
+      return '';
+    }
+    return html`<paper-progress indeterminate></paper-progress>`;
+  }
+
+  _unavailableTemplate() {
+    const { dataUnavailable } = this;
+    if (!dataUnavailable) {
+      return '';
+    }
+    return html`<p class="empty-info">The requests list is empty.</p>
+    <p class="empty-info">Send a request from the request panel and it will appear here.</p>`;
+  }
+
+  _selectionTemplate() {
+    const { listHidden, hasSelection, compatibility } = this;
+    const selectedItems = this.selectedItems || [];
+    return cache(listHidden ? '' : html`
+    <section class="selection-options">
+      <p class="selection-label">Selected: ${selectedItems.length}</p>
+      ${cache(hasSelection ? html`
+      <anypoint-menu-button
+        dynamicalign
+        ?compatibility="${compatibility}"
+        id="historyListMenu">
+        <anypoint-icon-button
+          ?compatibility="${compatibility}"
+          aria-label="Activate to open context menu"
+          slot="dropdown-trigger">
+          <iron-icon icon="arc:more-vert" alt="more"></iron-icon>
+        </anypoint-icon-button>
+        <anypoint-listbox
+          slot="dropdown-content"
+          ?compatibility="${compatibility}"
+          id="historyListMenuOptions">
+          <anypoint-icon-item
+            class="menu-item"
+            @click="${this._onExportSelected}">
+            <iron-icon icon="arc:export-variant" slot="item-icon"></iron-icon>Export selected
+          </anypoint-icon-item>
+          <anypoint-icon-item
+            class="menu-item"
+            data-action="delete-all"
+            @click="${this._deleteSelected}">
+            <iron-icon icon="arc:delete" slot="item-icon"></iron-icon>
+            Delete selected
+          </anypoint-icon-item>
+        </anypoint-listbox>
+      </anypoint-menu-button>` : '')}
       <div class="spacer"></div>
-      <paper-input label="search" type="search" no-label-float=""></paper-input>
-    </section>
+      <anypoint-input
+        type="search"
+        nolabelfloat
+        @search="${this._searchHandler}"
+        ?compatibility="${compatibility}">
+        <label slot="label">Search</label>
+      </anypoint-input>
+    </section>`);
+  }
 
-    <history-panel-list
-      hidden\$="[[listHidden]]"
-      requests="[[requests]]"
-      draggable-enabled="[[draggableEnabled]]"
-      list-type\$="[[listType]]"
-      has-two-lines="[[_hasTwoLines]]"
-      selected-items="{{selectedItems}}"
-      on-list-items-threshold="loadNext"
-      on-list-item-details="_onDetails"></history-panel-list>
+  _listTemplate() {
+    const {
+      listHidden,
+      compatibility,
+      requests,
+      draggableEnabled,
+      listType,
+      _hasTwoLines
+    } = this;
+    return cache(listHidden ? '' : html`<history-panel-list
+      ?compatibility="${compatibility}"
+      .requests="${requests}"
+      .draggableEnabled="${draggableEnabled}"
+      listtype="${listType}"
+      ?hastwolines="${_hasTwoLines}"
+      @list-items-threshold="${this.loadNext}"
+      @list-item-details="${this._onDetails}"
+      @selecteditems-changed="${this._selectionHandler}"></history-panel-list>`);
+  }
 
-    <bottom-sheet id="requestDetailsContainer" on-iron-overlay-opened="_resizeSheetContent" opened="{{detailsOpened}}">
+  _requestDetailsTemplate() {
+    const { detailsOpened, compatibility } = this;
+    return html`<bottom-sheet
+      id="requestDetailsContainer"
+      data-open-property="detailsOpened"
+      @overlay-opened="${this._resizeSheetContent}"
+      @overlay-closed="${this._sheetOpenedHandler}"
+      .opened="${detailsOpened}">
       <paper-fab
         icon="arc:keyboard-arrow-right"
         data-action="load-request-detail"
         title="Load request"
-        on-click="_loadRequestDetails"></paper-fab>
+        @click="${this._loadRequestDetails}"></paper-fab>
       <saved-request-detail
         id="requestDetails"
-        is-history=""
-        on-delete-request="_deleteRequestDetails"
-        on-edit-request="_editRequestDetails"></saved-request-detail>
-    </bottom-sheet>
-    <bottom-sheet id="requestEditorContainer" on-iron-overlay-opened="_resizeSheetContent" opened="{{editorOpened}}">
+        ?compatibility="${compatibility}"
+        @delete-request="${this._deleteRequestDetails}"
+        @edit-request="${this._editRequestDetails}"></saved-request-detail>
+    </bottom-sheet>`;
+  }
+
+  _requestEditorTemplate() {
+    const { editorOpened, compatibility, noAutoProjects } = this;
+    return html`<bottom-sheet
+      id="requestEditorContainer"
+      data-open-property="editorOpened"
+      @overlay-opened="${this._resizeSheetContent}"
+      @overlay-closed="${this._sheetOpenedHandler}"
+      .opened="${editorOpened}">
       <h3>Save history request</h3>
       <saved-request-editor
         id="requestEditor"
-        is-history=""
-        no-auto-projects="[[noAutoProjects]]"
-        on-cancel-request-edit="_cancelRequestEdit"
-        on-save-request="_saveRequestEdit"></saved-request-editor>
-    </bottom-sheet>
+        ?compatibility="${compatibility}"
+        ?noautoprojects="${noAutoProjects}"
+        @cancel="${this._cancelRequestEdit}"
+        @save-request="${this._saveRequestEdit}"></saved-request-editor>
+    </bottom-sheet>`;
+  }
 
-    <bottom-sheet id="exportOptionsContainer"
-      opened="{{_exportOptionsOpened}}"
-      on-iron-overlay-opened="_resizeSheetContent">
+  _exportOptionsTemplate() {
+    const {
+      _exportOptionsOpened,
+      _exportOptions,
+      compatibility
+    } = this;
+    return html`<bottom-sheet
+      id="exportOptionsContainer"
+      .opened="${_exportOptionsOpened}"
+      data-open-property="_exportOptionsOpened"
+      @overlay-opened="${this._resizeSheetContent}"
+      @overlay-closed="${this._sheetOpenedHandler}">
       <export-options
-        file="{{_exportOptions.file}}"
-        provider="{{_exportOptions.provider}}"
-        provider-options="{{_exportOptions.providerOptions}}"
-        on-accept="_acceptExportOptions"
-        on-cancel="_cancelExportOptions"></export-options>
-    </bottom-sheet>
+        ?compatibility="${compatibility}"
+        .file="${_exportOptions.file}"
+        .provider="${_exportOptions.provider}"
+        .providerOptions="${_exportOptions.providerOptions}"
+        @accept="${this._acceptExportOptions}"
+        @cancel="${this._cancelExportOptions}"></export-options>
+    </bottom-sheet>`;
+  }
 
-    <paper-toast id="noModel" class="error-toast" text="Model not found. Please, report an issue."></paper-toast>
-    <paper-toast id="errorToast" class="error-toast" duration="5000"></paper-toast>
+  _toastsTemplate() {
+    return html`<paper-toast id="errorToast" class="error-toast" duration="5000"></paper-toast>
     <paper-toast id="revertError" class="error-toast"
       text="Unable to revert changes. Please, report an issue."></paper-toast>
     <paper-toast id="noExport" class="error-toast"
@@ -285,122 +361,148 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
       text="Datasore delete error. Please report an issue"></paper-toast>
     <paper-toast id="driveSaved" text="Requests saved on Google Drive."></paper-toast>
     <paper-toast id="deleteToast" duration="7000">
-      <paper-button class="revert-button" on-tap="revertDeleted">Revert</paper-button>
-    </paper-toast>
+      <anypoint-button class="revert-button" @click="${this.revertDeleted}">Revert</anypoint-button>
+    </paper-toast>`;
+  }
 
-    <paper-dialog id="dataClearDialog" on-iron-overlay-closed="_onClearDialogResult">
-      <h2>Danger zone</h2>
-      <p>This will remove all data from the data store. Without option to restore it.</p>
+  _clearDialogTemplate() {
+    const {
+      compatibility
+    } = this;
+    return html`<anypoint-dialog
+      id="dataClearDialog"
+      ?compatibility="${compatibility}"
+      @overlay-closed="${this._onClearDialogResult}">
+      <h2>Remove all data?</h2>
       <p>Maybe you should create a backup first?</p>
       <div class="buttons">
-        <paper-button on-click="_exportAllFile">Create backup file</paper-button>
-        <paper-button dialog-dismiss="" autofocus="">Cancel</paper-button>
-        <paper-button dialog-confirm="" class="action-button">Destroy</paper-button>
+        <anypoint-button
+          ?compatibility="${compatibility}"
+          @click="${this._exportAllFile}">Create backup file</anypoint-button>
+        <anypoint-button
+          ?compatibility="${compatibility}"
+          dialog-dismiss>Cancel</anypoint-button>
+        <anypoint-button
+          ?compatibility="${compatibility}"
+          dialog-confirm
+          class="action-button" autofocus>Confirm</anypoint-button>
       </div>
-    </paper-dialog>`;
+    </anypoint-dialog>`;
+  }
+
+  _searchEmptyTemplate() {
+    if (this.isSearch && this.searchListEmpty) {
+      return html`<p>No search results.</p>`;
+    }
+    return '';
+  }
+
+  render() {
+    return html`
+    ${this.modelTemplate}
+    ${this._headerTemplate()}
+    ${this._busyTemplate()}
+    ${this._unavailableTemplate()}
+    ${this._selectionTemplate()}
+    ${this._searchEmptyTemplate()}
+    ${this._listTemplate()}
+    ${this._requestDetailsTemplate()}
+    ${this._requestEditorTemplate()}
+    ${this._exportOptionsTemplate()}
+    ${this._toastsTemplate()}
+    ${this._clearDialogTemplate()}
+    `;
   }
 
   static get properties() {
     return {
       /**
-       * List of requests that has been recently removed
-       */
-      _latestDeleted: Array,
-      /**
-       * Computed value, true if the requests lists is hidden.
-       */
-      listHidden: {
-        type: Boolean,
-        value: true,
-        computed: '_computeListHidden(hasRequests, isSearch)'
-      },
-
-      /**
        * Selected items list.
        * @type {Array<Object>}
        */
-      selectedItems: Array,
-      /**
-       * Computed value, true when the user made a selection on the list.
-       */
-      hasSelection: {type: Boolean, computed: '_computeHasSelection(selectedItems.length)'},
+      selectedItems: { type: Array },
       /**
        * When true the editor panel is rendered
        */
-      editorOpened: Boolean,
+      editorOpened: { type: Boolean },
       /**
        * When true the details panel is rendered
        */
-      detailsOpened: Boolean,
+      detailsOpened: { type: Boolean },
       /**
        * Passed to the request editor
        */
-      noAutoProjects: Boolean,
+      noAutoProjects: { type: Boolean },
       /**
        * Enables the comonent to accept drop action with a request.
        */
-      draggableEnabled: {type: Boolean},
+      draggableEnabled: { type: Boolean },
+      /**
+       * Enables compatibility with Anypoint platform
+       */
+      compatibility: { type: Boolean },
       /**
        * Indicates that the export options panel is currently rendered.
        */
-      _exportOptionsOpened: Boolean,
-      _exportOptions: {
-        type: Object,
-        value: function() {
-          return {
-            file: this._generateFileName(),
-            provider: 'file',
-            providerOptions: {
-              parents: ['My Drive']
-            }
-          };
-        }
-      }
+      _exportOptionsOpened: { type: Boolean },
+      _exportOptions: { type: Object }
     };
+  }
+  /**
+   * Computed value, true if the requests lists is hidden.
+   * @return {Boolean}
+   */
+  get listHidden() {
+    const { hasRequests, isSearch } = this;
+    if (isSearch) {
+      return false;
+    }
+    return !hasRequests;
+  }
+
+  get hasSelection() {
+    const items = this.selectedItems;
+    return !!(items && items.length);
+  }
+
+  get _requestDetails() {
+    return this.shadowRoot.querySelector('#requestDetails');
+  }
+
+  get _requestEditor() {
+    return this.shadowRoot.querySelector('#requestEditor');
+  }
+
+  get _list() {
+    return this.shadowRoot.querySelector('history-panel-list');
   }
 
   constructor() {
     super();
     this._navigateHandler = this._navigateHandler.bind(this);
-    this._searchHandler = this._searchHandler.bind(this);
+
+    this._exportOptions = {
+      file: this._generateFileName(),
+      provider: 'file',
+      providerOptions: {
+        parents: ['My Drive']
+      }
+    }
   }
 
   connectedCallback() {
-    super.connectedCallback();
+    if (super.connectedCallback) {
+      super.connectedCallback();
+    }
     this.type = 'history';
     this.addEventListener('navigate', this._navigateHandler);
-    const input = this.shadowRoot.querySelector('paper-input[type="search"]');
-    input.inputElement.addEventListener('search', this._searchHandler);
   }
 
   disconnectedCallback() {
-    super.disconnectedCallback();
-    const input = this.shadowRoot.querySelector('paper-input[type="search"]');
-    input.inputElement.removeEventListener('search', this._searchHandler);
-    this.removeEventListener('navigate', this._navigateHandler);
-  }
-
-  /**
-   * Notifies the list that the resize event occurred.
-   * Should be called whhen content of the list changed but the list wasn't
-   * visible at the time.
-   */
-  notifyResize() {
-    const list = this.shadowRoot.querySelector('history-panel-list');
-    list.notifyResize();
-  }
-  /**
-   * Computes value of the `listHidden` property.
-   * List is hidden when no requests are found and it is not searching.
-   * @param {Boolean} hasRequests
-   * @param {Boolean} isSearch
-   * @return {Boolean}
-   */
-  _computeListHidden(hasRequests, isSearch) {
-    if (isSearch) {
-      return false;
+    if (super.disconnectedCallback) {
+      super.disconnectedCallback();
     }
-    return !hasRequests;
+    this.removeEventListener('navigate', this._navigateHandler);
   }
   /**
    * Handler for navigate action from the list
@@ -414,74 +516,49 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
    * Handles items delete event from item click.
    * @return {Promise}
    */
-  _deleteSelected() {
+  async _deleteSelected() {
     this._closeSelectionMenu();
     const data = this.selectedItems;
     if (!data.length) {
       return;
     }
-    return this._delete(data);
+    return await this._delete(data);
   }
   /**
    * Deletes a request from the details panel.
    * @return {Promise}
    */
-  _deleteRequestDetails() {
-    const data = [this.$.requestDetails.request];
+  async _deleteRequestDetails() {
+    const data = [this._requestDetails.request];
     this.detailsOpened = false;
-    return this._delete(data);
+    return await this._delete(data);
   }
   /**
    * Performs a delete action of request items.
    *
-   * @param {Array<Object>} deleted List of deleted items.
-   * @return {[type]} [description]
+   * @param {Array<Object>} items List of deleted items.
+   * @return {Promise}
    */
-  _delete(deleted) {
-    const e = this._dispatchDelete(deleted);
-    if (!e.defaultPrevented) {
-      this.$.noModel.opened = true;
-      return Promise.reject(new Error('Model not found'));
+  async _delete(items) {
+    const model = this.requestModel;
+    const updated = await model.bulkDelete(this.type, items.map((item) => item._id));
+    const deleted = Object.keys(updated).map((id) => {
+      return {
+        _id: id,
+        _rev: updated[id]
+      };
+    });
+    this._latestDeleted = deleted;
+    let msg;
+    if (deleted.length === 1) {
+      msg = 'The request has been removed.';
+    } else {
+      msg = deleted.length + ' requests has been removed.';
     }
-    return e.detail.result
-    .then((updated) => {
-      return Object.keys(updated)
-      .map((id) => {
-        return {
-          _id: id,
-          _rev: updated[id]
-        };
-      });
-    })
-    .then((deleted) => {
-      this._latestDeleted = deleted;
-      let msg;
-      if (deleted.length === 1) {
-        msg = 'The request has been removed.';
-      } else {
-        msg = deleted.length + ' requests has been removed.';
-      }
-      this.$.deleteToast.text = msg;
-      this.$.deleteToast.opened = true;
-    });
-  }
-  /**
-   * Dispatches `request-objects-deleted` event.
-   * @param {Array<Object>} deleted List of requests to delete.
-   * @return {CustomEvent}
-   */
-  _dispatchDelete(deleted) {
-    const e = new CustomEvent('request-objects-deleted', {
-      bubbles: true,
-      composed: true,
-      cancelable: true,
-      detail: {
-        type: this.type,
-        items: deleted.map((item) => item._id)
-      }
-    });
-    this.dispatchEvent(e);
-    return e;
+    const toast = this.shadowRoot.querySelector('#deleteToast');
+    toast.text = msg;
+    toast.opened = true;
+    this._list.clearSelection();
   }
   /**
    * Restores removed requests.
@@ -489,41 +566,21 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
    *
    * @return {Promise} A promise resolved when objects were restored
    */
-  revertDeleted() {
-    this.$.deleteToast.opened = false;
+  async revertDeleted() {
+    const toast = this.shadowRoot.querySelector('#deleteToast');
+    toast.opened = false;
     const deleted = this._latestDeleted;
     if (!deleted || !deleted.length) {
-      return Promise.resolve();
+      return;
     }
-    const e = this._dispatchUndelete(deleted);
-    if (!e.defaultPrevented) {
-      this.$.noModel.opened = true;
-      return Promise.reject(new Error('Model not found'));
+    const model = this.requestModel;
+    try {
+      await model.revertRemove(this.type, deleted);
+    } catch (e) {
+      const toast = this.shadowRoot.querySelector('#revertError');
+      toast.opened = true;
+      this._handleError(e);
     }
-    return e.detail.result
-    .catch((cause) => {
-      this.$.revertError.opened = true;
-      this._handleError(cause);
-    });
-  }
-  /**
-   * Dispatches `request-objects-undeleted` event.
-   * @param {Array<Object>} items List of deleted requests. The list
-   * contains objects with `_id` and `_rev` properties.
-   * @return {CustomEvent}
-   */
-  _dispatchUndelete(items) {
-    const e = new CustomEvent('request-objects-undeleted', {
-      bubbles: true,
-      composed: true,
-      cancelable: true,
-      detail: {
-        type: this.type,
-        items
-      }
-    });
-    this.dispatchEvent(e);
-    return e;
   }
   /**
    * Forces selection menu to close.
@@ -531,7 +588,6 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
   _closeSelectionMenu() {
     const menu = this.shadowRoot.querySelector('#historyListMenu');
     if (!menu) {
-      console.warn('Menu not found in the DOM');
       return;
     }
     menu.opened = false;
@@ -542,8 +598,10 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
    * Forces main menu to close.
    */
   _closeMainMenu() {
-    this.$.mainMenu.opened = false;
-    this.$.mainMenuOptions.selected = -1;
+    const mainMenu = this.shadowRoot.querySelector('#mainMenu');
+    const menuOptions = this.shadowRoot.querySelector('#mainMenuOptions');
+    mainMenu.opened = false;
+    menuOptions.selected = -1;
   }
   /**
    * Toggles export options panel and sets export items to all currently loaded requests.
@@ -582,7 +640,6 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
     const detail = e.detail;
     return this._doExportItems(this._exportItems, detail);
   }
-
   /**
    * Calls `_dispatchExportData()` from requests lists mixin with
    * prepared arguments
@@ -591,22 +648,21 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
    * @param {String} detail Export configuration
    * @return {Promise}
    */
-  _doExportItems(requests, detail) {
+  async _doExportItems(requests, detail) {
     detail.options.kind = 'ARC#HistoryExport';
     const request = this._dispatchExportData(requests, detail);
-    return request.detail.result
-    .then(() => {
+    try {
+      await request.detail.result;
       if (detail.options.provider === 'drive') {
         // TODO: Render link to the folder
-        this.$.driveSaved.opened = true;
+        this.shadowRoot.querySelector('#driveSaved').opened = true;
       }
       this._exportItems = undefined;
-    })
-    .catch((cause) => {
-      this.$.errorToast.text = cause.message;
-      this.$.errorToast.opened = true;
-      console.warn(cause);
-    });
+    } catch(cause) {
+      const toast = this.shadowRoot.querySelector('#errorToast');
+      toast.text = cause.message;
+      toast.opened = true;
+    }
   }
 
   _onExportSelected() {
@@ -619,14 +675,17 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
    * @param {CustomEvent} e
    */
   _onDetails(e) {
-    this.$.requestDetails.request = e.detail.request;
-    this.detailsOpened = true;
+    this._requestDetails.request = e.detail.request;
+    this.detailsOpened = false;
+    setTimeout(() => {
+      this.detailsOpened = true;
+    });
   }
   /**
    * Fires `navigate` event for currently loaded in the details request.
    */
   _loadRequestDetails() {
-    this._openRequest(this.$.requestDetails.request._id);
+    this._openRequest(this._requestDetails.request._id);
     this.detailsOpened = false;
   }
   /**
@@ -634,17 +693,24 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
    * Calls `query()` with input's value as argument.
    * @param {Event} e
    */
-  _searchHandler(e) {
-    const {value} = e.target;
-    this.query(value);
+  async _searchHandler(e) {
+    const { value } = e.target;
+    await this.query(value);
+    const list = this._list;
+    if (list) {
+      list.clearSelection();
+    }
   }
   /**
    * Handler for delete all menu option click.
    */
   _deleteAllClick() {
-    this.$.mainMenu.opened = false;
-    this.$.mainMenuOptions.selected = -1;
-    this.$.dataClearDialog.opened = true;
+    const mainMenu = this.shadowRoot.querySelector('#mainMenu');
+    const menuOptions = this.shadowRoot.querySelector('#mainMenuOptions');
+    const dialog = this.shadowRoot.querySelector('#dataClearDialog');
+    mainMenu.opened = false;
+    menuOptions.selected = -1;
+    dialog.opened = true;
   }
   /**
    * Called when delete datastore dialog is closed.
@@ -659,18 +725,24 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
   /**
    * Removes all data from the datastore and then fires
    */
-  _clearDatastore() {
+  async _clearDatastore() {
     const e = this._dispatchDeleteModel();
     if (!e.detail.result) {
-      this.$.dataClearErrorToast.opened = true;
-      this._handleError(new Error('Model not found.'));
       return;
     }
-    Promise.all(e.detail.result)
-    .catch((cause) => {
-      this.$.dataClearErrorToast.opened = true;
-      this._handleError(cause);
-    });
+    try {
+      let result = e.detail.result;
+      if (!Array.isArray(result)) {
+        result = [result];
+      }
+      for(const item of result) {
+        await item;
+      }
+    } catch (e) {
+      const toast = this.shadowRoot.querySelector('#dataClearErrorToast');
+      toast.opened = true;
+      this._handleError(e);
+    }
   }
   /**
    * Dispatches `destroy-model` with `saved` on the models list.
@@ -692,23 +764,12 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
    * Opens request details editor in place of the request details applet.
    */
   _editRequestDetails() {
-    const request = Object.assign({}, this.$.requestDetails.request);
+    const request = Object.assign({}, this._requestDetails.request);
     this._resetHistoryObject(request);
-    this.$.requestEditor.request = request;
-    this.$.requestDetails.request = undefined;
+    this._requestEditor.request = request;
+    this._requestDetails.request = undefined;
     this.detailsOpened = false;
     this.editorOpened = true;
-  }
-  /**
-   * Resizes `bottom-sheet` content by calling `notifyResize()` on each content panel.
-   * @param {CustomEvent} e
-   */
-  _resizeSheetContent(e) {
-    const panel = e.target.querySelector(
-        'saved-request-editor,saved-request-detail,export-options');
-    if (panel && panel.notifyResize) {
-      panel.notifyResize();
-    }
   }
 
   _cancelRequestEdit() {
@@ -719,7 +780,7 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
    */
   _saveRequestEdit() {
     this.editorOpened = false;
-    this.$.requestEditor.request = undefined;
+    this._requestEditor.request = undefined;
   }
   /**
    * Checks if selection has items.
@@ -760,6 +821,26 @@ class HistoryPanel extends HistoryListMixin(RequestsListMixin(PolymerElement)) {
       day = '0' + day;
     }
     return `arc-history-export-${year}-${month}-${day}.arc`;
+  }
+
+  _selectionHandler(e) {
+    this.selectedItems = e.detail.value;
+  }
+
+  _sheetOpenedHandler(e) {
+    const prop = e.target.dataset.openProperty;
+    this[prop] = e.detail.value;
+  }
+  /**
+   * Resizes `bottom-sheet` content by calling `notifyResize()` on each content panel.
+   * @param {CustomEvent} e
+   */
+  _resizeSheetContent(e) {
+    const panel = e.target.querySelector(
+        'saved-request-editor,saved-request-detail,export-options');
+    if (panel && panel.notifyResize) {
+      panel.notifyResize();
+    }
   }
   /**
    * Fired when navigation was requested
