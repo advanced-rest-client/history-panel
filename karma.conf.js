@@ -16,10 +16,13 @@ module.exports = (config) => {
           type: 'module'
         },
         {
-          pattern: require.resolve('chai/chai.js')
+          pattern: require.resolve('web-animations-js/web-animations.min.js')
         },
         {
-          pattern: require.resolve('axe-core/axe.min.js')
+          pattern: require.resolve('codemirror/lib/codemirror.js')
+        },
+        {
+          pattern: require.resolve('codemirror/mode/markdown/markdown.js')
         }
       ],
 
