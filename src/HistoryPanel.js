@@ -180,6 +180,7 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
       <div class="header-actions">
         <anypoint-menu-button
           dynamicalign
+          closeOnActivate
           id="mainMenu"
           ?compatibility="${compatibility}">
           <anypoint-icon-button
@@ -194,11 +195,13 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
             ?compatibility="${compatibility}">
             <anypoint-icon-item
               class="menu-item"
+              data-action="export-all"
               @click="${this.openExportAll}">
               <iron-icon icon="arc:export-variant" slot="item-icon"></iron-icon>Export all
             </anypoint-icon-item>
             <anypoint-icon-item
               class="menu-item"
+              data-action="delete-all"
               @click="${this._deleteAllClick}">
               <iron-icon icon="arc:delete" slot="item-icon"></iron-icon>Delete all
             </anypoint-icon-item>
@@ -234,6 +237,7 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
       <anypoint-menu-button
         dynamicalign
         ?compatibility="${compatibility}"
+        closeOnActivate
         id="historyListMenu">
         <anypoint-icon-button
           ?compatibility="${compatibility}"
@@ -247,12 +251,13 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
           id="historyListMenuOptions">
           <anypoint-icon-item
             class="menu-item"
+            data-action="export-selected"
             @click="${this._onExportSelected}">
             <iron-icon icon="arc:export-variant" slot="item-icon"></iron-icon>Export selected
           </anypoint-icon-item>
           <anypoint-icon-item
             class="menu-item"
-            data-action="delete-all"
+            data-action="delete-selected"
             @click="${this._deleteSelected}">
             <iron-icon icon="arc:delete" slot="item-icon"></iron-icon>
             Delete selected
@@ -378,6 +383,7 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
       <div class="buttons">
         <anypoint-button
           ?compatibility="${compatibility}"
+          data-action="delete-export-all"
           @click="${this._exportAllFile}">Create backup file</anypoint-button>
         <anypoint-button
           ?compatibility="${compatibility}"
@@ -517,7 +523,7 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
    * @return {Promise}
    */
   async _deleteSelected() {
-    this._closeSelectionMenu();
+    this._deselectSelectionMenu();
     const data = this.selectedItems;
     if (!data.length) {
       return;
@@ -585,31 +591,28 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
   /**
    * Forces selection menu to close.
    */
-  _closeSelectionMenu() {
-    const menu = this.shadowRoot.querySelector('#historyListMenu');
-    if (!menu) {
-      return;
-    }
-    menu.opened = false;
-    const options = this.shadowRoot.querySelector('#historyListMenuOptions');
-    options.selected = -1;
+  _deselectSelectionMenu() {
+    setTimeout(() => {
+      const options = this.shadowRoot.querySelector('#historyListMenuOptions');
+      options.selected = null;
+    });
   }
   /**
-   * Forces main menu to close.
+   * Removes selection from screen's main menu dropdown
    */
-  _closeMainMenu() {
-    const mainMenu = this.shadowRoot.querySelector('#mainMenu');
-    const menuOptions = this.shadowRoot.querySelector('#mainMenuOptions');
-    mainMenu.opened = false;
-    menuOptions.selected = -1;
+  _deselectMainMenu() {
+    setTimeout(() => {
+      const menuOptions = this.shadowRoot.querySelector('#mainMenuOptions');
+      menuOptions.selected = null;
+    });
   }
   /**
    * Toggles export options panel and sets export items to all currently loaded requests.
    */
   openExportAll() {
-    this._closeMainMenu();
     this._exportOptionsOpened = true;
     this._exportItems = true;
+    this._deselectMainMenu();
   }
 
   _cancelExportOptions() {
@@ -624,7 +627,6 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
     const detail = {
       options: {
         file: this._generateFileName(),
-        kind: 'ARC#HistoryExport',
         provider: 'file'
       }
     };
@@ -637,7 +639,7 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
    */
   _acceptExportOptions(e) {
     this._exportOptionsOpened = false;
-    const detail = e.detail;
+    const { detail } = e;
     return this._doExportItems(this._exportItems, detail);
   }
   /**
@@ -657,16 +659,16 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
         // TODO: Render link to the folder
         this.shadowRoot.querySelector('#driveSaved').opened = true;
       }
-      this._exportItems = undefined;
     } catch(cause) {
       const toast = this.shadowRoot.querySelector('#errorToast');
       toast.text = cause.message;
       toast.opened = true;
     }
+    this._exportItems = undefined;
   }
 
   _onExportSelected() {
-    this._closeSelectionMenu();
+    this._deselectSelectionMenu();
     this._exportOptionsOpened = true;
     this._exportItems = this.selectedItems || [];
   }
@@ -705,12 +707,9 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
    * Handler for delete all menu option click.
    */
   _deleteAllClick() {
-    const mainMenu = this.shadowRoot.querySelector('#mainMenu');
-    const menuOptions = this.shadowRoot.querySelector('#mainMenuOptions');
     const dialog = this.shadowRoot.querySelector('#dataClearDialog');
-    mainMenu.opened = false;
-    menuOptions.selected = -1;
     dialog.opened = true;
+    this._deselectMainMenu();
   }
   /**
    * Called when delete datastore dialog is closed.
@@ -731,10 +730,7 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
       return;
     }
     try {
-      let result = e.detail.result;
-      if (!Array.isArray(result)) {
-        result = [result];
-      }
+      const result = e.detail.result;
       for(const item of result) {
         await item;
       }
@@ -754,7 +750,8 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
       composed: true,
       cancelable: true,
       detail: {
-        models: ['history']
+        models: ['history'],
+        result: []
       }
     });
     this.dispatchEvent(e);
@@ -781,14 +778,6 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
   _saveRequestEdit() {
     this.editorOpened = false;
     this._requestEditor.request = undefined;
-  }
-  /**
-   * Checks if selection has items.
-   * @param {Number} length Current size of selection
-   * @return {Boolean} True if there is a selection.
-   */
-  _computeHasSelection(length) {
-    return !!length;
   }
   /**
    * Updates icon size CSS variable and notifies resize on the list when
