@@ -1,7 +1,7 @@
 {
   "name": "@advanced-rest-client/history-panel",
   "description": "ARC's requests history view",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "license": "Apache-2.0",
   "main": "history-panel.js",
   "keywords": [

@@ -755,7 +755,7 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
       composed: true,
       cancelable: true,
       detail: {
-        models: ['history'],
+        models: [this.type],
         result: []
       }
     });
