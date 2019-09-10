@@ -227,6 +227,22 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
     <p class="empty-info">Send a request from the request panel and it will appear here.</p>`;
   }
 
+  _selectionOptionsTemplate() {
+    return html`<anypoint-icon-item
+      class="menu-item"
+      data-action="export-selected"
+      @click="${this._onExportSelected}">
+      <iron-icon icon="arc:export-variant" slot="item-icon"></iron-icon>Export selected
+    </anypoint-icon-item>
+    <anypoint-icon-item
+      class="menu-item"
+      data-action="delete-selected"
+      @click="${this._deleteSelected}">
+      <iron-icon icon="arc:delete" slot="item-icon"></iron-icon>
+      Delete selected
+    </anypoint-icon-item>`;
+  }
+
   _selectionTemplate() {
     const { listHidden, hasSelection, compatibility } = this;
     const selectedItems = this.selectedItems || [];
@@ -249,19 +265,7 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
           slot="dropdown-content"
           ?compatibility="${compatibility}"
           id="historyListMenuOptions">
-          <anypoint-icon-item
-            class="menu-item"
-            data-action="export-selected"
-            @click="${this._onExportSelected}">
-            <iron-icon icon="arc:export-variant" slot="item-icon"></iron-icon>Export selected
-          </anypoint-icon-item>
-          <anypoint-icon-item
-            class="menu-item"
-            data-action="delete-selected"
-            @click="${this._deleteSelected}">
-            <iron-icon icon="arc:delete" slot="item-icon"></iron-icon>
-            Delete selected
-          </anypoint-icon-item>
+          ${this._selectionOptionsTemplate()}
         </anypoint-listbox>
       </anypoint-menu-button>` : '')}
       <div class="spacer"></div>

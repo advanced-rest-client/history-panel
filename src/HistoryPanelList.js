@@ -83,23 +83,29 @@ export class HistoryPanelList extends LitElement {
         <anypoint-item-body
           ?twoline="${hasTwoLines}"
           ?compatibility="${compatibility}">
-          <div class="url">${item.url}</div>
-          <div secondary="">${item.timeLabel}</div>
+          ${this._listItemDetailsTemplate(item)}
         </anypoint-item-body>
         <anypoint-button
           data-index="${index}"
           class="list-action-button list-secondary-action"
           data-action="item-detail"
           ?compatibility="${compatibility}"
-          @click="${this._requestDetails}">Details</anypoint-button>
+          @click="${this._requestDetails}"
+          title="Open request details dialog">Details</anypoint-button>
         <anypoint-button
           data-index="${index}"
           class="list-action-button list-main-action"
           data-action="open-item"
           @click="${this._navigateItem}"
           ?compatibility="${compatibility}"
-          emphasis="high">Open</anypoint-button>
+          emphasis="high"
+          title="Open request in the workspace">Open</anypoint-button>
       </anypoint-icon-item>`);
+  }
+
+  _listItemDetailsTemplate(item) {
+    return html`<div class="url">${item.url}</div>
+    <div secondary="">${item.timeLabel}</div>`;
   }
 
   render() {
