@@ -505,6 +505,7 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
       super.connectedCallback();
     }
     this.type = 'history';
+    this._exportKind = 'ARC#HistoryExport';
     this.addEventListener('navigate', this._navigateHandler);
   }
 
@@ -655,7 +656,7 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
    * @return {Promise}
    */
   async _doExportItems(requests, detail) {
-    detail.options.kind = 'ARC#HistoryExport';
+    detail.options.kind = this._exportKind;
     const request = this._dispatchExportData(requests, detail);
     try {
       await request.detail.result;
