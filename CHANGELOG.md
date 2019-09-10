@@ -209,3 +209,7 @@
 
 
 
+## [3.0.1](https://github.com/advanced-rest-client/history-panel/compare/0.1.13...3.0.1) (2019-09-10)
+
+
+
