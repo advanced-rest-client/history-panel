@@ -49,6 +49,7 @@ declare namespace ApiElements {
     disconnectedCallback(): void;
     render(): any;
     _listTemplate(): any;
+    _listItemDetailsTemplate(item: any): any;
     clearSelection(): void;
 
     /**

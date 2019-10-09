@@ -96,6 +96,12 @@ declare namespace UiElements {
     compatibility: boolean|null|undefined;
 
     /**
+     * When set is enables encryption options.
+     * Currently only in the export panel.
+     */
+    withEncrypt: boolean|null|undefined;
+
+    /**
      * Indicates that the export options panel is currently rendered.
      */
     _exportOptionsOpened: boolean|null|undefined;
@@ -103,6 +109,7 @@ declare namespace UiElements {
     _headerTemplate(): any;
     _busyTemplate(): any;
     _unavailableTemplate(): any;
+    _selectionOptionsTemplate(): any;
     _selectionTemplate(): any;
     _listTemplate(): any;
     _requestDetailsTemplate(): any;
