@@ -221,3 +221,12 @@
 
 
 
+## [3.0.4](https://github.com/advanced-rest-client/history-panel/compare/0.1.13...3.0.4) (2019-10-09)
+
+
+### Features
+
+* adding `withEncrypt` option ([4e36fc5](https://github.com/advanced-rest-client/history-panel/commit/4e36fc5))
+
+
+
