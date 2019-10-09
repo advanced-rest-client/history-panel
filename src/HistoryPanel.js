@@ -342,7 +342,8 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
     const {
       _exportOptionsOpened,
       _exportOptions,
-      compatibility
+      compatibility,
+      withEncrypt
     } = this;
     return html`<bottom-sheet
       id="exportOptionsContainer"
@@ -352,6 +353,7 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
       @overlay-closed="${this._sheetOpenedHandler}">
       <export-options
         ?compatibility="${compatibility}"
+        ?withEncrypt="${withEncrypt}"
         .file="${_exportOptions.file}"
         .provider="${_exportOptions.provider}"
         .providerOptions="${_exportOptions.providerOptions}"
@@ -451,6 +453,11 @@ export class HistoryPanel extends HistoryListMixin(RequestsListMixin(LitElement)
        * Enables compatibility with Anypoint platform
        */
       compatibility: { type: Boolean },
+      /**
+       * When set is enables encryption options.
+       * Currently only in the export panel.
+       */
+      withEncrypt: { type: Boolean },
       /**
        * Indicates that the export options panel is currently rendered.
        */

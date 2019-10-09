@@ -9,6 +9,10 @@ describe('<history-panel>', function() {
     return await fixture(html`<history-panel noauto noautoprojects></history-panel>`);
   }
 
+  async function exportEncryptFixture(requests) {
+    return await fixture(html`<history-panel noauto withencrypt></history-panel>`);
+  }
+
   describe('get listHidden', () => {
     let element;
     beforeEach(async () => {
@@ -713,6 +717,14 @@ describe('<history-panel>', function() {
       assert.deepEqual(node.providerOptions, {
         parents: ['My Drive']
       });
+    });
+  });
+
+  describe('Export encryption', () => {
+    it('Enables encryption option', async () => {
+      const element = await exportEncryptFixture();
+      const node = element.shadowRoot.querySelector('export-options');
+      assert.isTrue(node.withEncrypt);
     });
   });
 });
