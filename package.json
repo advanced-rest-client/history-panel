@@ -1,7 +1,7 @@
 {
   "name": "@advanced-rest-client/history-panel",
   "description": "ARC's requests history view",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "license": "Apache-2.0",
   "main": "history-panel.js",
   "keywords": [
@@ -24,8 +24,8 @@
     "email": "arc@mulesoft.com"
   },
   "dependencies": {
-    "@advanced-rest-client/arc-icons": "^3.1.0",
-    "@advanced-rest-client/bottom-sheet": "^3.2.0",
+    "@advanced-rest-client/arc-icons": "^3.1.2",
+    "@advanced-rest-client/bottom-sheet": "^3.2.1",
     "@advanced-rest-client/export-options": "^3.2.0",
     "@advanced-rest-client/history-list-mixin": "^3.0.2",
     "@advanced-rest-client/requests-list-mixin": "^3.0.1",
@@ -52,44 +52,20 @@
     "@advanced-rest-client/arc-data-generator": "^3.1.6",
     "@advanced-rest-client/arc-demo-helper": "^1.0.17",
     "@advanced-rest-client/arc-models": "^3.2.0",
-    "@advanced-rest-client/eslint-config": "^1.1.5",
-    "@advanced-rest-client/history-menu": "^3.0.1",
     "@advanced-rest-client/http-method-selector": "^3.0.5",
-    "@advanced-rest-client/prettier-config": "^0.1.0",
-    "@advanced-rest-client/saved-menu": "^3.0.0",
-    "@advanced-rest-client/testing-karma-sl": "^1.4.2",
     "@anypoint-web-components/anypoint-radio-button": "^0.1.5",
     "@open-wc/testing": "^2.5.26",
     "@open-wc/testing-karma": "^4.0.5",
-    "@polymer/gen-typescript-declarations": "^1.6.2",
     "@polymer/iron-test-helpers": "^3.0.1",
     "@polymer/paper-toast": "^3.0.0",
     "@polymer/paper-toggle-button": "^3.0.1",
     "deepmerge": "^4.2.2",
     "es-dev-server": "^1.57.4",
-    "husky": "^4.3.0",
-    "lint-staged": "^10.4.0",
     "sinon": "^9.0.3"
   },
   "scripts": {
     "test": "karma start --coverage",
-    "update-types": "gen-typescript-declarations --deleteExisting --outDir .",
     "start": "es-dev-server --app-index demo/index.html --node-resolve --open --watch",
-    "start:compatibility": "es-dev-server --app-index demo/index.html --compatibility all --node-resolve --open --watch",
-    "lint:eslint": "eslint --ext .js,.html .",
-    "format:eslint": "eslint --ext .js,.html . --fix",
-    "lint:prettier": "prettier \"**/*.js\" --list-different || (echo '↑↑ these files are not prettier formatted ↑↑' && exit 1)",
-    "format:prettier": "prettier \"**/*.js\" --write",
-    "lint": "npm run lint:eslint && npm run lint:prettier",
-    "format": "npm run format:eslint && npm run format:prettier",
-    "test:watch": "karma start --auto-watch=true --single-run=false",
-    "test:legacy": "karma start --compatibility all --coverage",
-    "test:legacy:watch": "karma start --compatibility all --auto-watch=true --single-run=false",
-    "test:sl": "karma start karma.sl.config.js --compatibility all --coverage"
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix"
-    ]
+    "test:watch": "karma start --auto-watch=true --single-run=false"
   }
 }

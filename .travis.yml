@@ -1,18 +1,6 @@
 language: node_js
 node_js: stable
-sudo: required
 addons:
-  apt:
-    sources:
-    - google-chrome
-    packages:
-    - google-chrome-stable
+  chrome: stable
 script:
 - npm test
-- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then npm run test:sl; fi
-env:
-  global:
-    - secure: >-
-        xjTCaAlfDD7V1GCCi7fFE+Kmuc1xIiNMj/5np7eMaB+ws53/qREJ/r5T6+ivsS0uqvQskE6TAPcTwC82w6TratafGVdOBwBN5jUHNXoYuvKTLqcR7qPo+z3FlNcSFY9rqD69/W2eAgGjmnvME3yironloncjPstbWMI/xv9ebL8RNMIbOGVeKLH2xarlVbUR/MvO3VJZ6GdMQ7uNcHRwQsXIrUfYiqF8eOf5mkZMQw6FQ3jS6NDzdOXPudfRP9q0PFTAStKHUAhtE0iu/BlkoMo4aA4hAdRLr4c7CCpWInI4FqdI1MeSZh3ZmQG8j67iXjsmGhGZhDD6yKCBh6r4TFH1TK6RG/OkyvPfXTUXNG4FXjxa7bKWzZ6BnenfsdjbYr98d2HzaXddHHNTbP+FOm6MSOxFH4hodrGp5dFIiXwTPsP+zF30ti/e2K/hxpd0+9myYRz9+5A7hiFeQMWVvFnpVj9wmjFKvexrf6wyQX6JqoOHM/GjgSaNN1SHb36IVPzFi8EoQ2l+isVlQeHbQvJ7Y9qqNWlSU/ssr5Nbkik98VpRw//74bt8yLS8/xqhJaoah0vbOXOwCH8SKzlXTCNEuWm8++9QvxEnvxPcEhmhU5ldctsED7i/MPD3flkc0L+S/bLWT7aHOOpV4Mb8aTh9jNYJMfvzrtASJiW3hnU=
-    - secure: >-
-        skB/es+zPi19RaWQ/ZMcght8P7osotg7GqA0u+RiMe3bpbU0RuUq7eaQjKbNY8kUkfSAM/jyAqsCbnGMZqn0K0Dabh9MRbwJZUFcAUodXS8fpWtSv3N5eXak4XmKcGrTP0Qk9ZTpaSIr4jtD7GJptEDwIiEIMlWhKbXboGtvO2AeEqwZSZj9UdJDOQT+S4EiFhOaqfw8H5CyrHl21MiU1uLc984YeqCyKj/lEj7CzKjb2aHJIGOPt+nTpv/wRwUou16ZUKP9l9Q3INxB+3P4d1XbpOA83FmSiJiHqrU8ImIaAmz/8t2giFmo3RqG5FLNfm9mqCPb0iipr1aK+cwiJVTmdNs9Xa46DSOOsvJMRQsFu2NxJmu0SMOQD+JZN37y/znoa5wxNMmeX6FzTq9WwWGCrmLUDyBGghg46fD4Dx8eQ+Hfx3blJF6lmH3eAfhJ7lEpR68PCAPrbs+yUQJELrDDNSXZzNKZxgn+VZH0wH8Ct08ZTKrwDaCaDZEJH+pSTWa7lmI8YgmuUX/261X+yuym0OTkbeqlBbi5tSSFSCXvn9aCPSdgNcyQ1cFqYgG8jOA+6BarR0bEPeD1ou293bwULVOR20RtEjuyUV70NgbxEKGbnqBqj5sYhqZOFw4tuYxEcGfXsDSHraBZUQ5S7lxyVaX4BFj11fZF8Rzu5ps=
